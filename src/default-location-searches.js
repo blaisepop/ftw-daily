@@ -9,38 +9,41 @@ const { LatLng, LatLngBounds } = sdkTypes;
 // `predictionPlace` (util.types.place) properties.
 const defaultLocations = [
   {
-    id: 'default-helsinki',
+    id: 'default-geneva',
     predictionPlace: {
-      address: 'Helsinki, Finland',
-      bounds: new LatLngBounds(new LatLng(60.29783, 25.25448), new LatLng(59.92248, 24.78287)),
+      address: 'Geneva, Suisse',
+      bounds: new LatLngBounds(
+        new LatLng(46.27667033, 6.22228052),
+        new LatLng(46.09040127, 6.06676663)
+        ),
     },
   },
   {
-    id: 'default-turku',
+    id: 'default-lausanne',
     predictionPlace: {
-      address: 'Turku, Finland',
-      bounds: new LatLngBounds(new LatLng(60.53045, 22.38197), new LatLng(60.33361, 22.06644)),
+      address: 'Lausanne, Switzerland',
+      bounds: new LatLngBounds(new LatLng(46.58181451283725, 6.567349290768799), new LatLng(46.493016461552195, 6.714978068486247)),
     },
   },
   {
-    id: 'default-tampere',
+    id: 'default-neuchatel',
     predictionPlace: {
-      address: 'Tampere, Finland',
-      bounds: new LatLngBounds(new LatLng(61.83657, 24.11838), new LatLng(61.42728, 23.5422)),
+      address: 'Neuchâtel, Switzerland',
+      bounds: new LatLngBounds(new LatLng(47.06348587447352, 6.727485659248486), new LatLng(46.979378760121996, 7.039994442589336)),
     },
   },
   {
-    id: 'default-oulu',
+    id: 'default-bern',
     predictionPlace: {
-      address: 'Oulu, Finland',
-      bounds: new LatLngBounds(new LatLng(65.56434, 26.77069), new LatLng(64.8443, 24.11494)),
+      address: 'bern, Switzerland',
+      bounds: new LatLngBounds(new LatLng(46.976203921045695, 7.391091893083048), new LatLng(46.914326208695115, 7.490655487357604)),
     },
   },
   {
-    id: 'default-ruka',
+    id: 'default-zurich',
     predictionPlace: {
-      address: 'Ruka, Finland',
-      bounds: new LatLngBounds(new LatLng(66.16997, 29.16773), new LatLng(66.16095, 29.13572)),
+      address: 'zurich, Switzerland',
+      bounds: new LatLngBounds(new LatLng(47.42971717116399, 8.44916610797947), new LatLng(47.3376635013167, 8.605034631429984)),
     },
   },
 ];
