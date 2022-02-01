@@ -26,6 +26,7 @@ import EditListingWizardTab, {
   LOCATION,
   PRICING,
   PHOTOS,
+  WIDTH,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -39,6 +40,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 export const TABS = [
   DESCRIPTION,
   FEATURES,
+  WIDTH,
   POLICY,
   LOCATION,
   PRICING,
@@ -68,6 +70,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
+  } else if (tab === WIDTH) {
+    key = 'EditListingWizard.tabLabelWidth';
   }
 
   return intl.formatMessage({ id: key });
@@ -97,6 +101,8 @@ const tabCompleted = (tab, listing) => {
       return !!(description && title);
     case FEATURES:
       return !!(publicData && publicData.amenities);
+    case WIDTH:
+      return !!(publicData && publicData.width);
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined');
     case LOCATION:

@@ -17,6 +17,7 @@ import {
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
+  EditListingWidthPanel,
 } from '../../components';
 
 import css from './EditListingWizard.module.css';
@@ -24,15 +25,18 @@ import css from './EditListingWizard.module.css';
 export const AVAILABILITY = 'availability';
 export const DESCRIPTION = 'description';
 export const FEATURES = 'features';
+export const WIDTH = 'width';
 export const POLICY = 'policy';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 
+
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
   DESCRIPTION,
   FEATURES,
+  WIDTH,
   POLICY,
   LOCATION,
   PRICING,
@@ -258,6 +262,20 @@ const EditListingWizardTab = props => {
             onCompleteEditListingWizardTab(tab, values);
           }}
           onUpdateImageOrder={onUpdateImageOrder}
+        />
+      );
+    }
+    case WIDTH: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewWidth'
+        : 'EditListingWizard.saveEditWidth';
+      return (
+        <EditListingWidthPanel
+          {...panelProps(WIDTH)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
         />
       );
     }
