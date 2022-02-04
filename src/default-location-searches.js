@@ -22,28 +22,28 @@ const defaultLocations = [
     id: 'default-lausanne',
     predictionPlace: {
       address: 'Lausanne, Switzerland',
-      bounds: new LatLngBounds(new LatLng(46.58181451283725, 6.567349290768799), new LatLng(46.493016461552195, 6.714978068486247)),
+      bounds: new LatLngBounds(new LatLng(46.60519965, 6.77690937), new LatLng(46.40145027, 6.54728915)),
     },
   },
   {
     id: 'default-neuchatel',
     predictionPlace: {
       address: 'Neuchâtel, Switzerland',
-      bounds: new LatLngBounds(new LatLng(47.06348587447352, 6.727485659248486), new LatLng(46.979378760121996, 7.039994442589336)),
+      bounds: new LatLngBounds(new LatLng(47.05803712, 6.9984204), new LatLng(46.87743887, 6.84544465)),
     },
   },
   {
     id: 'default-bern',
     predictionPlace: {
-      address: 'bern, Switzerland',
-      bounds: new LatLngBounds(new LatLng(46.976203921045695, 7.391091893083048), new LatLng(46.914326208695115, 7.490655487357604)),
+      address: 'Bern, Switzerland',
+      bounds: new LatLngBounds(new LatLng(47.01098855, 7.51012784), new LatLng(46.8722205, 7.3926418)),
     },
   },
   {
     id: 'default-zurich',
     predictionPlace: {
-      address: 'zurich, Switzerland',
-      bounds: new LatLngBounds(new LatLng(47.42971717116399, 8.44916610797947), new LatLng(47.3376635013167, 8.605034631429984)),
+      address: 'Zurich, Switzerland',
+      bounds: new LatLngBounds(new LatLng(47.43059012, 8.58478231), new LatLng(47.30962388, 8.48153875)),
     },
   },
 ];
