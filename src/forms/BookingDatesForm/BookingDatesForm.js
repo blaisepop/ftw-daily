@@ -9,6 +9,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { required, bookingDatesRequired, composeValidators } from '../../util/validators';
 import { START_DATE, END_DATE } from '../../util/dates';
 import { propTypes } from '../../util/types';
+import axios from 'axios';
 //
 import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
@@ -25,14 +26,11 @@ const label = <h3>Menus</h3>;
 
 ///REQUETE POUR LES MENUS
 const url="https://mobile-food-ch.herokuapp.com/api/v1/menu_items/";
-fetch(url)
-.then((resp) => resp.json())
-.then(function(data) {
-console.log(data);
-})
+ axios.get(url)
+.then(resp => console.log(resp.data))
 .catch(function() {
-
 });
+
 //fin de la requete 
 
 
