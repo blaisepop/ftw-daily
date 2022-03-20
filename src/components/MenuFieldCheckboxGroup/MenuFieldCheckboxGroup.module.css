@@ -1,0 +1,41 @@
+.root {
+  margin: 0;
+  padding: 0;
+  border: none;
+  
+  
+}
+.scroll{
+  max-height: 400px;
+  overflow-y: auto;
+}
+.scroll ::-webkit-scrollbar {
+  width: 12px;
+}
+.scroll ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: grey;
+}
+
+.list {
+  margin: 0;
+}
+
+.twoColumns {
+  @media (--viewportMedium) {
+    columns: 2;
+  }
+}
+
+.item {
+  padding: 2px 0;
+
+  /* Fix broken multi-column layout in Chrome */
+  page-break-inside: avoid;
+
+  @media (--viewportMedium) {
+    padding: 4px 0;
+  }
+}
+
+

@@ -20,7 +20,8 @@
   /* We must lift up the text from the center since it looks better with
    the button border. Also clears the top padding set for link
    elements looking like buttons */
-  padding: 0 0 2px 0;
+  
+  padding: 0 0 0 0;
 }
 
 .inlineTextButtonRoot {
@@ -31,7 +32,8 @@
   /* Class handle for primary button state styles */
 }
 .secondaryButton {
-  /* Class handle for secondary button state styles */
+
+
 }
 
 .inProgress {

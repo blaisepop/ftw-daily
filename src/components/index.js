@@ -88,6 +88,9 @@ export { default as ModalInMobile } from './ModalInMobile/ModalInMobile';
 // Fields (for Final Form)
 export { default as FieldBirthdayInput } from './FieldBirthdayInput/FieldBirthdayInput';
 export { default as FieldCheckbox } from './FieldCheckbox/FieldCheckbox';
+export { default as MenuFieldCheckbox } from './MenuFieldCheckbox/MenuFieldCheckbox';
+export { default as MenuFieldTextInput } from './MenuFieldTextInput/MenuFieldTextInput';
+
 export { default as FieldCurrencyInput } from './FieldCurrencyInput/FieldCurrencyInput';
 export { default as FieldDateInput } from './FieldDateInput/FieldDateInput';
 export { default as FieldDateRangeController } from './FieldDateRangeController/FieldDateRangeController';
@@ -99,6 +102,8 @@ export { default as FieldTextInput } from './FieldTextInput/FieldTextInput';
 // Fields that use other Fields
 export { default as FieldBoolean } from './FieldBoolean/FieldBoolean';
 export { default as FieldCheckboxGroup } from './FieldCheckboxGroup/FieldCheckboxGroup';
+export { default as MenuFieldCheckboxGroup } from './MenuFieldCheckboxGroup/MenuFieldCheckboxGroup';
+
 export { default as FieldPhoneNumberInput } from './FieldPhoneNumberInput/FieldPhoneNumberInput';
 // Fields and inputs using old naming pattern
 export { default as LocationAutocompleteInput, LocationAutocompleteInputField } from './LocationAutocompleteInput/LocationAutocompleteInput';

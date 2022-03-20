@@ -9,12 +9,87 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { required, bookingDatesRequired, composeValidators } from '../../util/validators';
 import { START_DATE, END_DATE } from '../../util/dates';
 import { propTypes } from '../../util/types';
-import { Form, IconSpinner, PrimaryButton, FieldDateRangeInput } from '../../components';
+//
+import { formatMoney } from '../../util/currency';
+import { types as sdkTypes } from '../../util/sdkLoader';
+//
+import { Form, IconSpinner, PrimaryButton, FieldDateRangeInput, MenuFieldCheckboxGroup, FieldCheckbox, MenuFieldCheckbox, FieldTextInput } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 
 import css from './BookingDatesForm.module.css';
 
+const { Money } = sdkTypes;
 const identity = v => v;
+const label = <h3>Menus</h3>;
+
+
+///REQUETE POUR LES MENUS
+const url="https://mobile-food-ch.herokuapp.com/api/v1/menu_items/";
+fetch(url)
+.then((resp) => resp.json())
+.then(function(data) {
+console.log(data);
+})
+.catch(function() {
+
+});
+//fin de la requete 
+
+
+const commonProps = {
+  label: label,
+  options: [
+    {
+      key: 'Cheese Burger',
+      description: 'steak - cheddar - tomates ',
+      label: 'Cheese Burger',
+      item_price: 1,
+    },
+    {
+      key: 'Savoyard',
+      description: 'steak - roblochon - salade - lard',
+      label: 'Savoyard',
+      item_price: 1,
+    },
+    {
+      key: 'Barbuc',
+      description: 'steak - cheddar - sauce bbq - tomates - bacon',
+      label: 'Barbuc\'',
+      item_price: 1,
+    },
+    /*{
+      key: '4',
+      description:'steak - cheddar - sauce bbq - tomates - bacon',
+      label: 'Barbuc\'',
+      item_price: 10,
+    },
+    {
+      key: '5',
+      description:'steak - cheddar - sauce bbq - tomates - bacon',
+      label: 'Barbuc\'',
+      item_price: 10,
+    },
+    {
+      key: '6',
+      description:'steak - cheddar - sauce bbq - tomates - bacon',
+      label: 'Barbuc\'',
+      item_price: 10,
+    },
+    {
+      key: '7',
+      description:'steak - cheddar - sauce bbq - tomates - bacon',
+      label: 'Barbuc\'',
+      item_price: 10,
+    },*/
+
+  ],
+  id: "menus",
+
+};
+
+
+
+
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
@@ -53,6 +128,10 @@ export class BookingDatesFormComponent extends Component {
   // In case you add more fields to the form, make sure you add
   // the values here to the bookingData object.
   handleOnChange(formValues) {
+     const listMenuSelected=formValues.values && formValues.values.menus ? formValues.values.menus : {};
+    //console.log(listMenuSelected);
+    
+     
     const { startDate, endDate } =
       formValues.values && formValues.values.bookingDates ? formValues.values.bookingDates : {};
     const listingId = this.props.listingId;
@@ -60,7 +139,7 @@ export class BookingDatesFormComponent extends Component {
 
     if (startDate && endDate && !this.props.fetchLineItemsInProgress) {
       this.props.onFetchTransactionLineItems({
-        bookingData: { startDate, endDate },
+        bookingData: { startDate, endDate,listMenuSelected },
         listingId,
         isOwnListing,
       });
@@ -143,10 +222,10 @@ export class BookingDatesFormComponent extends Component {
           const bookingData =
             startDate && endDate
               ? {
-                  unitType,
-                  startDate,
-                  endDate,
-                }
+                unitType,
+                startDate,
+                endDate,
+              }
               : null;
 
           const showEstimatedBreakdown =
@@ -198,6 +277,7 @@ export class BookingDatesFormComponent extends Component {
                 subscription={{ values: true }}
                 onChange={values => {
                   this.handleOnChange(values);
+                  console.log(values);
                 }}
               />
               <FieldDateRangeInput
@@ -221,6 +301,10 @@ export class BookingDatesFormComponent extends Component {
                 )}
                 disabled={fetchLineItemsInProgress}
               />
+             
+              {<MenuFieldCheckboxGroup {...commonProps} />}
+            
+              
 
               {bookingInfoMaybe}
               {loadingSpinnerMaybe}
@@ -235,11 +319,13 @@ export class BookingDatesFormComponent extends Component {
                   }
                 />
               </p>
+
               <div className={submitButtonClasses}>
                 <PrimaryButton type="submit">
                   <FormattedMessage id="BookingDatesForm.requestToBook" />
                 </PrimaryButton>
               </div>
+
             </Form>
           );
         }}

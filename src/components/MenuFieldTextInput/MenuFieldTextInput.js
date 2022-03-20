@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import { bool, func, object, shape, string } from 'prop-types';
 import { Field } from 'react-final-form';
 import classNames from 'classnames';
-import { ValidationError, ExpandingTextarea } from '../../components';
+import { ValidationError, ExpandingTextarea, SecondaryButton } from '../../components';
 
-import css from './FieldTextInput.module.css';
+import css from './MenuFieldTextInput.module.css';
 
 const CONTENT_MAX_LENGTH = 5000;
 
-class FieldTextInputComponent extends Component {
+class MenuFieldTextInputComponent extends Component {
+  
   render() {
+   
+    
     /* eslint-disable no-unused-vars */
     const {
       rootClassName,
@@ -30,7 +33,7 @@ class FieldTextInputComponent extends Component {
     if (label && !id) {
       throw new Error('id required when a label is given');
     }
-    //console.log(input);
+    console.log(input);
     const { valid, invalid, touched, error } = meta;
     const isTextarea = input.type === 'textarea';
 
@@ -43,9 +46,9 @@ class FieldTextInputComponent extends Component {
     const fieldMeta = { touched: hasError, error: errorText };
 
     // Textarea doesn't need type.
-    const { type, ...inputWithoutType } = input;
+    
     // Uncontrolled input uses defaultValue instead of value.
-    const { value: defaultValue, ...inputWithoutValue } = input;
+    
     // Use inputRef if it is passed as prop.
     const refMaybe = inputRef ? { ref: inputRef } : {};
 
@@ -72,25 +75,28 @@ class FieldTextInputComponent extends Component {
           className: inputClasses,
           id,
           type,
-          defaultValue,
-          ...refMaybe,
-          ...inputWithoutValue,
-          ...rest,
+
         }
-      : { className: inputClasses, id, type, ...refMaybe, ...input, ...rest };
+      : { className: inputClasses, id, ...refMaybe, ...input, ...rest };
 
     const classes = classNames(rootClassName || css.root, className);
+    
     return (
       <div className={classes}>
+        
         {label ? <label htmlFor={id}>{label}</label> : null}
-        {isTextarea ? <ExpandingTextarea {...inputProps} /> : <input {...inputProps} />}
+       
+     <input  {...inputProps} />
+        
+        
         <ValidationError fieldMeta={fieldMeta} />
+
       </div>
     );
   }
 }
 
-FieldTextInputComponent.defaultProps = {
+MenuFieldTextInputComponent.defaultProps = {
   rootClassName: null,
   className: null,
   inputRootClass: null,
@@ -102,7 +108,7 @@ FieldTextInputComponent.defaultProps = {
   inputRef: null,
 };
 
-FieldTextInputComponent.propTypes = {
+MenuFieldTextInputComponent.propTypes = {
   rootClassName: string,
   className: string,
   inputRootClass: string,
@@ -133,7 +139,7 @@ FieldTextInputComponent.propTypes = {
   meta: object.isRequired,
 };
 
-class FieldTextInput extends Component {
+class MenuFieldTextInput extends Component {
   componentWillUnmount() {
     // Unmounting happens too late if it is done inside Field component
     // (Then Form has already registered its (new) fields and
@@ -144,8 +150,8 @@ class FieldTextInput extends Component {
   }
 
   render() {
-    return <Field component={FieldTextInputComponent} {...this.props} />;
+    return <Field component={MenuFieldTextInputComponent} {...this.props} />;
   }
 }
 
-export default FieldTextInput;
+export default MenuFieldTextInput;

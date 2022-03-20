@@ -203,3 +203,4 @@ exports.constructValidLineItems = lineItems => {
   });
   return lineItemsWithTotals;
 };
+

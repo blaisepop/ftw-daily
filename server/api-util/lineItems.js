@@ -6,7 +6,14 @@ const { Money } = types;
 // line-item/night, line-item/day or line-item/units
 const bookingUnitType = 'line-item/night';
 const PROVIDER_COMMISSION_PERCENTAGE = -10;
+const resolveMenuPrice = listing => {
 
+    
+    return new Money(100, "CHF");
+  
+
+  
+};
 /** Returns collection of lineItems (max 50)
  *
  * Each line items has following fields:
@@ -28,8 +35,9 @@ const PROVIDER_COMMISSION_PERCENTAGE = -10;
  * @returns {Array} lineItems
  */
 exports.transactionLineItems = (listing, bookingData) => {
+  
   const unitPrice = listing.attributes.price;
-  const { startDate, endDate } = bookingData;
+  const { startDate, endDate, listMenuSelected } = bookingData;
 
   /**
    * If you want to use pre-defined component and translations for printing the lineItems base price for booking,
@@ -47,15 +55,39 @@ exports.transactionLineItems = (listing, bookingData) => {
     quantity: calculateQuantityFromDates(startDate, endDate, bookingUnitType),
     includeFor: ['customer', 'provider'],
   };
-
+  const menuPrice = resolveMenuPrice(listing);
+  const menus=[];
+  Object.keys(listMenuSelected).forEach(key => {
+    if(listMenuSelected[key]>0){
+      menus.push({
+      code: 'line-item/'+key,
+      unitPrice: menuPrice,
+      quantity: listMenuSelected[key],
+      includeFor: ['customer', 'provider'],
+    });
+    }
+    
+  });
+  
+  
+  
+  /*listMenuSelected.foreach(element=> 
+    menus.push({
+      code: 'line-item/menu'+element,
+      unitPrice: menuPrice,
+      quantity: 1,
+      includeFor: ['customer', 'provider'],
+    })
+    );*/
+  
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([booking]),
+    unitPrice: calculateTotalFromLineItems([booking, ...menus]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
-
-  const lineItems = [booking, providerCommission];
+  const lineItems = [booking, ...menus, providerCommission];
+  
 
   return lineItems;
 };

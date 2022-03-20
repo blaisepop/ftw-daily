@@ -1,0 +1,88 @@
+@import '../../styles/propertySets.css';
+
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.input {
+ /*background-color: #f3f3f3;*/
+  /*text-align:center;*/
+  border: none;
+  max-width: 40px;
+  height: 30px;
+  border-radius: 5px;
+  margin: 0 5px 0 5px;
+  padding-left:10px ;
+}
+
+.stepper{
+  display: flex;
+  width: 35%;
+  justify-content: end;
+}
+.stepperButton{
+  width: 30px;
+  min-height: 30px;
+  max-height: 30px;
+  padding: 0 0 0 0;
+  line-height: 30px;
+  border: 1px solid #ececec;
+  cursor: pointer;
+  border-radius: 15px;
+  transition: border-color 0.3s ;
+}
+
+.stepperButton:disabled{
+  background-color: #f3f3f3;
+  color: white;
+  cursor: no-drop;
+}
+.stepperButton:enabled:hover{
+  border-color: #b2b2b2;
+}
+.label {
+  display: flex;
+  align-items: center;
+  width: 65%;
+}
+
+.checkboxWrapper {
+  /* This should follow line-height */
+  height: 32px;
+  margin-top: -1px;
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checked {
+  display: none;
+  fill: var(--marketplaceColor);
+}
+.checkedSuccess {
+  display: none;
+  fill: var(--successColor);
+}
+
+.boxSuccess,
+.box {
+  stroke: var(--matterColorAnti);
+}
+
+.description{
+  font-size: 10px;
+}
+.description{
+  display: flex;
+  flex-direction: column;
+}
+.textRoot {
+  @apply --marketplaceListingAttributeFontStyles;
+  color: var(--matterColor);
+  margin-top: -1px;
+  margin-bottom: 1px;
+  cursor: pointer;
+}
