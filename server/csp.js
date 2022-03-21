@@ -31,6 +31,9 @@ const defaultDirectives = {
 
     'sentry.io',
     '*.stripe.com',
+
+    //menus API
+    'mobile-food-ch.herokuapp.com'
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
   frameSrc: [self, '*.stripe.com'],
