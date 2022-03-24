@@ -9,7 +9,12 @@ import css from './MenuFieldTextInput.module.css';
 const CONTENT_MAX_LENGTH = 5000;
 
 class MenuFieldTextInputComponent extends Component {
-  
+  componentDidUpdate(prevProps) {
+    // Utilisation classique (pensez bien à comparer les props) :
+    //if (this.props.defaultValue !== prevProps.defaultValue) {
+     console.log("coulcoul");
+    //}
+  }
   render() {
    
     
@@ -140,7 +145,14 @@ MenuFieldTextInputComponent.propTypes = {
 };
 
 class MenuFieldTextInput extends Component {
+  componentDidUpdate(prevProps) {
+    // Utilisation classique (pensez bien à comparer les props) :
+    //if (this.props.defaultValue !== prevProps.defaultValue) {
+     console.log("coulcoul2");
+    //}
+  }
   componentWillUnmount() {
+    
     // Unmounting happens too late if it is done inside Field component
     // (Then Form has already registered its (new) fields and
     // changing the value without corresponding field is prohibited in Final Form

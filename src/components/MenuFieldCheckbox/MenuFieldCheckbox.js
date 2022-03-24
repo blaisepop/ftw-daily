@@ -11,15 +11,21 @@ import css from './MenuFieldCheckbox.module.css';
 class MenuFieldCheckboxComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { value:0 };
+   // this.state = { value: 6 };
     this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+
   }
-  increment() { //this function add a number to value
-    document.getElementById("1").stepUp()    ;
-    
+  increment() { //this function increment value
+    document.getElementById(this.props.id).stepUp();
+    //this.setState({value: 2});
+  }
+  decrement() { //this function add a number to value
+    document.getElementById(this.props.id).stepDown();
+    //this.setState({value: 2});
   }
   render() {
-    var value=0;
+   
     var {
       rootClassName,
       className,
@@ -34,21 +40,21 @@ class MenuFieldCheckboxComponent extends Component {
       description,
       ...rest
     } = this.props;
-    
+
     if (label && !id) {
       throw new Error('id required when a label is given');
     }
     const classes = classNames(rootClassName || css.root, className);
-    
+
     // This is a workaround for a bug in Firefox & React Final Form.
     // https://github.com/final-form/react-final-form/issues/134
-    
-   
 
-   
-   // inputProps.value=this.state.value.toString();
+
+
+
+    // inputProps.value=this.state.value.toString();
     //console.log(input);
-    
+
     return (
       <div className={classes}>
 
@@ -61,17 +67,13 @@ class MenuFieldCheckboxComponent extends Component {
 
         </label>
         <div className={css.stepper}>
-          {/*<button type="button" disabled={this.state.value===0}  onClick={() => this.increment(-1)} className={css.stepperButton}>-</button>*/}
-        
-          <input className={css.input} type="number"
-            id={this.props.id}
-            
+          <button type="button"  onClick={() => this.decrement()} className={css.stepperButton}>-</button>
+          
+          {<input className={css.input} type="number"
+            id={this.props.id}         
            {...input}
-            
-           
-           />
-        
-         { /*<button  type="button" onClick={() => {this.increment();}} className={css.stepperButton}>+</button>$*/}
+           />}
+          <button  type="button" onClick={()=>this.increment()} className={css.stepperButton}>+</button>
         </div>
 
       </div>

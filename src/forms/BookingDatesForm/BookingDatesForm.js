@@ -38,7 +38,7 @@ const commonProps = {
   label: label,
   options: [
     {
-      key: 'Cheese Burger',
+      key: 'CheeseBurger',
       description: 'steak - cheddar - tomates ',
       label: 'Cheese Burger',
       item_price: 1,
