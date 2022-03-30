@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   border: none;
-  
+  padding: 0 24px;
   
 }
 .scroll{
@@ -18,7 +18,7 @@
 }
 
 .list {
-  margin: 0;
+  margin-right: 12px;
 }
 
 .twoColumns {
@@ -38,4 +38,8 @@
   }
 }
 
-
+@media screen and (--viewportMedium){
+  .root{
+    padding: 0;
+  }
+}

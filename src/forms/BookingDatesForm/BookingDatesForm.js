@@ -25,79 +25,41 @@ const label = <h3>Menus</h3>;
 
 
 ///REQUETE POUR LES MENUS
-const url="https://mobile-food-ch.herokuapp.com/api/v1/menu_items/";
- axios.get(url)
-.then(resp => console.log(resp.data))
-.catch(function() {
-});
-
-//fin de la requete 
-
-
-const commonProps = {
-  label: label,
-  options: [
-    {
-      key: 'CheeseBurger',
-      description: 'steak - cheddar - tomates ',
-      label: 'Cheese Burger',
-      item_price: 1,
-    },
-    {
-      key: 'Savoyard',
-      description: 'steak - roblochon - salade - lard',
-      label: 'Savoyard',
-      item_price: 1,
-    },
-    {
-      key: 'Barbuc',
-      description: 'steak - cheddar - sauce bbq - tomates - bacon',
-      label: 'Barbuc\'',
-      item_price: 1,
-    },
-    /*{
-      key: '4',
-      description:'steak - cheddar - sauce bbq - tomates - bacon',
-      label: 'Barbuc\'',
-      item_price: 10,
-    },
-    {
-      key: '5',
-      description:'steak - cheddar - sauce bbq - tomates - bacon',
-      label: 'Barbuc\'',
-      item_price: 10,
-    },
-    {
-      key: '6',
-      description:'steak - cheddar - sauce bbq - tomates - bacon',
-      label: 'Barbuc\'',
-      item_price: 10,
-    },
-    {
-      key: '7',
-      description:'steak - cheddar - sauce bbq - tomates - bacon',
-      label: 'Barbuc\'',
-      item_price: 10,
-    },*/
-
-  ],
-  id: "menus",
-
-};
-
-
-
+const url = "https://mobile-food-ch.herokuapp.com/api/v1/menu_items/?partner_number=1210810";
 
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { focusedInput: null };
+    this.state = {
+      focusedInput: null,
+      commonProps: {
+        label: label,
+        options: [],
+        id: "menus",
+      }
+    };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.onFocusedInputChange = this.onFocusedInputChange.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
   }
+  componentDidMount() {
+    axios.get(url)
+      .then((resp) => {
+        console.log(resp.data.length)
+      
+      
+        this.setState({commonProps: {
+        label: label,
+        options: resp.data,
+        id: "menus",
+      }});
+      })
+      .catch(function () {
+      });
 
+      
+  }
   // Function that can be passed to nested components
   // so that they can notify this component when the
   // focused input changes.
@@ -126,10 +88,10 @@ export class BookingDatesFormComponent extends Component {
   // In case you add more fields to the form, make sure you add
   // the values here to the bookingData object.
   handleOnChange(formValues) {
-     const listMenuSelected=formValues.values && formValues.values.menus ? formValues.values.menus : {};
+    const menus = formValues.values && formValues.values.menus ? formValues.values.menus : {};
     //console.log(listMenuSelected);
-    
-     
+
+
     const { startDate, endDate } =
       formValues.values && formValues.values.bookingDates ? formValues.values.bookingDates : {};
     const listingId = this.props.listingId;
@@ -137,7 +99,7 @@ export class BookingDatesFormComponent extends Component {
 
     if (startDate && endDate && !this.props.fetchLineItemsInProgress) {
       this.props.onFetchTransactionLineItems({
-        bookingData: { startDate, endDate,listMenuSelected },
+        bookingData: { startDate, endDate, menus },
         listingId,
         isOwnListing,
       });
@@ -275,7 +237,7 @@ export class BookingDatesFormComponent extends Component {
                 subscription={{ values: true }}
                 onChange={values => {
                   this.handleOnChange(values);
-                  console.log(values);
+                  //console.log(values);
                 }}
               />
               <FieldDateRangeInput
@@ -299,10 +261,10 @@ export class BookingDatesFormComponent extends Component {
                 )}
                 disabled={fetchLineItemsInProgress}
               />
-             
-              {<MenuFieldCheckboxGroup {...commonProps} />}
-            
-              
+
+              <MenuFieldCheckboxGroup {...this.state.commonProps} />
+
+
 
               {bookingInfoMaybe}
               {loadingSpinnerMaybe}

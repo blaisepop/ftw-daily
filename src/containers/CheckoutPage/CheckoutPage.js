@@ -112,7 +112,9 @@ export class CheckoutPageComponent extends Component {
 
   componentDidMount() {
     if (window) {
+      console.log(this.props)
       this.loadInitialData();
+      
     }
   }
 
@@ -147,7 +149,7 @@ export class CheckoutPageComponent extends Component {
     // Note: since there's need for data loading in "componentWillMount" function,
     //       this is added here instead of loadData static function.
     fetchStripeCustomer();
-
+    
     // Browser's back navigation should not rewrite data in session store.
     // Action is 'POP' on both history.back() and page refresh cases.
     // Action is 'PUSH' when user has directed through a link
@@ -159,12 +161,12 @@ export class CheckoutPageComponent extends Component {
       // Store data only if data is passed through props and user has navigated through a link.
       storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
     }
-
+    
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
       ? { bookingData, bookingDates, listing, transaction }
       : storedData(STORAGE_KEY);
-
+    console.log(pageData);
     // Check if a booking is already created according to stored data.
     const tx = pageData ? pageData.transaction : null;
     const isBookingCreated = tx && tx.booking && tx.booking.id;
@@ -188,7 +190,7 @@ export class CheckoutPageComponent extends Component {
       // a noon of correct year-month-date combo in UTC
       const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
       const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
-
+      
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
@@ -197,15 +199,19 @@ export class CheckoutPageComponent extends Component {
           listingId,
           bookingStart: bookingStartForAPI,
           bookingEnd: bookingEndForAPI,
+          menus:pageData.bookingData.menus
         },
         transactionId
       );
+      
     }
-
+    
     this.setState({ pageData: pageData || {}, dataLoaded: true });
+    
   }
 
   handlePaymentIntent(handlePaymentParams) {
+    
     const {
       currentUser,
       stripeCustomerFetched,
@@ -373,11 +379,12 @@ export class CheckoutPageComponent extends Component {
         : selectedPaymentFlow === PAY_AND_SAVE_FOR_LATER_USE
         ? { setupPaymentMethodForSaving: true }
         : {};
-
+      
     const orderParams = {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
+      menus:pageData.bookingData.menus,
       ...optionalPaymentParams,
     };
 
@@ -456,6 +463,7 @@ export class CheckoutPageComponent extends Component {
         history.push(orderDetailsPath);
       })
       .catch(err => {
+        console.log("bnfbenrifkenb")
         console.error(err);
         this.setState({ submitting: false });
       });
@@ -490,6 +498,7 @@ export class CheckoutPageComponent extends Component {
   }
 
   render() {
+   
     const {
       scrollingDisabled,
       speculateTransactionInProgress,
@@ -512,10 +521,11 @@ export class CheckoutPageComponent extends Component {
     // initiate or the speculative initiate fail due to the listing
     // being deleted or closec, we should dig the information from the
     // errors and not the listing data.
+   
     const listingNotFound =
       isTransactionInitiateListingNotFoundError(speculateTransactionError) ||
       isTransactionInitiateListingNotFoundError(initiateOrderError);
-
+      
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
     const { listing, bookingDates, transaction } = this.state.pageData;
@@ -523,10 +533,10 @@ export class CheckoutPageComponent extends Component {
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
-
+   
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { listingTitle });
-
+   
     const pageProps = { title, scrollingDisabled };
     const topbar = (
       <div className={css.topbar}>

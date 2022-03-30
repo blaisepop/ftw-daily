@@ -298,6 +298,7 @@ export const sendEnquiry = (listingId, message) => (dispatch, getState, sdk) => 
 
 export const fetchTransactionLineItems = ({ bookingData, listingId, isOwnListing }) => dispatch => {
   dispatch(fetchLineItemsRequest());
+ 
   transactionLineItems({ bookingData, listingId, isOwnListing })
     .then(response => {
       const lineItems = response.data;

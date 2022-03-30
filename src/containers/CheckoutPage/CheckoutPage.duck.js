@@ -171,10 +171,11 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
     ? TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY
     : TRANSITION_REQUEST_PAYMENT;
   const isPrivilegedTransition = isPrivileged(transition);
-
+  console.log("dnjiouezndjouzdnzk");
   const bookingData = {
     startDate: orderParams.bookingStart,
     endDate: orderParams.bookingEnd,
+    menus:orderParams.menus
   };
 
   const bodyParams = isTransition
@@ -312,6 +313,7 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
   const bookingData = {
     startDate: orderParams.bookingStart,
     endDate: orderParams.bookingEnd,
+    menus:orderParams.menus
   };
 
   const params = {

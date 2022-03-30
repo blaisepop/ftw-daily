@@ -19,34 +19,48 @@ const MenuFieldCheckboxComponent = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const listClasses = css.list;
-
+ 
   return (
     <div className={classes}>
       {label ? <legend>{label}</legend> : null}
       <div className={css.scroll}>
-      <ul className={listClasses}>
-        {options.map((option, index) => {
-          const fieldId = `${id}.${option.key}`;
-          return (
-            <li key={fieldId} className={css.item}>
+        <ul className={listClasses}>
+          {
+          options.map((option, index) => {
+              const price=option.item_price==null?"0.0":option.item_price
+              
+              const key = option.name + "-" + option.id + "-" + price.replace('.', ',')
+              const menu = {
+                key: key,
+                description: option.description,
+                label: option.name,
+                item_price: price,
+              };
+             
+              
             
-              <MenuFieldCheckbox
-                id={fieldId}
-                name={fieldId}
-                label={option.label}
-                value={option.key}
-                price={option.item_price}
-                description={option.description}
-                defaultValue="0"
-                
-              />
-               
-            </li>
-          );
-        })}
-      </ul>
+            const fieldId = `${id}.${menu.key}`;
+            return (
+              <li key={fieldId} className={css.item}>
+
+                <MenuFieldCheckbox
+                  id={fieldId}
+                  name={fieldId}
+                  label={menu.label}
+                  value={menu.key}
+                  price={menu.item_price}
+                  description={menu.description}
+                  defaultValue="0"
+
+
+                />
+
+              </li>
+            );
+          })}
+        </ul>
       </div>
-      
+
       <ValidationError fieldMeta={{ ...meta }} />
     </div>
   );
@@ -56,7 +70,7 @@ MenuFieldCheckboxComponent.defaultProps = {
   rootClassName: null,
   className: null,
   label: null,
- 
+
 };
 
 MenuFieldCheckboxComponent.propTypes = {
@@ -70,8 +84,8 @@ MenuFieldCheckboxComponent.propTypes = {
       label: node.isRequired,
     })
   ).isRequired,
-   name: string.isRequired,
-};  
+  name: string.isRequired,
+};
 
 
 // Name and component are required fields for FieldArray.

@@ -11,21 +11,43 @@ import css from './MenuFieldCheckbox.module.css';
 class MenuFieldCheckboxComponent extends Component {
   constructor(props) {
     super(props);
-   // this.state = { value: 6 };
+    this.state = { value: 0 };
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
 
   }
-  increment() { //this function increment value
-    document.getElementById(this.props.id).stepUp();
-    //this.setState({value: 2});
+  onChange = (e, input) => {
+    this.setState({ value: e.target.value });
+    const { onBlur, onChange } = input;
+    onChange(e);
+    onBlur(e);
   }
-  decrement() { //this function add a number to value
-    document.getElementById(this.props.id).stepDown();
-    //this.setState({value: 2});
+  handleOnChange(input, event) {
+
+  };
+  increment(input) { //this function increment value
+    const { value } = this.state;
+    const nextValue = Number(value) + 1;
+    const changeEvent = {
+      target: {
+        value: nextValue
+      }
+    };
+    this.onChange(changeEvent, input);
+  }
+  decrement(input) { //this function a a number to value
+    const { value } = this.state;
+    const nextValue = Number(value) - 1;
+    const changeEvent = {
+      target: {
+        value: nextValue
+      }
+    };
+    this.onChange(changeEvent, input);
   }
   render() {
-   
+    const { value } = this.state;
     var {
       rootClassName,
       className,
@@ -46,14 +68,6 @@ class MenuFieldCheckboxComponent extends Component {
     }
     const classes = classNames(rootClassName || css.root, className);
 
-    // This is a workaround for a bug in Firefox & React Final Form.
-    // https://github.com/final-form/react-final-form/issues/134
-
-
-
-
-    // inputProps.value=this.state.value.toString();
-    //console.log(input);
 
     return (
       <div className={classes}>
@@ -67,13 +81,22 @@ class MenuFieldCheckboxComponent extends Component {
 
         </label>
         <div className={css.stepper}>
-          <button type="button"  onClick={() => this.decrement()} className={css.stepperButton}>-</button>
-          
-          {<input className={css.input} type="number"
-            id={this.props.id}         
-           {...input}
-           />}
-          <button  type="button" onClick={()=>this.increment()} className={css.stepperButton}>+</button>
+          <button type="button" onClick={() => this.decrement(input)} className={css.stepperButton}>-</button>
+    
+          <input
+            
+            className={css.input}
+            type="number"
+            id={this.props.id}
+
+            {...input}
+
+            value={value}
+            onChange={event=>this.onChange(event, input)}
+            
+
+          ></input>
+            <button type="button" onClick={() => this.increment(input)} className={css.stepperButton}>+</button>
         </div>
 
       </div>
@@ -116,7 +139,7 @@ class MenuFieldCheckbox extends Component {
   }
 
   render() {
-    //console.log("ici");
+
     return <Field component={MenuFieldCheckboxComponent} {...this.props} />;
   }
 }
