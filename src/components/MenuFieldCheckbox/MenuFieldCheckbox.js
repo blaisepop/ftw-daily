@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { node, string } from 'prop-types';
 import classNames from 'classnames';
 import { Field } from 'react-final-form';
-import { MenuFieldTextInput, SecondaryButton } from '../../components';
+
 import css from './MenuFieldCheckbox.module.css';
 
 
@@ -14,8 +14,6 @@ class MenuFieldCheckboxComponent extends Component {
     this.state = { value: 0 };
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-
   }
   onChange = (e, input) => {
     this.setState({ value: e.target.value });
@@ -23,9 +21,7 @@ class MenuFieldCheckboxComponent extends Component {
     onChange(e);
     onBlur(e);
   }
-  handleOnChange(input, event) {
 
-  };
   increment(input) { //this function increment value
     const { value } = this.state;
     const nextValue = Number(value) + 1;
