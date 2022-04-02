@@ -7,8 +7,8 @@ const { Money } = types;
 const bookingUnitType = 'line-item/night';
 const PROVIDER_COMMISSION_PERCENTAGE = -10;
 const resolveMenuPrice = key => {
-  const mount=key.split('-')[2].replace(',', '.')
-    return new Money( mount*100, "CHF"); 
+  const mount=Number(key.split('-')[2])
+    return new Money( mount, "CHF"); 
 };
 const getId = key=>{
   return  key.split('-')[1];
