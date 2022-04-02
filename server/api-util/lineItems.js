@@ -6,13 +6,17 @@ const { Money } = types;
 // line-item/night, line-item/day or line-item/units
 const bookingUnitType = 'line-item/night';
 const PROVIDER_COMMISSION_PERCENTAGE = -10;
+
+//return price of a menu
 const resolveMenuPrice = key => {
-  const mount=key.split('-')[2].replace(',', '.')
-    return new Money( mount*100, "CHF"); 
+  const mount=key.split('-')[2]
+    return new Money( mount, "CHF"); 
 };
+//return id of a menu
 const getId = key=>{
   return  key.split('-')[1];
 }
+//return name of a menu
 const getName=key=>{
   return  key.split('-')[0];
 }

@@ -1,6 +1,6 @@
 /*
- * Renders a group of checkboxes that can be used to select
- * multiple values from a set of options.
+ * Renders a group of MenuFieldCheckBox that can be used to select
+ * multiple values .
  *
  * The corresponding component when rendering the selected
  * values is PropertyGroup.
@@ -26,19 +26,16 @@ const MenuFieldCheckboxComponent = props => {
       <div className={css.scroll}>
         <ul className={listClasses}>
           {
-          options.map((option, index) => {
+          options.map((option) => {
               const price=option.item_price==null?"0.0":option.item_price
               
-              const key = option.name + "-" + option.id + "-" + price.replace('.', ',')
+              const key = option.name + "-" + option.id + "-" + price*100
               const menu = {
                 key: key,
                 description: option.description,
                 label: option.name,
                 item_price: price,
               };
-             
-              
-            
             const fieldId = `${id}.${menu.key}`;
             return (
               <li key={fieldId} className={css.item}>
