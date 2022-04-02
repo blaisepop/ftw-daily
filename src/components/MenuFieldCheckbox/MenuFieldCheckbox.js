@@ -36,7 +36,7 @@ class MenuFieldCheckboxComponent extends Component {
     };
     this.onChange(changeEvent, input);
   }
-  decrement(input) { //this function a a number to value
+  decrement(input) { //this function decrement value
     const { value } = this.state;
     const nextValue = Number(value) - 1;
     const changeEvent = {

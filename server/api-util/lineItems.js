@@ -10,10 +10,10 @@ const resolveMenuPrice = key => {
   const mount=key.split('-')[2].replace(',', '.')
     return new Money( mount*100, "CHF"); 
 };
-const getId = key=>{
+const getId = key=>{//return id of a menu
   return  key.split('-')[1];
 }
-const getName=key=>{
+const getName=key=>{ //return name of a menu
   return  key.split('-')[0];
 }
 
@@ -75,15 +75,7 @@ exports.transactionLineItems = (listing, bookingData) => {
   });
   
   
-  
-  /*listMenuSelected.foreach(element=> 
-    menus.push({
-      code: 'line-item/menu'+element,
-      unitPrice: menuPrice,
-      quantity: 1,
-      includeFor: ['customer', 'provider'],
-    })
-    );*/
+
   
   const providerCommission = {
     code: 'line-item/provider-commission',

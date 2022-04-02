@@ -46,9 +46,6 @@ export class BookingDatesFormComponent extends Component {
   componentDidMount() {
     axios.get(url)
       .then((resp) => {
-        console.log(resp.data.length)
-      
-      
         this.setState({commonProps: {
         label: label,
         options: resp.data,
@@ -89,7 +86,7 @@ export class BookingDatesFormComponent extends Component {
   // the values here to the bookingData object.
   handleOnChange(formValues) {
     const menus = formValues.values && formValues.values.menus ? formValues.values.menus : {};
-    //console.log(listMenuSelected);
+  
 
 
     const { startDate, endDate } =
@@ -237,7 +234,7 @@ export class BookingDatesFormComponent extends Component {
                 subscription={{ values: true }}
                 onChange={values => {
                   this.handleOnChange(values);
-                  //console.log(values);
+                
                 }}
               />
               <FieldDateRangeInput

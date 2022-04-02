@@ -112,7 +112,7 @@ export class CheckoutPageComponent extends Component {
 
   componentDidMount() {
     if (window) {
-      console.log(this.props)
+      
       this.loadInitialData();
       
     }
@@ -166,7 +166,7 @@ export class CheckoutPageComponent extends Component {
     const pageData = hasDataInProps
       ? { bookingData, bookingDates, listing, transaction }
       : storedData(STORAGE_KEY);
-    console.log(pageData);
+ 
     // Check if a booking is already created according to stored data.
     const tx = pageData ? pageData.transaction : null;
     const isBookingCreated = tx && tx.booking && tx.booking.id;
@@ -463,7 +463,7 @@ export class CheckoutPageComponent extends Component {
         history.push(orderDetailsPath);
       })
       .catch(err => {
-        console.log("bnfbenrifkenb")
+     
         console.error(err);
         this.setState({ submitting: false });
       });
