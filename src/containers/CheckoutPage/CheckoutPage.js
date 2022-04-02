@@ -166,11 +166,6 @@ export class CheckoutPageComponent extends Component {
     const pageData = hasDataInProps
       ? { bookingData, bookingDates, listing, transaction }
       : storedData(STORAGE_KEY);
-<<<<<<< HEAD
- 
-=======
-    
->>>>>>> e89b4c0cc025c852e3a89a056365d99e21107c58
     // Check if a booking is already created according to stored data.
     const tx = pageData ? pageData.transaction : null;
     const isBookingCreated = tx && tx.booking && tx.booking.id;
@@ -467,11 +462,6 @@ export class CheckoutPageComponent extends Component {
         history.push(orderDetailsPath);
       })
       .catch(err => {
-<<<<<<< HEAD
-     
-=======
-      
->>>>>>> e89b4c0cc025c852e3a89a056365d99e21107c58
         console.error(err);
         this.setState({ submitting: false });
       });
