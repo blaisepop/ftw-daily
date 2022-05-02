@@ -9,7 +9,7 @@ import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
 import * as validators from '../../util/validators';
 import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import { Button, Form, FieldCurrencyInput } from '../../components';
+import { Button, Form, FieldCurrencyInput, FieldTextInput } from '../../components';
 import css from './EditListingPricingForm.module.css';
 
 const { Money } = sdkTypes;
@@ -42,12 +42,22 @@ export const EditListingPricingFormComponent = props => (
         ? 'EditListingPricingForm.pricePerDay'
         : 'EditListingPricingForm.pricePerUnit';
 
+
       const pricePerUnitMessage = intl.formatMessage({
         id: translationKey,
+      });
+      const feeMessage = intl.formatMessage({
+        id: "EditListingPricingForm.feeMesssage",
       });
 
       const pricePlaceholderMessage = intl.formatMessage({
         id: 'EditListingPricingForm.priceInputPlaceholder',
+      });
+      const feePlaceholderMessage = intl.formatMessage({
+        id: 'EditListingPricingForm.feePlaceholder',
+      });
+      const feeNamePlaceholderMessage = intl.formatMessage({
+        id: 'EditListingPricingForm.feeNamePlaceholder',
       });
 
       const priceRequired = validators.required(
@@ -98,6 +108,22 @@ export const EditListingPricingFormComponent = props => (
             placeholder={pricePlaceholderMessage}
             currencyConfig={config.currencyConfig}
             validate={priceValidators}
+          />
+
+          <FieldTextInput
+            id="feeName"
+            name="feeName"
+            className={css.feeInput}
+            label={feeMessage}
+            placeholder={feeNamePlaceholderMessage}
+          />
+          
+          <FieldCurrencyInput
+            id="fee"
+            name="fee"
+            className={css.feeInput}
+            placeholder={feePlaceholderMessage}
+            currencyConfig={config.currencyConfig}
           />
 
           <Button

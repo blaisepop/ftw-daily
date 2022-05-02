@@ -17,6 +17,8 @@ import css from './BookingPanel.module.css';
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023;
 
+
+
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
     const formattedPrice = formatMoney(intl, price);
@@ -69,6 +71,7 @@ const BookingPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    partnerNumber,
   } = props;
 
   const price = listing.attributes.price;
@@ -96,7 +99,11 @@ const BookingPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.bookingTitle);
-
+  const fee =
+  listing.attributes.publicData &&
+  listing.attributes.publicData.fee
+    ? listing.attributes.publicData.fee
+    : null;
   return (
     <div className={classes}>
       <ModalInMobile
@@ -134,6 +141,8 @@ const BookingPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            partnerNumber={partnerNumber}
+            fee={fee}
           />
         ) : null}
       </ModalInMobile>

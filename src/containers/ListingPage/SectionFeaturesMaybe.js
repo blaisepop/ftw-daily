@@ -4,7 +4,7 @@ import { PropertyGroup } from '../../components';
 
 import css from './ListingPage.module.css';
 
-const SectionFeaturesMaybe = props => {
+const SectionFeaturesMaybe = props => { 
   const { options, publicData } = props;
   if (!publicData) {
     return null;

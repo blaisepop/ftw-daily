@@ -39,7 +39,7 @@ const SearchFiltersPrimaryComponent = props => {
       />
     </button>
   ) : null;
-
+      
   return (
     <div className={classes}>
       <div className={css.searchOptions}>

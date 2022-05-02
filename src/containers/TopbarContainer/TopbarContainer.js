@@ -90,6 +90,7 @@ TopbarContainerComponent.propTypes = {
 };
 
 const mapStateToProps = state => {
+  
   // Topbar needs isAuthenticated
   const { isAuthenticated, logoutError, authScopes } = state.Auth;
   // Topbar needs user info.

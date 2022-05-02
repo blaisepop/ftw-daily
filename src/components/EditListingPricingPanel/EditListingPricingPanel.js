@@ -14,6 +14,7 @@ import css from './EditListingPricingPanel.module.css';
 const { Money } = sdkTypes;
 
 const EditListingPricingPanel = props => {
+
   const {
     className,
     rootClassName,
@@ -30,8 +31,13 @@ const EditListingPricingPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
-  const { price } = currentListing.attributes;
-
+  const { price, publicData } = currentListing.attributes;
+  const fee =publicData && publicData.fee ? publicData.fee : null;
+  const feeName=fee?fee.name:null
+  const feeAsMoney = fee
+    ? new Money(fee.amount, fee.currency)
+    : null;
+  const initialValues = { price, fee: feeAsMoney, feeName };
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
     <FormattedMessage
@@ -46,8 +52,19 @@ const EditListingPricingPanel = props => {
   const form = priceCurrencyValid ? (
     <EditListingPricingForm
       className={css.form}
-      initialValues={{ price }}
-      onSubmit={onSubmit}
+      initialValues={initialValues}
+      onSubmit={values => {
+        console.log(values)
+        const { price, fee = null , feeName=null} = values;
+
+        const updatedValues = {
+          price,
+          publicData: {
+            fee: { name:feeName ,amount: fee.amount, currency: fee.currency },
+          },
+        };
+        onSubmit(updatedValues);
+      }}
       onChange={onChange}
       saveActionMsg={submitButtonText}
       disabled={disabled}

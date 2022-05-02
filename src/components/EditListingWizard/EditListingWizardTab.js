@@ -18,6 +18,8 @@ import {
   EditListingPoliciesPanel,
   EditListingPricingPanel,
   EditListingWidthPanel,
+  EditListingPartnerIDPanel,
+
 } from '../../components';
 
 import css from './EditListingWizard.module.css';
@@ -30,10 +32,13 @@ export const POLICY = 'policy';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
+export const PARTNERID = 'partnerID';
+export const FEE='fee';
 
 
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
+  PARTNERID,
   DESCRIPTION,
   FEATURES,
   WIDTH,
@@ -42,6 +47,8 @@ export const SUPPORTED_TABS = [
   PRICING,
   AVAILABILITY,
   PHOTOS,
+  FEE,
+  
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -170,6 +177,7 @@ const EditListingWizardTab = props => {
           {...panelProps(DESCRIPTION)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
+            
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
@@ -198,6 +206,7 @@ const EditListingWizardTab = props => {
           {...panelProps(POLICY)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
+            console.log(values);
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
@@ -274,6 +283,22 @@ const EditListingWizardTab = props => {
           {...panelProps(WIDTH)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
+            console.log(values);
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    case PARTNERID:{
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewPartnerID'
+        : 'EditListingWizard.saveEditPartnerID';
+      return (
+        <EditListingPartnerIDPanel
+          {...panelProps(PARTNERID)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            console.log(values);
             onCompleteEditListingWizardTab(tab, values);
           }}
         />

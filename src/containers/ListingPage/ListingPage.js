@@ -28,6 +28,7 @@ import { richText } from '../../util/richText';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
 import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
+import SectionDimensions from './SectionDimensions';
 import {
   Page,
   NamedLink,
@@ -241,7 +242,7 @@ export class ListingPageComponent extends Component {
       title = '',
       publicData,
     } = currentListing.attributes;
-
+    
     const richTitle = (
       <span>
         {richText(title, {
@@ -324,7 +325,7 @@ export class ListingPageComponent extends Component {
 
     const currentAuthor = authorAvailable ? currentListing.author : null;
     const ensuredAuthor = ensureUser(currentAuthor);
-
+    
     // When user is banned or deleted the listing is also deleted.
     // Because listing can be never showed with banned or deleted user we don't have to provide
     // banned or deleted display names for the function
@@ -333,6 +334,7 @@ export class ListingPageComponent extends Component {
     const { formattedPrice, priceTitle } = priceData(price, intl);
 
     const handleBookingSubmit = values => {
+      
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED;
       if (isOwnListing || isCurrentlyClosed) {
         window.scrollTo(0, 0);
@@ -360,6 +362,7 @@ export class ListingPageComponent extends Component {
     const twitterImages = listingImages(currentListing, 'twitter');
     const schemaImages = JSON.stringify(facebookImages.map(img => img.url));
     const siteTitle = config.siteTitle;
+    
     const schemaTitle = intl.formatMessage(
       { id: 'ListingPage.schemaTitle' },
       { title, price: formattedPrice, siteTitle }
@@ -385,7 +388,7 @@ export class ListingPageComponent extends Component {
           <span className={css.separator}>•</span>
         </span>
       ) : null;
-
+    console.log(publicData);
     return (
       <Page
         title={schemaTitle}
@@ -434,9 +437,12 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
-                  <SectionDescriptionMaybe description={description} />
+                 
+                  <SectionDescriptionMaybe description={description} /> 
+                
                   <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
-                  <SectionRulesMaybe publicData={publicData} />
+                  <SectionRulesMaybe publicData={publicData} /> 
+                   <SectionDimensions  publicData={publicData}/>
                   <SectionMapMaybe
                     geolocation={geolocation}
                     publicData={publicData}
@@ -473,6 +479,7 @@ export class ListingPageComponent extends Component {
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
                   fetchLineItemsError={fetchLineItemsError}
+                  partnerNumber={publicData && publicData.partnerNumber?publicData.partnerNumber:null}
                 />
               </div>
             </div>

@@ -198,7 +198,8 @@ export class CheckoutPageComponent extends Component {
           listingId,
           bookingStart: bookingStartForAPI,
           bookingEnd: bookingEndForAPI,
-          menus:pageData.bookingData.menus
+          menus:pageData.bookingData.menus,
+          hasFee: bookingData.fee?.length > 0,
         },
         transactionId
       );
@@ -384,6 +385,7 @@ export class CheckoutPageComponent extends Component {
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
       menus:pageData.bookingData.menus,
+      hasFee: pageData.bookingData?.fee?.length > 0,
       ...optionalPaymentParams,
     };
 

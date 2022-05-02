@@ -19,6 +19,7 @@ import { Modal, NamedRedirect, Tabs, StripeConnectAccountStatusBox } from '../..
 import { StripeConnectAccountForm } from '../../forms';
 
 import EditListingWizardTab, {
+  PARTNERID,
   AVAILABILITY,
   DESCRIPTION,
   FEATURES,
@@ -27,6 +28,7 @@ import EditListingWizardTab, {
   PRICING,
   PHOTOS,
   WIDTH,
+  
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -38,7 +40,8 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
 export const TABS = [
-  DESCRIPTION,
+  
+  DESCRIPTION,PARTNERID,
   FEATURES,
   WIDTH,
   POLICY,
@@ -46,6 +49,7 @@ export const TABS = [
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
+  
 ];
 
 // Tabs are horizontal in small screens
@@ -72,6 +76,9 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelPhotos';
   } else if (tab === WIDTH) {
     key = 'EditListingWizard.tabLabelWidth';
+  }
+  else if (tab === PARTNERID) {
+    key = 'EditListingWizard.tabLabelPartnerID';
   }
 
   return intl.formatMessage({ id: key });
@@ -102,7 +109,7 @@ const tabCompleted = (tab, listing) => {
     case FEATURES:
       return !!(publicData && publicData.amenities);
     case WIDTH:
-      return !!(publicData && publicData.width);
+      return !!(publicData && publicData.dimensions);
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined');
     case LOCATION:
@@ -113,6 +120,8 @@ const tabCompleted = (tab, listing) => {
       return !!availabilityPlan;
     case PHOTOS:
       return images && images.length > 0;
+    case PARTNERID:
+      return !!(publicData && typeof publicData.partnerNumber !== 'undefined');
     default:
       return false;
   }

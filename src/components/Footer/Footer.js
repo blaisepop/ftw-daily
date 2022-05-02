@@ -81,11 +81,11 @@ const Footer = props => {
             </div>
             <div className={css.infoLinks}>
               <ul className={css.list}>
-                <li className={css.listItem}>
+                {/*<li className={css.listItem}>
                   <NamedLink name="NewListingPage" className={css.link}>
                     <FormattedMessage id="Footer.toNewListingPage" />
                   </NamedLink>
-                </li>
+                </li>*/}
                 <li className={css.listItem}>
                   <NamedLink name="AboutPage" className={css.link}>
                     <FormattedMessage id="Footer.toAboutPage" />

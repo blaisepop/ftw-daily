@@ -171,6 +171,7 @@ export { default as EditListingPhotosPanel } from './EditListingPhotosPanel/Edit
 export { default as EditListingPoliciesPanel } from './EditListingPoliciesPanel/EditListingPoliciesPanel';
 export { default as EditListingPricingPanel } from './EditListingPricingPanel/EditListingPricingPanel';
 export { default as EditListingWidthPanel } from './EditListingWidthPanel/EditListingWidthPanel';
+export { default as EditListingPartnerIDPanel } from './EditListingPartnerIDPanel/EditListingPartnerIDPanel';
 export { default as EditListingWizard } from './EditListingWizard/EditListingWizard';
 export { default as Footer } from './Footer/Footer';
 export { default as SectionHero } from './SectionHero/SectionHero';

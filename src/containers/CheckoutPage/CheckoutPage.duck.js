@@ -175,7 +175,8 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const bookingData = {
     startDate: orderParams.bookingStart,
     endDate: orderParams.bookingEnd,
-    menus:orderParams.menus
+    menus:orderParams.menus,
+    hasFee: orderParams.hasFee,
   };
 
   const bodyParams = isTransition
@@ -313,7 +314,8 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
   const bookingData = {
     startDate: orderParams.bookingStart,
     endDate: orderParams.bookingEnd,
-    menus:orderParams.menus
+    menus:orderParams.menus,
+    hasFee: orderParams.hasFee,
   };
 
   const params = {

@@ -16,6 +16,27 @@ const getId = key=>{
 const getName=key=>{
   return  key.split('-')[0];
 }
+const resolveFeePrice = listing => {
+  const publicData = listing.attributes.publicData;
+  const fee = publicData && publicData.fee;
+  const { amount, currency } = fee;
+
+  if (amount && currency) {
+    return new Money(amount, currency);
+  }
+
+  return null;
+};
+const resolveFeeName=listing=>{
+  const publicData = listing.attributes.publicData;
+  const fee = publicData && publicData.fee;
+  const { name } = fee;
+
+  if (name) {
+    return name;
+  }
+  return null;
+};
 
 /** Returns collection of lineItems (max 50)
  *
@@ -40,7 +61,7 @@ const getName=key=>{
 exports.transactionLineItems = (listing, bookingData) => {
   
   const unitPrice = listing.attributes.price;
-  const { startDate, endDate, menus } = bookingData;
+  const { startDate, endDate, menus, hasFee, } = bookingData;
 
   /**
    * If you want to use pre-defined component and translations for printing the lineItems base price for booking,
@@ -73,25 +94,27 @@ exports.transactionLineItems = (listing, bookingData) => {
     }
     
   });
+  const feePrice = hasFee ? resolveFeePrice(listing) : null;
+ const fee = feePrice
+   ? [
+       {
+         code: 'line-item/'+resolveFeeName(listing),
+         unitPrice: feePrice,
+         quantity: 1,
+         includeFor: ['customer', 'provider'],
+       },
+     ]
+   : [];
   
-  
-  
-  /*listMenuSelected.foreach(element=> 
-    menus.push({
-      code: 'line-item/menu'+element,
-      unitPrice: menuPrice,
-      quantity: 1,
-      includeFor: ['customer', 'provider'],
-    })
-    );*/
+
   
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([booking, ...menus1]),
+    unitPrice: calculateTotalFromLineItems([booking, ...menus1, ...fee]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
-  const lineItems = [booking, ...menus1, providerCommission];
+  const lineItems = [booking, ...menus1,...fee, providerCommission];
   
 
   return lineItems;

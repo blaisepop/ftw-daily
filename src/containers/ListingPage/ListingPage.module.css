@@ -3,6 +3,19 @@
 
 .root {
 }
+.dimensionsContainer{
+ display: flex;
+
+
+}
+.dimensionsContainer div{
+  display: flex;
+  flex-direction: column;
+}
+.dimensionsContainer span{
+  margin-right: 25px;
+ }
+
 
 .pageRoot {
   display: flex;
@@ -389,7 +402,7 @@
   margin: 0;
 }
 
-.sectionDescription {
+.sectionDescription , .sectionDimensions{
   padding: 0 24px;
   margin-bottom: 35px;
 
@@ -399,7 +412,7 @@
   }
 }
 
-.descriptionTitle {
+.descriptionTitle, .dimensionsTitle{
   /* Font */
   @apply --marketplaceH3FontStyles;
   color: var(--matterColorAnti);

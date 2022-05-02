@@ -226,7 +226,7 @@ class MainPanel extends Component {
     };
 
     const classes = classNames(rootClassName || css.searchResultContainer, className);
-
+    console.log(primaryFilters)
     return (
       <div className={classes}>
         <SearchFiltersPrimary

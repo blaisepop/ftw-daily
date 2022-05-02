@@ -27,7 +27,7 @@
     composes: formMargins;
   }
   
-  .textField{
+  .partnerID{
     composes: formMargins;
     flex-shrink: 0;
   }

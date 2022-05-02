@@ -11,8 +11,8 @@ import {
   FormattedMessage,
 } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
-import { required } from '../../util/validators';
-import { Form, Button, FieldSelect } from '../../components';
+
+import { Form, Button, FieldTextInput } from '../../components';
 
 // Create this file using EditListingFeaturesForm.module.css
 // as a template.
@@ -33,24 +33,36 @@ export const EditListingWidthFormComponent = props => (
         updated,
         updateError,
         updateInProgress,
-        widthOptions,
+       
       } = formRenderProps;
 
-      const widthPlaceholder = intl.formatMessage({
+      const widthPlaceholderMessage = intl.formatMessage({
         id: 'EditListingWidthForm.widthPlaceholder',
       });
+      const heightPlaceholderMessage = intl.formatMessage({
+        id: 'EditListingWidthForm.heightPlaceholder',
+      });
+      const lengthPlaceholderMessage = intl.formatMessage({
+        id: 'EditListingWidthForm.lengthPlaceholder',
+      });
 
+
+      const widthLabelMessage = intl.formatMessage({
+        id: 'EditListingWidthForm.widthLabel',
+      });
+      const heightLabelMessage = intl.formatMessage({
+        id: 'EditListingWidthForm.heightLabel',
+      });
+      const lengthLabelMessage = intl.formatMessage({
+        id: 'EditListingWidthForm.lengthLabel',
+      });
       const errorMessage = updateError ? (
         <p className={css.error}>
           <FormattedMessage id="EditListingWidthForm.updateFailed" />
         </p>
       ) : null;
 
-      const widthRequired = required(
-        intl.formatMessage({
-          id: 'EditListingWidthForm.widthRequired',
-        })
-      );
+      
 
       const classes = classNames(css.root, className);
       const submitReady = updated && pristine;
@@ -61,19 +73,31 @@ export const EditListingWidthFormComponent = props => (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
 
-          <FieldSelect
-            className={css.width}
-            name="width"
+          <FieldTextInput
             id="width"
-            validate={widthRequired}
-          >
-            <option value="">{widthPlaceholder}</option>
-            {widthOptions.map(c => (
-              <option key={c.key} value={c.key}>
-                {c.label}
-              </option>
-            ))}
-          </FieldSelect>
+            name="width"
+            className={css.textField}
+            type="text"
+            label={widthLabelMessage}
+            placeholder={widthPlaceholderMessage}
+          />
+          <FieldTextInput
+            id="height"
+            name="height"
+            className={css.textField}
+            type="text"
+            label={heightLabelMessage}
+            placeholder={heightPlaceholderMessage}
+          />
+          <FieldTextInput
+            id="length"
+            name="length"
+            className={css.textField}
+            type="text"
+            label={lengthLabelMessage}
+            placeholder={lengthPlaceholderMessage}
+          />
+
 
           <Button
             className={css.submitButton}

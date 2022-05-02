@@ -9,6 +9,7 @@ export { default as EditListingPhotosForm } from './EditListingPhotosForm/EditLi
 export { default as EditListingPoliciesForm } from './EditListingPoliciesForm/EditListingPoliciesForm';
 export { default as EditListingPricingForm } from './EditListingPricingForm/EditListingPricingForm';
 export { default as EditListingWidthForm } from './EditListingWidthForm/EditListingWidthForm';
+export { default as EditListingPartnerIDForm } from './EditListingPartnerIDForm/EditListingPartnerIDForm';
 export { default as EmailVerificationForm } from './EmailVerificationForm/EmailVerificationForm';
 export { default as EnquiryForm } from './EnquiryForm/EnquiryForm';
 export { default as FilterForm } from './FilterForm/FilterForm';

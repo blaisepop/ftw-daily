@@ -14,48 +14,56 @@ import axios from 'axios';
 import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
 //
-import { Form, IconSpinner, PrimaryButton, FieldDateRangeInput, MenuFieldCheckboxGroup, FieldCheckbox, MenuFieldCheckbox, FieldTextInput } from '../../components';
+import { Form, IconSpinner, PrimaryButton, FieldDateRangeInput, MenuFieldCheckboxGroup, FieldCheckbox, } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 
 import css from './BookingDatesForm.module.css';
 
 const { Money } = sdkTypes;
 const identity = v => v;
-const label = <h3>Menus</h3>;
+const label = <h2>Menus</h2>;
 
 
 ///REQUETE POUR LES MENUS
-const url = "https://mobile-food-ch.herokuapp.com/api/v1/menu_items/?partner_number=1210810";
 
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       focusedInput: null,
       commonProps: {
         label: label,
         options: [],
         id: "menus",
+        showMinMessage: false,
+
       }
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.onFocusedInputChange = this.onFocusedInputChange.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.totalCost = 0;
+    this.url = "https://mobile-food-ch.herokuapp.com/api/v1/menu_items/?partner_number=" + this.props.partnerNumber;
   }
   componentDidMount() {
-    axios.get(url)
+    axios.get(this.url)
       .then((resp) => {
-        this.setState({commonProps: {
-        label: label,
-        options: resp.data,
-        id: "menus",
-      }});
+        var groupedList = this.groupByFoodType(resp.data)
+        console.log("grouped", groupedList)
+        this.setState({
+          commonProps: {
+            label: label,
+            options: groupedList,
+            id: "menus",
+          }
+        });
       })
       .catch(function () {
       });
 
-      
+
   }
   // Function that can be passed to nested components
   // so that they can notify this component when the
@@ -63,19 +71,49 @@ export class BookingDatesFormComponent extends Component {
   onFocusedInputChange(focusedInput) {
     this.setState({ focusedInput });
   }
+  groupByFoodType(liste) {
+
+    var newList = [];
+
+    liste.map((element) => {
+
+      if (newList[element.item_type]) {
+
+        newList[element.item_type].push(element)
+      }
+      else {
+
+        newList[element.item_type] = [element]
+      }
+    });
+    //console.log("newList",newList)
+    return newList
+
+  }
 
   // In case start or end date for the booking is missing
   // focus on that input, otherwise continue with the
   // default handleSubmit function.
   handleFormSubmit(e) {
+
     const { startDate, endDate } = e.bookingDates || {};
+
+
+
+    console.log(e)
     if (!startDate) {
       e.preventDefault();
       this.setState({ focusedInput: START_DATE });
     } else if (!endDate) {
       e.preventDefault();
       this.setState({ focusedInput: END_DATE });
-    } else {
+    }
+    else if (this.totalCost < 80000) {
+
+      this.setState({ showMinMessage: true })
+
+    }
+    else {
       this.props.onSubmit(e);
     }
   }
@@ -85,18 +123,22 @@ export class BookingDatesFormComponent extends Component {
   // In case you add more fields to the form, make sure you add
   // the values here to the bookingData object.
   handleOnChange(formValues) {
+
+    console.log(formValues)
     const menus = formValues.values && formValues.values.menus ? formValues.values.menus : {};
-  
+
 
 
     const { startDate, endDate } =
       formValues.values && formValues.values.bookingDates ? formValues.values.bookingDates : {};
+      const hasFee =this.props.fee!=null;
     const listingId = this.props.listingId;
     const isOwnListing = this.props.isOwnListing;
 
     if (startDate && endDate && !this.props.fetchLineItemsInProgress) {
+
       this.props.onFetchTransactionLineItems({
-        bookingData: { startDate, endDate, menus },
+        bookingData: { startDate, endDate, menus ,hasFee},
         listingId,
         isOwnListing,
       });
@@ -147,7 +189,22 @@ export class BookingDatesFormComponent extends Component {
             lineItems,
             fetchLineItemsInProgress,
             fetchLineItemsError,
+            fee,
           } = fieldRenderProps;
+          const feeName=fee?fee.name:null
+          const formattedFee = fee
+            ? formatMoney(
+              intl,
+              new Money(fee.amount, fee.currency)
+            )
+            : null;
+
+          const feeLabel = intl.formatMessage(
+            { id: 'BookingDatesForm.feeLabel' },
+            { fee: formattedFee, name:feeName}
+            
+            
+          );
           const { startDate, endDate } = values && values.bookingDates ? values.bookingDates : {};
 
           const bookingStartLabel = intl.formatMessage({
@@ -170,6 +227,12 @@ export class BookingDatesFormComponent extends Component {
               <FormattedMessage id="BookingDatesForm.timeSlotsError" />
             </p>
           ) : null;
+          const totalCostError = this.state.showMinMessage ? (
+            <p className={css.sideBarError}>
+              <FormattedMessage id={"BookingDatesForm.totalCostError"} />
+            </p>
+          ) : null;
+
 
           // This is the place to collect breakdown estimation data.
           // Note: lineItems are calculated and fetched from FTW backend
@@ -187,6 +250,9 @@ export class BookingDatesFormComponent extends Component {
 
           const showEstimatedBreakdown =
             bookingData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
+          //console.log(this.totalCost);
+          //console.log(lineItems);
+          showEstimatedBreakdown && lineItems ? this.totalCost = lineItems[lineItems.length - 1].unitPrice.amount : null;
 
           const bookingInfoMaybe = showEstimatedBreakdown ? (
             <div className={css.priceBreakdownContainer}>
@@ -206,7 +272,19 @@ export class BookingDatesFormComponent extends Component {
               <FormattedMessage id="BookingDatesForm.fetchLineItemsError" />
             </span>
           ) : null;
-
+          const feeMaybe = fee ? (
+            <div>
+              <p>{feeLabel}</p>
+              
+            <input type="hidden"
+             id="fee"
+             name="fee"
+             label={feeLabel}
+             value="fee"></input>
+            </div>
+            
+            
+          ) : null;
           const dateFormatOptions = {
             weekday: 'short',
             month: 'short',
@@ -227,6 +305,7 @@ export class BookingDatesFormComponent extends Component {
             submitButtonWrapperClassName || css.submitButtonWrapper
           );
 
+          //console.log(this.state.commonProps)
           return (
             <Form onSubmit={handleSubmit} className={classes} enforcePagePreloadFor="CheckoutPage">
               {timeSlotsError}
@@ -234,7 +313,7 @@ export class BookingDatesFormComponent extends Component {
                 subscription={{ values: true }}
                 onChange={values => {
                   this.handleOnChange(values);
-                
+
                 }}
               />
               <FieldDateRangeInput
@@ -262,23 +341,30 @@ export class BookingDatesFormComponent extends Component {
               <MenuFieldCheckboxGroup {...this.state.commonProps} />
 
 
-
+              {feeMaybe}
               {bookingInfoMaybe}
               {loadingSpinnerMaybe}
               {bookingInfoErrorMaybe}
+              {totalCostError}
+              {
+                <p className={css.smallPrint}>
 
-              <p className={css.smallPrint}>
-                <FormattedMessage
-                  id={
-                    isOwnListing
-                      ? 'BookingDatesForm.ownListing'
-                      : 'BookingDatesForm.youWontBeChargedInfo'
-                  }
-                />
-              </p>
+                  <FormattedMessage
+                    id={
+                      isOwnListing
+                        ? 'BookingDatesForm.ownListing'
+                        : 'BookingDatesForm.youWontBeChargedInfo'
+                    }
+                  />
+                </p>
+
+              }
+
 
               <div className={submitButtonClasses}>
-                <PrimaryButton type="submit">
+
+                <PrimaryButton >
+
                   <FormattedMessage id="BookingDatesForm.requestToBook" />
                 </PrimaryButton>
               </div>

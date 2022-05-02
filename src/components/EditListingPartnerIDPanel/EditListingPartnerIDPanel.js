@@ -1,24 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
-import config from '../../config.js';
 import { FormattedMessage } from '../../util/reactIntl';
+import { LISTING_STATE_DRAFT } from '../../util/types';
 import { ensureOwnListing } from '../../util/data';
-import { findOptionsForSelectFilter } from '../../util/search';
-
 import { ListingLink } from '../../components';
-import { EditListingWidthForm } from '../../forms';
+import { EditListingPartnerIDForm } from '../../forms';
 
-// Create this file using EditListingDescriptionPanel.module.css
-// as a template.
-import css from './EditListingWidthPanel.module.css';
+import css from './EditListingPartnerIDPanel.module.css';
 
-const EditListingWidthPanel = props => {
+const EditListingPartnerIDPanel = props => {
   const {
     className,
     rootClassName,
     listing,
+    disabled,
+    ready,
     onSubmit,
     onChange,
     submitButtonText,
@@ -31,40 +28,39 @@ const EditListingWidthPanel = props => {
   const currentListing = ensureOwnListing(listing);
   const { publicData } = currentListing.attributes;
 
-  const panelTitle = currentListing.id ? (
+  const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
+  const panelTitle = isPublished ? (
     <FormattedMessage
-      id="EditListingWidthPanel.title"
+      id="EditListingPartnerIDPanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingWidthPanel.createListingTitle" />
-  );
-  const widthOptions = findOptionsForSelectFilter(
-    'width',
-    config.custom.filters
+    <FormattedMessage id="EditListingPartnerIDPanel.createListingTitle" />
   );
 
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <EditListingWidthForm
+      <EditListingPartnerIDForm
         className={css.form}
-        
+        publicData={publicData}
+        initialValues={{ partnerNumber: publicData.partnerNumber }}
         onSubmit={values => {
-          const { width, height, length } = values;
+          const { partnerNumber = '' } = values;
           const updateValues = {
             publicData: {
-              dimensions:{width: width, height: height, length: length}
+              partnerNumber,
             },
           };
           onSubmit(updateValues);
         }}
         onChange={onChange}
+        disabled={disabled}
+        ready={ready}
         saveActionMsg={submitButtonText}
         updated={panelUpdated}
-        updateError={errors.updateListingError}
         updateInProgress={updateInProgress}
-        widthOptions={widthOptions}
+        fetchErrors={errors}
       />
     </div>
   );
@@ -72,19 +68,21 @@ const EditListingWidthPanel = props => {
 
 const { func, object, string, bool } = PropTypes;
 
-EditListingWidthPanel.defaultProps = {
+EditListingPartnerIDPanel.defaultProps = {
   className: null,
   rootClassName: null,
   listing: null,
 };
 
-EditListingWidthPanel.propTypes = {
+EditListingPartnerIDPanel.propTypes = {
   className: string,
   rootClassName: string,
 
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
+  disabled: bool.isRequired,
+  ready: bool.isRequired,
   onSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,
@@ -93,4 +91,4 @@ EditListingWidthPanel.propTypes = {
   errors: object.isRequired,
 };
 
-export default EditListingWidthPanel;
+export default EditListingPartnerIDPanel;

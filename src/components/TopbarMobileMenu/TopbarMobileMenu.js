@@ -24,6 +24,7 @@ const TopbarMobileMenu = props => {
   } = props;
 
   const user = ensureCurrentUser(currentUser);
+  const isAdmin = isAuthenticated && currentUser != null && currentUser.attributes.profile.publicData.admin != null ? currentUser.attributes.profile.publicData.admin : false
 
   if (!isAuthenticated) {
     const signup = (
@@ -43,6 +44,11 @@ const TopbarMobileMenu = props => {
         <FormattedMessage id="TopbarMobileMenu.signupOrLogin" values={{ signup, login }} />
       </span>
     );
+    const createListingMaybe = isAdmin ?
+      <NamedLink className={css.createNewListingLink} name="NewListingPage">
+        <FormattedMessage id="TopbarMobileMenu.newListingLink" />
+      </NamedLink>
+      : null
     return (
       <div className={css.root}>
         <div className={css.content}>
@@ -54,9 +60,7 @@ const TopbarMobileMenu = props => {
           </div>
         </div>
         <div className={css.footer}>
-          <NamedLink className={css.createNewListingLink} name="NewListingPage">
-            <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-          </NamedLink>
+         {createListingMaybe}
         </div>
       </div>
     );
@@ -112,9 +116,7 @@ const TopbarMobileMenu = props => {
         </NamedLink>
       </div>
       <div className={css.footer}>
-        <NamedLink className={css.createNewListingLink} name="NewListingPage">
-          <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-        </NamedLink>
+        {createListingMaybe }
       </div>
     </div>
   );

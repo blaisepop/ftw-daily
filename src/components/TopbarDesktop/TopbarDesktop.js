@@ -32,6 +32,7 @@ const TopbarDesktop = props => {
     onSearchSubmit,
     initialSearchFormValues,
   } = props;
+  
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const TopbarDesktop = props => {
 
   const authenticatedOnClientSide = mounted && isAuthenticated;
   const isAuthenticatedOrJustHydrated = isAuthenticated || !mounted;
-
+  const isAdmin=isAuthenticated&&currentUser!=null&&currentUser.attributes.profile.publicData.admin!=null?currentUser.attributes.profile.publicData.admin:false
   const classes = classNames(rootClassName || css.root, className);
 
   const search = (
@@ -52,6 +53,13 @@ const TopbarDesktop = props => {
     />
   );
 
+  const createListingMaybe=isAdmin?
+        <NamedLink className={css.createListingLink} name="NewListingPage">
+          <span className={css.createListing}>
+            <FormattedMessage id="TopbarDesktop.createListing" />
+          </span>
+        </NamedLink>
+      :null
   const notificationDot = notificationCount > 0 ? <div className={css.notificationDot} /> : null;
 
   const inboxLink = authenticatedOnClientSide ? (
@@ -142,11 +150,8 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
-      <NamedLink className={css.createListingLink} name="NewListingPage">
-        <span className={css.createListing}>
-          <FormattedMessage id="TopbarDesktop.createListing" />
-        </span>
-      </NamedLink>
+      {createListingMaybe}
+
       {inboxLink}
       {profileMenu}
       {signupLink}
