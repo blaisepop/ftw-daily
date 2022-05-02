@@ -64,13 +64,8 @@ exports[`ActivityFeed matches snapshot 1`] = `
     <div
       className="message"
     >
-      <a
+      <div
         className="root avatar"
-        href="/u/user1"
-        onClick={[Function]}
-        onMouseOver={[Function]}
-        onTouchStart={[Function]}
-        style={Object {}}
         title="user1 display name"
       >
         <span
@@ -78,7 +73,7 @@ exports[`ActivityFeed matches snapshot 1`] = `
         >
           TT
         </span>
-      </a>
+      </div>
       <div>
         <p
           className="messageContent"

@@ -66,7 +66,7 @@ export class SearchPageComponent extends Component {
     if (viewportBoundsChanged && isSearchPage) {
       const { history, location, filterConfig } = this.props;
 
-      // parse query parameters, including a custom attribute named category
+      // parse query parameters, including a custom attribute named certificate
       const { address, bounds, mapSearch, ...rest } = parse(location.search, {
         latlng: ['origin'],
         latlngBounds: ['bounds'],

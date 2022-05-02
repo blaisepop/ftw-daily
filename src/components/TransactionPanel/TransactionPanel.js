@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, arrayOf, bool, func, number, string } from 'prop-types';
+import { array, arrayOf, bool, func, number, object, string } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
 import {
@@ -177,6 +177,7 @@ export class TransactionPanelComponent extends Component {
       sendMessageError,
       sendReviewInProgress,
       sendReviewError,
+      onFetchTimeSlots,
       onManageDisableScrolling,
       onShowMoreMessages,
       transactionRole,
@@ -188,8 +189,7 @@ export class TransactionPanelComponent extends Component {
       acceptSaleError,
       declineSaleError,
       onSubmitBookingRequest,
-      timeSlots,
-      fetchTimeSlotsError,
+      monthlyTimeSlots,
       nextTransitions,
       onFetchTransactionLineItems,
       lineItems,
@@ -348,6 +348,8 @@ export class TransactionPanelComponent extends Component {
               image={firstImage}
               provider={currentProvider}
               isCustomer={isCustomer}
+              listingId={currentListing.id && currentListing.id.uuid}
+              listingDeleted={listingDeleted}
             />
             {isProvider ? (
               <div className={css.avatarWrapperProviderDesktop}>
@@ -425,6 +427,8 @@ export class TransactionPanelComponent extends Component {
                 image={firstImage}
                 provider={currentProvider}
                 isCustomer={isCustomer}
+                listingId={currentListing.id && currentListing.id.uuid}
+                listingDeleted={listingDeleted}
               />
 
               <DetailCardHeadingsMaybe
@@ -446,8 +450,8 @@ export class TransactionPanelComponent extends Component {
                   authorDisplayName={authorDisplayName}
                   onSubmit={onSubmitBookingRequest}
                   onManageDisableScrolling={onManageDisableScrolling}
-                  timeSlots={timeSlots}
-                  fetchTimeSlotsError={fetchTimeSlotsError}
+                  monthlyTimeSlots={monthlyTimeSlots}
+                  onFetchTimeSlots={onFetchTimeSlots}
                   onFetchTransactionLineItems={onFetchTransactionLineItems}
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
@@ -493,8 +497,7 @@ TransactionPanelComponent.defaultProps = {
   savePaymentMethodFailed: false,
   sendMessageError: null,
   sendReviewError: null,
-  timeSlots: null,
-  fetchTimeSlotsError: null,
+  monthlyTimeSlots: null,
   nextTransitions: null,
   lineItems: null,
   fetchLineItemsError: null,
@@ -517,13 +520,13 @@ TransactionPanelComponent.propTypes = {
   sendMessageError: propTypes.error,
   sendReviewInProgress: bool.isRequired,
   sendReviewError: propTypes.error,
+  onFetchTimeSlots: func.isRequired,
   onManageDisableScrolling: func.isRequired,
   onShowMoreMessages: func.isRequired,
   onSendMessage: func.isRequired,
   onSendReview: func.isRequired,
   onSubmitBookingRequest: func.isRequired,
-  timeSlots: arrayOf(propTypes.timeSlot),
-  fetchTimeSlotsError: propTypes.error,
+  monthlyTimeSlots: object,
   nextTransitions: array,
 
   // Sale related props

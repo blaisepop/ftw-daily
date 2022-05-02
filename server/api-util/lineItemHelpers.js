@@ -1,12 +1,9 @@
 const Decimal = require('decimal.js');
-const has = require('lodash/has');
+const moment = require('moment-timezone/builds/moment-timezone-with-data-10-year-range.min');
 const { types } = require('sharetribe-flex-sdk');
 const { Money } = types;
 
 const { getAmountAsDecimalJS, convertDecimalJSToNumber } = require('./currency');
-const { nightsBetween, daysBetween } = require('./dates');
-const LINE_ITEM_NIGHT = 'line-item/night';
-const LINE_ITEM_DAY = 'line-item/day';
 
 /** Helper functions for constructing line items*/
 
@@ -87,21 +84,22 @@ exports.calculateTotalPriceFromSeats = (unitPrice, unitCount, seats) => {
 };
 
 /**
- * Calculates the quantity based on the booking start and end dates depending on booking type.
+ * Calculate the quantity of hours between start and end dates.
+ * If the length of the timeslot is something else than hour (e.g. 30 minutes)
+ * you can change parameter 'hours' to 'minutes' and use that to calculate the
+ * quantity of timeslots.
+ *
+ * See moment documentation about diff:
+ * https://momentjs.com/docs/#/displaying/difference/
  *
  * @param {Date} startDate
  * @param {Date} endDate
- * @param {string} type
  *
- * @returns {number} quantity
+ * @returns {int} quantity of hours between start and end
+ *
  */
-exports.calculateQuantityFromDates = (startDate, endDate, type) => {
-  if (type === LINE_ITEM_NIGHT) {
-    return nightsBetween(startDate, endDate);
-  } else if (type === LINE_ITEM_DAY) {
-    return daysBetween(startDate, endDate);
-  }
-  throw new Error(`Can't calculate quantity from dates to unit type: ${type}`);
+exports.calculateQuantityFromHours = (startDate, endDate) => {
+  return moment(endDate).diff(moment(startDate), 'hours', true);
 };
 
 /**

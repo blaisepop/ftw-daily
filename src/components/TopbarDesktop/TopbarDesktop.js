@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { bool, func, object, number, string } from 'prop-types';
 import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
@@ -13,6 +13,8 @@ import {
   MenuContent,
   MenuItem,
   NamedLink,
+  ListingLink,
+  OwnListingLink,
 } from '../../components';
 import { TopbarSearchForm } from '../../forms';
 
@@ -25,6 +27,8 @@ const TopbarDesktop = props => {
     currentPage,
     rootClassName,
     currentUserHasListings,
+    currentUserListing,
+    currentUserListingFetched,
     notificationCount,
     intl,
     isAuthenticated,
@@ -87,14 +91,21 @@ const TopbarDesktop = props => {
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
-        <MenuItem key="ManageListingsPage">
-          <NamedLink
-            className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
-            name="ManageListingsPage"
+        <MenuItem key="EditListingPage">
+          <OwnListingLink
+            listing={currentUserListing}
+            listingFetched={currentUserListingFetched}
+            className={css.yourListingsLink}
           >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-          </NamedLink>
+            <div>
+              <span className={css.menuItemBorder} />
+              {currentUserListing ? (
+                <FormattedMessage id="TopbarDesktop.editYourListingLink" />
+              ) : (
+                <FormattedMessage id="TopbarDesktop.addYourListingLink" />
+              )}
+            </div>
+          </OwnListingLink>
         </MenuItem>
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
@@ -140,6 +151,28 @@ const TopbarDesktop = props => {
     </NamedLink>
   );
 
+  const listingLink =
+    authenticatedOnClientSide && currentUserListingFetched && currentUserListing ? (
+      <ListingLink
+        className={css.createListingLink}
+        listing={currentUserListing}
+        children={
+          <span className={css.createListing}>
+            <FormattedMessage id="TopbarDesktop.viewListing" />
+          </span>
+        }
+      />
+    ) : null;
+
+  const createListingLink =
+    isAuthenticatedOrJustHydrated && !(currentUserListingFetched && !currentUserListing) ? null : (
+      <NamedLink className={css.createListingLink} name="NewListingPage">
+        <span className={css.createListing}>
+          <FormattedMessage id="TopbarDesktop.createListing" />
+        </span>
+      </NamedLink>
+    );
+
   return (
     <nav className={classes}>
       <NamedLink className={css.logoLink} name="LandingPage">
@@ -150,8 +183,13 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
+<<<<<<< HEAD
       {createListingMaybe}
 
+=======
+      {listingLink}
+      {createListingLink}
+>>>>>>> upstream/master
       {inboxLink}
       {profileMenu}
       {signupLink}
@@ -160,8 +198,6 @@ const TopbarDesktop = props => {
   );
 };
 
-const { bool, func, object, number, string } = PropTypes;
-
 TopbarDesktop.defaultProps = {
   rootClassName: null,
   className: null,
@@ -169,12 +205,16 @@ TopbarDesktop.defaultProps = {
   currentPage: null,
   notificationCount: 0,
   initialSearchFormValues: {},
+  currentUserListing: null,
+  currentUserListingFetched: false,
 };
 
 TopbarDesktop.propTypes = {
   rootClassName: string,
   className: string,
   currentUserHasListings: bool.isRequired,
+  currentUserListing: propTypes.ownListing,
+  currentUserListingFetched: bool,
   currentUser: propTypes.currentUser,
   currentPage: string,
   isAuthenticated: bool.isRequired,

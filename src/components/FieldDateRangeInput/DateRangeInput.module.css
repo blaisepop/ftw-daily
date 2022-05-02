@@ -1,9 +1,6 @@
 @import '../../styles/propertySets.css';
 
 .inputRoot {
-  /* Contain repainting to this component only */
-  transform: translate3d(0, 0, 0);
-
   /* Override react-dates default styles to match input styles */
 
   & :global(.DateRangePicker) {
@@ -29,6 +26,7 @@
 
   & :global(.DateInput_input) {
     @apply --marketplaceH4FontStyles;
+    font-size: 16px;
     padding: 0;
     margin: 0;
     border: 0;

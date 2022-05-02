@@ -8,7 +8,7 @@
    :actor :actor.role/customer,
    :actions
    [{:name :action/create-booking,
-     :config {:observe-availability? true}}
+     :config {:observe-availability? true, :type :time}}
     {:name :action/privileged-set-line-items}
     {:name :action/stripe-create-payment-intent}],
    :to :state/pending-payment
@@ -17,7 +17,7 @@
    :actor :actor.role/customer,
    :actions
    [{:name :action/create-booking,
-     :config {:observe-availability? true}}
+     :config {:observe-availability? true, :type :time}}
     {:name :action/privileged-set-line-items}
     {:name :action/stripe-create-payment-intent}],
    :from :state/enquiry,

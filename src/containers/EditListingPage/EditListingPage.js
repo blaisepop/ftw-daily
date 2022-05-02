@@ -8,6 +8,7 @@ import { types as sdkTypes } from '../../util/sdkLoader';
 import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_NEW,
+  LISTING_PAGE_PARAM_TYPE_EDIT,
   LISTING_PAGE_PARAM_TYPES,
   LISTING_PAGE_PENDING_APPROVAL_VARIANT,
   createSlug,
@@ -18,17 +19,13 @@ import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
 import {
   stripeAccountClearError,
-  createStripeAccount,
   getStripeConnectAccountLink,
 } from '../../ducks/stripeConnectAccount.duck';
-
-import { EditListingWizard, NamedRedirect, Page } from '../../components';
+import { EditListingWizard, Footer, NamedRedirect, Page, UserNav } from '../../components';
 import { TopbarContainer } from '../../containers';
 
 import {
-  requestFetchBookings,
-  requestFetchAvailabilityExceptions,
-  requestCreateAvailabilityException,
+  requestAddAvailabilityException,
   requestDeleteAvailabilityException,
   requestCreateListingDraft,
   requestPublishListingDraft,
@@ -55,6 +52,8 @@ const { UUID } = sdkTypes;
 export const EditListingPageComponent = props => {
   const {
     currentUser,
+    currentUserListing,
+    currentUserListingFetched,
     createStripeAccountError,
     fetchInProgress,
     fetchStripeAccountError,
@@ -63,10 +62,8 @@ export const EditListingPageComponent = props => {
     getAccountLinkInProgress,
     history,
     intl,
-    onFetchAvailabilityExceptions,
-    onCreateAvailabilityException,
+    onAddAvailabilityException,
     onDeleteAvailabilityException,
-    onFetchBookings,
     onCreateListingDraft,
     onPublishListingDraft,
     onUpdateListing,
@@ -81,6 +78,7 @@ export const EditListingPageComponent = props => {
     page,
     params,
     scrollingDisabled,
+    allowOnlyOneListing,
     stripeAccountFetched,
     stripeAccount,
     updateStripeAccountError,
@@ -92,7 +90,8 @@ export const EditListingPageComponent = props => {
   const isNewListingFlow = isNewURI || isDraftURI;
 
   const listingId = page.submittedListingId || (id ? new UUID(id) : null);
-  const currentListing = ensureOwnListing(getOwnListing(listingId));
+  const listing = getOwnListing(listingId);
+  const currentListing = ensureOwnListing(listing);
   const { state: currentListingState } = currentListing.attributes;
 
   const isPastDraft = currentListingState && currentListingState !== LISTING_STATE_DRAFT;
@@ -127,6 +126,19 @@ export const EditListingPageComponent = props => {
         };
 
     return <NamedRedirect {...redirectProps} />;
+  } else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
+    // If we allow only one listing per provider, we need to redirect to correct listing.
+    return (
+      <NamedRedirect
+        name="EditListingPage"
+        params={{
+          id: currentUserListing.id.uuid,
+          slug: createSlug(currentUserListing.attributes.title),
+          type: LISTING_PAGE_PARAM_TYPE_EDIT,
+          tab: 'description',
+        }}
+      />
+    );
   } else if (showForm) {
     const {
       createListingDraftError = null,
@@ -134,6 +146,9 @@ export const EditListingPageComponent = props => {
       updateListingError = null,
       showListingsError = null,
       uploadImageError = null,
+      fetchExceptionsError = null,
+      addExceptionError = null,
+      deleteExceptionError = null,
     } = page;
     const errors = {
       createListingDraftError,
@@ -142,6 +157,9 @@ export const EditListingPageComponent = props => {
       showListingsError,
       uploadImageError,
       createStripeAccountError,
+      fetchExceptionsError,
+      addExceptionError,
+      deleteExceptionError,
     };
     // TODO: is this dead code? (shouldRedirect is checked before)
     const newListingPublished =
@@ -176,6 +194,10 @@ export const EditListingPageComponent = props => {
           desktopClassName={css.desktopTopbar}
           mobileClassName={css.mobileTopbar}
         />
+        <UserNav
+          selectedPageName={listing ? 'EditListingPage' : 'NewListingPage'}
+          listing={listing}
+        />
         <EditListingWizard
           id="EditListingWizard"
           className={css.wizard}
@@ -187,13 +209,8 @@ export const EditListingPageComponent = props => {
           history={history}
           images={images}
           listing={currentListing}
-          availability={{
-            calendar: page.availabilityCalendar,
-            onFetchAvailabilityExceptions,
-            onCreateAvailabilityException,
-            onDeleteAvailabilityException,
-            onFetchBookings,
-          }}
+          onAddAvailabilityException={onAddAvailabilityException}
+          onDeleteAvailabilityException={onDeleteAvailabilityException}
           onUpdateListing={onUpdateListing}
           onCreateListingDraft={onCreateListingDraft}
           onPublishListingDraft={onPublishListingDraft}
@@ -210,6 +227,8 @@ export const EditListingPageComponent = props => {
           stripeOnboardingReturnURL={params.returnURLType}
           updatedTab={page.updatedTab}
           updateInProgress={page.updateInProgress || page.createListingDraftInProgress}
+          fetchExceptionsInProgress={page.fetchExceptionsInProgress}
+          availabilityExceptions={page.availabilityExceptions}
           payoutDetailsSaveInProgress={page.payoutDetailsSaveInProgress}
           payoutDetailsSaved={page.payoutDetailsSaved}
           stripeAccountFetched={stripeAccountFetched}
@@ -219,6 +238,7 @@ export const EditListingPageComponent = props => {
           }
           stripeAccountLinkError={getAccountLinkError}
         />
+        <Footer />
       </Page>
     );
   } else {
@@ -228,7 +248,20 @@ export const EditListingPageComponent = props => {
       id: 'EditListingPage.loadingListingData',
     };
     return (
-      <Page title={intl.formatMessage(loadingPageMsg)} scrollingDisabled={scrollingDisabled} />
+      <Page title={intl.formatMessage(loadingPageMsg)} scrollingDisabled={scrollingDisabled}>
+        <TopbarContainer
+          className={css.topbar}
+          mobileRootClassName={css.mobileTopbar}
+          desktopClassName={css.desktopTopbar}
+          mobileClassName={css.mobileTopbar}
+        />
+        <UserNav
+          selectedPageName={listing ? 'EditListingPage' : 'NewListingPage'}
+          listing={listing}
+        />
+        <div className={css.placeholderWhileLoading} />
+        <Footer />
+      </Page>
     );
   }
 };
@@ -246,6 +279,8 @@ EditListingPageComponent.defaultProps = {
   listingDraft: null,
   notificationCount: 0,
   sendVerificationEmailError: null,
+  currentUserListing: null,
+  currentUserListingFetched: false,
 };
 
 EditListingPageComponent.propTypes = {
@@ -255,12 +290,11 @@ EditListingPageComponent.propTypes = {
   getAccountLinkInProgress: bool,
   updateStripeAccountError: propTypes.error,
   currentUser: propTypes.currentUser,
-  fetchInProgress: bool.isRequired,
   getOwnListing: func.isRequired,
-  onFetchAvailabilityExceptions: func.isRequired,
-  onCreateAvailabilityException: func.isRequired,
+  currentUserListing: propTypes.ownListing,
+  currentUserListingFetched: bool,
+  onAddAvailabilityException: func.isRequired,
   onDeleteAvailabilityException: func.isRequired,
-  onFetchBookings: func.isRequired,
   onGetStripeConnectAccountLink: func.isRequired,
   onCreateListingDraft: func.isRequired,
   onPublishListingDraft: func.isRequired,
@@ -295,6 +329,7 @@ EditListingPageComponent.propTypes = {
 
 const mapStateToProps = state => {
   const page = state.EditListingPage;
+
   const {
     getAccountLinkInProgress,
     getAccountLinkError,
@@ -306,7 +341,7 @@ const mapStateToProps = state => {
     stripeAccountFetched,
   } = state.stripeConnectAccount;
 
-  const { currentUser } = state.user;
+  const { currentUser, currentUserListing, currentUserListingFetched } = state.user;
 
   const fetchInProgress = createStripeAccountInProgress;
 
@@ -324,6 +359,8 @@ const mapStateToProps = state => {
     stripeAccount,
     stripeAccountFetched,
     currentUser,
+    currentUserListing,
+    currentUserListingFetched,
     fetchInProgress,
     getOwnListing,
     page,
@@ -332,18 +369,15 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onUpdateListing: (tab, values) => dispatch(requestUpdateListing(tab, values)),
-  onFetchBookings: params => dispatch(requestFetchBookings(params)),
-  onFetchAvailabilityExceptions: params => dispatch(requestFetchAvailabilityExceptions(params)),
-  onCreateAvailabilityException: params => dispatch(requestCreateAvailabilityException(params)),
+  onAddAvailabilityException: params => dispatch(requestAddAvailabilityException(params)),
   onDeleteAvailabilityException: params => dispatch(requestDeleteAvailabilityException(params)),
+  onUpdateListing: (tab, values) => dispatch(requestUpdateListing(tab, values)),
   onCreateListingDraft: values => dispatch(requestCreateListingDraft(values)),
   onPublishListingDraft: listingId => dispatch(requestPublishListingDraft(listingId)),
   onImageUpload: data => dispatch(requestImageUpload(data)),
   onManageDisableScrolling: (componentId, disableScrolling) =>
     dispatch(manageDisableScrolling(componentId, disableScrolling)),
   onPayoutDetailsFormChange: () => dispatch(stripeAccountClearError()),
-  onPayoutDetailsSubmit: values => dispatch(createStripeAccount(values)),
   onPayoutDetailsFormSubmit: (values, isUpdateCall) =>
     dispatch(savePayoutDetails(values, isUpdateCall)),
   onGetStripeConnectAccountLink: params => dispatch(getStripeConnectAccountLink(params)),

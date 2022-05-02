@@ -11,22 +11,22 @@ exports[`EditListingPageComponent matches snapshot 1`] = `
     mobileClassName="mobileTopbar"
     mobileRootClassName="mobileTopbar"
   />
+  <UserNav
+    className={null}
+    listing={null}
+    rootClassName={null}
+    selectedPageName="NewListingPage"
+  />
   <withViewport(injectIntl(EditListingWizard))
-    availability={
-      Object {
-        "calendar": undefined,
-        "onCreateAvailabilityException": [Function],
-        "onDeleteAvailabilityException": [Function],
-        "onFetchAvailabilityExceptions": [Function],
-        "onFetchBookings": [Function],
-      }
-    }
     className="wizard"
     currentUser={null}
     errors={
       Object {
+        "addExceptionError": null,
         "createListingDraftError": null,
         "createStripeAccountError": null,
+        "deleteExceptionError": null,
+        "fetchExceptionsError": null,
         "publishListingError": null,
         "showListingsError": null,
         "updateListingError": null,
@@ -53,8 +53,10 @@ exports[`EditListingPageComponent matches snapshot 1`] = `
       }
     }
     newListingPublished={false}
+    onAddAvailabilityException={[Function]}
     onChange={[Function]}
     onCreateListingDraft={[Function]}
+    onDeleteAvailabilityException={[Function]}
     onGetStripeConnectAccountLink={[Function]}
     onImageUpload={[Function]}
     onManageDisableScrolling={[Function]}
@@ -77,5 +79,6 @@ exports[`EditListingPageComponent matches snapshot 1`] = `
     stripeAccountFetched={null}
     stripeAccountLinkError={null}
   />
+  <injectIntl(Footer) />
 </Page>
 `;

@@ -121,7 +121,7 @@ exports[`ManageListingCard matches snapshot 1`] = `
         className="perUnit"
       >
         <MemoizedFormattedMessage
-          id="ManageListingCard.perNight"
+          id="ManageListingCard.perUnit"
         />
       </div>
     </div>

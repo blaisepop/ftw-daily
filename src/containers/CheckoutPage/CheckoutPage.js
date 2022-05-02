@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
-import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATE } from '../../util/types';
+import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATETIME } from '../../util/types';
 import {
   ensureListing,
   ensureCurrentUser,
@@ -18,7 +18,7 @@ import {
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data';
-import { dateFromLocalToAPI, minutesBetween } from '../../util/dates';
+import { minutesBetween } from '../../util/dates';
 import { createSlug } from '../../util/urlHelpers';
 import {
   isTransactionInitiateAmountTooLowError,
@@ -178,6 +178,7 @@ export class CheckoutPageComponent extends Component {
       pageData.bookingDates &&
       pageData.bookingDates.bookingStart &&
       pageData.bookingDates.bookingEnd &&
+      pageData.bookingData.quantity &&
       !isBookingCreated;
 
     if (shouldFetchSpeculatedTransaction) {
@@ -185,21 +186,29 @@ export class CheckoutPageComponent extends Component {
       const transactionId = tx ? tx.id : null;
       const { bookingStart, bookingEnd } = pageData.bookingDates;
 
+<<<<<<< HEAD
       // Convert picked date to date that will be converted on the API as
       // a noon of correct year-month-date combo in UTC
       const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
       const bookingEndForAPI = dateFromLocalToAPI(bookingEnd);
       
+=======
+>>>>>>> upstream/master
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
       fetchSpeculatedTransaction(
         {
           listingId,
+<<<<<<< HEAD
           bookingStart: bookingStartForAPI,
           bookingEnd: bookingEndForAPI,
           menus:pageData.bookingData.menus,
           hasFee: bookingData.fee?.length > 0,
+=======
+          bookingStart,
+          bookingEnd,
+>>>>>>> upstream/master
         },
         transactionId
       );
@@ -384,8 +393,12 @@ export class CheckoutPageComponent extends Component {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
+<<<<<<< HEAD
       menus:pageData.bookingData.menus,
       hasFee: pageData.bookingData?.fee?.length > 0,
+=======
+      quantity: pageData.bookingData ? pageData.bookingData.quantity : null,
+>>>>>>> upstream/master
       ...optionalPaymentParams,
     };
 
@@ -592,6 +605,9 @@ export class CheckoutPageComponent extends Component {
     // (i.e. have an id)
     const tx = existingTransaction.booking ? existingTransaction : speculatedTransaction;
     const txBooking = ensureBooking(tx.booking);
+    const timeZone = currentListing.attributes.availabilityPlan
+      ? currentListing.attributes.availabilityPlan.timezone
+      : 'Etc/UTC';
     const breakdown =
       tx.id && txBooking.id ? (
         <BookingBreakdown
@@ -600,7 +616,8 @@ export class CheckoutPageComponent extends Component {
           unitType={config.bookingUnitType}
           transaction={tx}
           booking={txBooking}
-          dateType={DATE_TYPE_DATE}
+          dateType={DATE_TYPE_DATETIME}
+          timeZone={timeZone}
         />
       ) : null;
 
@@ -775,12 +792,6 @@ export class CheckoutPageComponent extends Component {
           <div className={css.bookListingContainer}>
             <div className={css.heading}>
               <h1 className={css.title}>{title}</h1>
-              <div className={css.author}>
-                <FormattedMessage
-                  id="CheckoutPage.hostedBy"
-                  values={{ name: currentAuthor.attributes.profile.displayName }}
-                />
-              </div>
             </div>
 
             <div className={css.priceBreakdownContainer}>

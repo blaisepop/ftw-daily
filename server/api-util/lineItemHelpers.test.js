@@ -5,7 +5,6 @@ const {
   calculateTotalPriceFromQuantity,
   calculateTotalPriceFromPercentage,
   calculateTotalPriceFromSeats,
-  calculateQuantityFromDates,
   calculateLineTotal,
   calculateTotalFromLineItems,
   calculateTotalForProvider,
@@ -53,31 +52,6 @@ describe('calculateTotalPriceFromSeats()', () => {
     const seats = -3;
     expect(() => calculateTotalPriceFromSeats(unitPrice, unitCount, seats)).toThrowError(
       "Value of seats can't be negative"
-    );
-  });
-});
-
-describe('calculateQuantityFromDates()', () => {
-  it('should calculate quantity based on given dates with nightly bookings', () => {
-    const start = new Date(2017, 0, 1);
-    const end = new Date(2017, 0, 3);
-    const type = 'line-item/night';
-    expect(calculateQuantityFromDates(start, end, type)).toEqual(2);
-  });
-
-  it('should calculate quantity based on given dates with daily bookings', () => {
-    const start = new Date(2017, 0, 1);
-    const end = new Date(2017, 0, 3);
-    const type = 'line-item/day';
-    expect(calculateQuantityFromDates(start, end, type)).toEqual(2);
-  });
-
-  it('should throw error if unit type is not night or day', () => {
-    const start = new Date(2017, 0, 1);
-    const end = new Date(2017, 0, 3);
-    const type = 'line-item/units';
-    expect(() => calculateQuantityFromDates(start, end, type)).toThrowError(
-      `Can't calculate quantity from dates to unit type: ${type}`
     );
   });
 });

@@ -9,7 +9,11 @@
 
   @media (--viewportMedium) {
     flex-basis: 576px;
+<<<<<<< HEAD
     height: fit-content;
+=======
+    height: unset;
+>>>>>>> upstream/master
     padding: var(--modalPaddingMedium);
     background-color: var(--matterColorLight);
     margin-top: 12.5vh;
@@ -74,9 +78,46 @@
     margin-bottom: 30px;
   }
 }
+.desktopPriceContainer {
+  display: none;
+
+  @media (--viewportLarge) {
+    /* Layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    flex-shrink: 0;
+    margin: 0 48px 0 0;
+    padding: 0;
+  }
+}
+
+.desktopPriceValue {
+  /* Font */
+  @apply --marketplaceH2FontStyles;
+  color: var(--marketplaceColor);
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+}
+
+.desktopPerUnit {
+  /* Font */
+  @apply --marketplaceH5FontStyles;
+  color: var(--matterColor);
+
+  @media (--viewportMedium) {
+    margin-top: 0;
+    margin-bottom: 12px;
+    margin-left: 6px;
+  }
+}
 
 .bookingTitle {
   /* Font */
+  @apply --marketplaceH3FontStyles;
   color: var(--matterColor);
 
   margin-top: 0;
@@ -98,10 +139,10 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin: 0 0 84px 0;
+  padding: 0;
 
   @media (--viewportMedium) {
-    margin: 0;
+    padding: 0;
     min-height: 400px;
   }
 
@@ -111,7 +152,7 @@
   }
 }
 
-.bookingDatesSubmitButtonWrapper {
+.submitButtonWrapper {
   flex-shrink: 0;
   padding: 0 24px 24px 24px;
   width: 100%;

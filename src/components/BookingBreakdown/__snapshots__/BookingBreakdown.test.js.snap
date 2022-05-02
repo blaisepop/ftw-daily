@@ -25,14 +25,14 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Fri 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 14
             </span>
           </div>
         </div>
@@ -50,14 +50,14 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Sun 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 16
             </span>
           </div>
         </div>
@@ -67,6 +67,22 @@ exports[`BookingBreakdown customer transaction data matches snapshot 1`] = `
       className="totalDivider"
     />,
   ]
+  <div
+    className="lineItem"
+  >
+    <span
+      className="itemLabel"
+    >
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span
+      className="itemValue"
+    >
+      10
+    </span>
+  </div>
   <div
     className="lineItem"
   >
@@ -132,14 +148,14 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Fri 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 14
             </span>
           </div>
         </div>
@@ -157,14 +173,14 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Sun 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 16
             </span>
           </div>
         </div>
@@ -174,6 +190,22 @@ exports[`BookingBreakdown pretransaction data matches snapshot 1`] = `
       className="totalDivider"
     />,
   ]
+  <div
+    className="lineItem"
+  >
+    <span
+      className="itemLabel"
+    >
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span
+      className="itemValue"
+    >
+      10
+    </span>
+  </div>
   <div
     className="lineItem"
   >
@@ -239,14 +271,14 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Fri 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 14
             </span>
           </div>
         </div>
@@ -264,14 +296,14 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Sun 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 16
             </span>
           </div>
         </div>
@@ -281,6 +313,22 @@ exports[`BookingBreakdown provider canceled transaction data matches snapshot 1`
       className="totalDivider"
     />,
   ]
+  <div
+    className="lineItem"
+  >
+    <span
+      className="itemLabel"
+    >
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span
+      className="itemValue"
+    >
+      10
+    </span>
+  </div>
   <div
     className="lineItem"
   >
@@ -422,14 +470,14 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Fri 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 14
             </span>
           </div>
         </div>
@@ -447,14 +495,14 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
             className="dayInfo"
           >
             <span>
-              Sat 12:00 PM
+              Sun 12:00 PM
             </span>
           </div>
           <div
             className="itemLabel"
           >
             <span>
-              Jun 10
+              Apr 16
             </span>
           </div>
         </div>
@@ -464,6 +512,22 @@ exports[`BookingBreakdown provider transaction data matches snapshot 1`] = `
       className="totalDivider"
     />,
   ]
+  <div
+    className="lineItem"
+  >
+    <span
+      className="itemLabel"
+    >
+      <span>
+        BookingBreakdown.pricePerNight
+      </span>
+    </span>
+    <span
+      className="itemValue"
+    >
+      10
+    </span>
+  </div>
   <div
     className="lineItem"
   >

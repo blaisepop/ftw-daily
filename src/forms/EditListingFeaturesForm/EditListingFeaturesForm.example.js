@@ -1,44 +1,38 @@
 import EditListingFeaturesForm from './EditListingFeaturesForm';
 
-const NAME = 'amenities';
+const NAME = 'yogaStyles';
 
-const initialValueArray = ['towels', 'jacuzzi', 'bathroom'];
+const initialValueArray = ['hatha', 'vinyasa', 'yin'];
 const initialValues = { [NAME]: initialValueArray };
 
 const filterConfig = [
   {
-    id: 'amenities',
-    label: 'Amenities',
+    id: 'yogaStyles',
+    label: 'Yoga styles',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_amenities'],
+    queryParamNames: ['pub_yogaStyles'],
     config: {
       mode: 'has_all',
       options: [
-        {
-          key: 'feat1',
-          label: 'Feat 1',
-        },
-        {
-          key: 'feat2',
-          label: 'Feat 2',
-        },
-        {
-          key: 'feat3',
-          label: 'Feat 3',
-        },
+        { key: 'ashtanga', label: 'Ashtanga' },
+        { key: 'hatha', label: 'Hatha' },
+        { key: 'kundalini', label: 'Kundalini' },
+        { key: 'restorative', label: 'Restorative' },
+        { key: 'vinyasa', label: 'Vinyasa' },
+        { key: 'yin', label: 'Yin' },
       ],
     },
   },
 ];
 
-export const Amenities = {
+export const YogaStyles = {
   component: EditListingFeaturesForm,
   props: {
     name: NAME,
     onSubmit: values => console.log('EditListingFeaturesForm submit:', values),
     initialValues: initialValues,
-    saveActionMsg: 'Save amenities',
+    saveActionMsg: 'Save yoga styles',
     updated: false,
     updateInProgress: false,
     disabled: false,

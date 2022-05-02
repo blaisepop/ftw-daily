@@ -35,14 +35,32 @@
 
 export const filters = [
   {
-    id: 'dates',
+    id: 'dates-length',
     label: 'Dates',
-    type: 'BookingDateRangeFilter',
+    type: 'BookingDateRangeLengthFilter',
     group: 'primary',
     // Note: BookingDateRangeFilter is fixed filter,
     // you can't change "queryParamNames: ['dates'],"
-    queryParamNames: ['dates'],
-    config: {},
+    queryParamNames: ['dates', 'minDuration'],
+    config: {
+      // A global time zone to use in availability searches. As listings
+      // can be in various time zones, we must decide what time zone we
+      // use in search when looking for available listings within a
+      // certain time interval.
+      //
+      // If you have all/most listings in a certain time zone, change this
+      // config value to that.
+      //
+      // See: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      searchTimeZone: 'Etc/UTC',
+
+      // Options for the minimum duration of the booking
+      options: [
+        { key: '0', label: 'Any length' },
+        { key: '60', label: '1 hour', shortLabel: '1h' },
+        { key: '120', label: '2 hours', shortLabel: '2h' },
+      ],
+    },
   },
   {
     id: 'price',
@@ -74,30 +92,19 @@ export const filters = [
     config: {},
   },
   {
+<<<<<<< HEAD
     id: 'category',
     label: 'Category',
     type: 'SelectSingleFilter',
     group: 'primary',
     queryParamNames: ['pub_category'],
-    config: {
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for the UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        { key: 'burger', label: 'Burger' },
-        { key: 'pizza', label: 'Pizza' },
-        { key: 'crepe', label: 'Crepe' },
-        { key: 'thai', label: 'Thai' },
-      ],
-    },
-  },
-  {
-    id: 'amenities',
-    label: 'Amenities',
+=======
+    id: 'yogaStyles',
+    label: 'Yoga styles',
     type: 'SelectMultipleFilter',
     group: 'secondary',
-    queryParamNames: ['pub_amenities'],
+    queryParamNames: ['pub_yogaStyles'],
+>>>>>>> upstream/master
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
@@ -108,6 +115,35 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
+<<<<<<< HEAD
+        { key: 'burger', label: 'Burger' },
+        { key: 'pizza', label: 'Pizza' },
+        { key: 'crepe', label: 'Crepe' },
+        { key: 'thai', label: 'Thai' },
+=======
+        { key: 'ashtanga', label: 'Ashtanga' },
+        { key: 'hatha', label: 'Hatha' },
+        { key: 'kundalini', label: 'Kundalini' },
+        { key: 'restorative', label: 'Restorative' },
+        { key: 'vinyasa', label: 'Vinyasa' },
+        { key: 'yin', label: 'Yin' },
+>>>>>>> upstream/master
+      ],
+    },
+  },
+  {
+    id: 'certificate',
+    label: 'Certificate',
+    type: 'SelectSingleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_certificate'],
+    config: {
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for the UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+<<<<<<< HEAD
         {
           key: 'starter',
           label: 'Starter',
@@ -128,6 +164,11 @@ export const filters = [
           key: 'aperitive',
           label: 'Aperitive',
         },
+=======
+        { key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
+        { key: '200h', label: 'Registered yoga teacher 200h' },
+        { key: '500h', label: 'Registered yoga teacher 500h' },
+>>>>>>> upstream/master
       ],
     },
   },

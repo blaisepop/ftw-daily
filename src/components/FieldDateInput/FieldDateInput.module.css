@@ -13,6 +13,10 @@
   }
 }
 
+.labelDisabled {
+  color: var(--matterColorNegative);
+}
+
 /**
  * Mobile margins mean that labels, inputs (incl separate borders) get margins,
  * but calendar popup doesn't.

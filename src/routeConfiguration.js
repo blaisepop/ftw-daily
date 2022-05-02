@@ -19,7 +19,6 @@ const EmailVerificationPage = loadable(() => import(/* webpackChunkName: "EmailV
 const InboxPage = loadable(() => import(/* webpackChunkName: "InboxPage" */ './containers/InboxPage/InboxPage'));
 const LandingPage = loadable(() => import(/* webpackChunkName: "LandingPage" */ './containers/LandingPage/LandingPage'));
 const ListingPage = loadable(() => import(/* webpackChunkName: "ListingPage" */ /* webpackPrefetch: true */ './containers/ListingPage/ListingPage'));
-const ManageListingsPage = loadable(() => import(/* webpackChunkName: "ManageListingsPage" */ './containers/ManageListingsPage/ManageListingsPage'));
 const PasswordChangePage = loadable(() => import(/* webpackChunkName: "PasswordChangePage" */ './containers/PasswordChangePage/PasswordChangePage'));
 const PasswordRecoveryPage = loadable(() => import(/* webpackChunkName: "PasswordRecoveryPage" */ './containers/PasswordRecoveryPage/PasswordRecoveryPage'));
 const PasswordResetPage = loadable(() => import(/* webpackChunkName: "PasswordResetPage" */ './containers/PasswordResetPage/PasswordResetPage'));
@@ -116,6 +115,7 @@ const routeConfiguration = () => {
       name: 'EditListingPage',
       auth: true,
       component: EditListingPage,
+      extraProps: { allowOnlyOneListing: true },
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
     },
     {
@@ -228,14 +228,6 @@ const routeConfiguration = () => {
       extraProps: { transactionRole: 'provider' },
       loadData: params =>
         pageDataLoadingAPI.TransactionPage.loadData({ ...params, transactionRole: 'provider' }),
-    },
-    {
-      path: '/listings',
-      name: 'ManageListingsPage',
-      auth: true,
-      authPage: 'LoginPage',
-      component: ManageListingsPage,
-      loadData: pageDataLoadingAPI.ManageListingsPage.loadData,
     },
     {
       path: '/account',

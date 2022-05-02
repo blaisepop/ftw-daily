@@ -34,26 +34,32 @@ const EditListingDescriptionPanel = props => {
   const panelTitle = isPublished ? (
     <FormattedMessage
       id="EditListingDescriptionPanel.title"
-      values={{ listingTitle: <ListingLink listing={listing} /> }}
+      values={{
+        listingTitle: (
+          <ListingLink listing={listing}>
+            <FormattedMessage id="EditListingDescriptionPanel.listingTitle" />
+          </ListingLink>
+        ),
+      }}
     />
   ) : (
     <FormattedMessage id="EditListingDescriptionPanel.createListingTitle" />
   );
 
-  const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters);
+  const certificateOptions = findOptionsForSelectFilter('certificate', config.custom.filters);
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingDescriptionForm
         className={css.form}
-        initialValues={{ title, description, category: publicData.category }}
+        initialValues={{ title, description, certificate: publicData.certificate }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, category } = values;
+          const { title, description, certificate } = values;
           const updateValues = {
             title: title.trim(),
             description,
-            publicData: { category },
+            publicData: { certificate },
           };
 
           onSubmit(updateValues);
@@ -64,7 +70,7 @@ const EditListingDescriptionPanel = props => {
         updated={panelUpdated}
         updateInProgress={updateInProgress}
         fetchErrors={errors}
-        categories={categoryOptions}
+        certificateOptions={certificateOptions}
       />
     </div>
   );

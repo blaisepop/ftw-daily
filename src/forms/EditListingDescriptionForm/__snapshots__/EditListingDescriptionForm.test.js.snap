@@ -50,43 +50,6 @@ exports[`EditListingDescriptionForm matches snapshot 1`] = `
       value=""
     />
   </div>
-  <div
-    className="root category"
-  >
-    <label
-      htmlFor="category"
-    >
-      EditListingDescriptionForm.categoryLabel
-    </label>
-    <select
-      className="select"
-      id="category"
-      name="category"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      value=""
-    >
-      <option
-        disabled={true}
-        value=""
-      >
-        EditListingDescriptionForm.categoryPlaceholder
-      </option>
-      <option
-        key="cat1"
-        value="cat1"
-      >
-        Cat 1
-      </option>
-      <option
-        key="cat2"
-        value="cat2"
-      >
-        Cat 2
-      </option>
-    </select>
-  </div>
   <button
     className="root submitButton"
     disabled={true}

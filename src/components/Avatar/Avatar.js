@@ -33,7 +33,15 @@ const AVATAR_IMAGE_VARIANTS = [
 ];
 
 export const AvatarComponent = props => {
-  const { rootClassName, className, user, renderSizes, disableProfileLink, intl } = props;
+  const {
+    rootClassName,
+    className,
+    initialsClassName,
+    user,
+    renderSizes,
+    disableProfileLink,
+    intl,
+  } = props;
   const classes = classNames(rootClassName || css.root, className);
 
   const userIsCurrentUser = user && user.type === 'currentUser';
@@ -66,6 +74,8 @@ export const AvatarComponent = props => {
     : { name: 'ProfileBasePage' };
   const hasProfileImage = avatarUser.profileImage && avatarUser.profileImage.id;
   const profileLinkEnabled = !disableProfileLink;
+
+  const classForInitials = initialsClassName || css.initials;
 
   if (isBannedUser || isDeletedUser) {
     return (
@@ -101,14 +111,14 @@ export const AvatarComponent = props => {
     // Placeholder avatar (initials)
     return (
       <NamedLink {...rootProps} {...linkProps}>
-        <span className={css.initials}>{abbreviatedName}</span>
+        <span className={classForInitials}>{abbreviatedName}</span>
       </NamedLink>
     );
   } else {
     // Placeholder avatar (initials)
     return (
       <div {...rootProps}>
-        <span className={css.initials}>{abbreviatedName}</span>
+        <span className={classForInitials}>{abbreviatedName}</span>
       </div>
     );
   }
@@ -117,6 +127,7 @@ export const AvatarComponent = props => {
 AvatarComponent.defaultProps = {
   className: null,
   rootClassName: null,
+  initialsClassName: null,
   user: null,
   renderSizes: AVATAR_SIZES,
   disableProfileLink: false,
@@ -125,6 +136,7 @@ AvatarComponent.defaultProps = {
 AvatarComponent.propTypes = {
   rootClassName: string,
   className: string,
+  initialsClassName: string,
   user: oneOfType([propTypes.user, propTypes.currentUser]),
 
   renderSizes: string,

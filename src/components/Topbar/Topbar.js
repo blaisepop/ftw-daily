@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { array, bool, func, number, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import pickBy from 'lodash/pickBy';
@@ -61,8 +61,6 @@ const GenericError = props => {
     </div>
   );
 };
-
-const { bool } = PropTypes;
 
 GenericError.propTypes = {
   show: bool.isRequired,
@@ -139,6 +137,8 @@ class TopbarComponent extends Component {
       authInProgress,
       currentUser,
       currentUserHasListings,
+      currentUserListing,
+      currentUserListingFetched,
       currentUserHasOrders,
       currentPage,
       notificationCount,
@@ -167,6 +167,8 @@ class TopbarComponent extends Component {
       <TopbarMobileMenu
         isAuthenticated={isAuthenticated}
         currentUserHasListings={currentUserHasListings}
+        currentUserListing={currentUserListing}
+        currentUserListingFetched={currentUserListingFetched}
         currentUser={currentUser}
         onLogout={this.handleLogout}
         notificationCount={notificationCount}
@@ -226,6 +228,8 @@ class TopbarComponent extends Component {
           <TopbarDesktop
             className={desktopClassName}
             currentUserHasListings={currentUserHasListings}
+            currentUserListing={currentUserListing}
+            currentUserListingFetched={currentUserListingFetched}
             currentUser={currentUser}
             currentPage={currentPage}
             initialSearchFormValues={initialSearchFormValues}
@@ -296,8 +300,6 @@ TopbarComponent.defaultProps = {
   sendVerificationEmailError: null,
   authScopes: [],
 };
-
-const { array, func, number, shape, string } = PropTypes;
 
 TopbarComponent.propTypes = {
   className: string,

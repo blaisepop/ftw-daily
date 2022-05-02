@@ -2,7 +2,7 @@ import unionWith from 'lodash/unionWith';
 import { storableError } from '../../util/errors';
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { convertUnitToSubUnit, unitDivisor } from '../../util/currency';
-import { formatDateStringToUTC, getExclusiveEndDate } from '../../util/dates';
+import { formatDateStringToTz, getExclusiveEndDateWithTz } from '../../util/dates';
 import { parse } from '../../util/urlHelpers';
 import config from '../../config';
 
@@ -138,32 +138,53 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
       : {};
   };
 
-  const datesSearchParams = datesParam => {
-    const values = datesParam ? datesParam.split(',') : [];
-    const hasValues = datesParam && values.length === 2;
-    const startDate = hasValues ? values[0] : null;
-    const isNightlyBooking = config.bookingUnitType === 'line-item/night';
-    const endDate =
-      hasValues && isNightlyBooking ? values[1] : hasValues ? getExclusiveEndDate(values[1]) : null;
+  const availabilityParams = (datesParam, minDurationParam) => {
+    const dateValues = datesParam ? datesParam.split(',') : [];
+    const hasDateValues = datesParam && dateValues.length === 2;
+    const startDate = hasDateValues ? dateValues[0] : null;
+    const endDate = hasDateValues ? dateValues[1] : null;
 
-    return hasValues
+    const minDurationMaybe =
+      minDurationParam && Number.isInteger(minDurationParam) && hasDateValues
+        ? { minDuration: minDurationParam }
+        : {};
+
+    // Find configs for 'dates-length' filter
+    // (type: BookingDateRangeLengthFilter)
+    const filterConfigs = config.custom.filters;
+    const idOfBookingDateRangeLengthFilter = 'dates-length';
+    const dateLengthFilterConfig = filterConfigs.find(
+      f => f.id === idOfBookingDateRangeLengthFilter
+    );
+    // Extract time zone
+    const timeZone = dateLengthFilterConfig.config.searchTimeZone;
+
+    return hasDateValues
       ? {
-          start: formatDateStringToUTC(startDate),
-          end: formatDateStringToUTC(endDate),
-          // Availability can be full or partial. Default value is full.
-          availability: 'full',
+          start: formatDateStringToTz(startDate, timeZone),
+          end: getExclusiveEndDateWithTz(endDate, timeZone),
+
+          // When we have `time-partial` value in the availability, the
+          // API returns listings that don't necessarily have the full
+          // start->end range available, but enough that the minDuration
+          // (in minutes) can be fulfilled.
+          //
+          // See: https://www.sharetribe.com/api-reference/marketplace.html#availability-filtering
+          availability: 'time-partial',
+
+          ...minDurationMaybe,
         }
       : {};
   };
 
-  const { perPage, price, dates, ...rest } = searchParams;
+  const { perPage, price, dates, minDuration, ...rest } = searchParams;
   const priceMaybe = priceSearchParams(price);
-  const datesMaybe = datesSearchParams(dates);
+  const availabilityMaybe = availabilityParams(dates, minDuration);
 
   const params = {
     ...rest,
     ...priceMaybe,
-    ...datesMaybe,
+    ...availabilityMaybe,
     per_page: perPage,
   };
 
@@ -220,7 +241,7 @@ export const loadData = (params, search) => {
     page,
     perPage: RESULT_PAGE_SIZE,
     include: ['author', 'images'],
-    'fields.listing': ['title', 'geolocation', 'price'],
+    'fields.listing': ['title', 'geolocation', 'price', 'publicData'],
     'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
     'fields.image': ['variants.landscape-crop', 'variants.landscape-crop2x'],
     'limit.images': 1,

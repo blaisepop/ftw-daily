@@ -124,7 +124,18 @@ exports[`ListingPage matches snapshot 1`] = `
             className="mainContent"
           >
             <SectionHeading
-              category={null}
+              certificateOptions={
+                Array [
+                  Object {
+                    "key": "cat1",
+                    "label": "Cat 1",
+                  },
+                  Object {
+                    "key": "cat2",
+                    "label": "Cat 2",
+                  },
+                ]
+              }
               formattedPrice={55}
               hostLink={
                 <NamedLink
@@ -180,11 +191,6 @@ exports[`ListingPage matches snapshot 1`] = `
               }
               publicData={Object {}}
             />
-            <SectionRulesMaybe
-              className={null}
-              publicData={Object {}}
-              rootClassName={null}
-            />
             <SectionMapMaybe
               className={null}
               geolocation={
@@ -207,87 +213,12 @@ exports[`ListingPage matches snapshot 1`] = `
               fetchReviewsError={null}
               reviews={Array []}
             />
-            <SectionHostMaybe
-              authorDisplayName="user-1 display name"
-              currentUser={
-                Object {
-                  "attributes": Object {
-                    "banned": false,
-                    "deleted": false,
-                    "email": "user-2@example.com",
-                    "emailVerified": true,
-                    "profile": Object {
-                      "abbreviatedName": "user-2 abbreviated name",
-                      "displayName": "user-2 display name",
-                      "firstName": "user-2 first name",
-                      "lastName": "user-2 last name",
-                    },
-                  },
-                  "id": UUID {
-                    "_sdkType": "UUID",
-                    "uuid": "user-2",
-                  },
-                  "type": "currentUser",
-                }
-              }
-              isEnquiryModalOpen={false}
-              listing={
-                Object {
-                  "attributes": Object {
-                    "deleted": false,
-                    "description": "listing1 description",
-                    "geolocation": LatLng {
-                      "_sdkType": "LatLng",
-                      "lat": 40,
-                      "lng": 60,
-                    },
-                    "price": Money {
-                      "_sdkType": "Money",
-                      "amount": 5500,
-                      "currency": "USD",
-                    },
-                    "publicData": Object {},
-                    "state": "published",
-                    "title": "listing1 title",
-                  },
-                  "author": Object {
-                    "attributes": Object {
-                      "banned": false,
-                      "deleted": false,
-                      "profile": Object {
-                        "abbreviatedName": "TT",
-                        "displayName": "user-1 display name",
-                      },
-                    },
-                    "id": UUID {
-                      "_sdkType": "UUID",
-                      "uuid": "user-1",
-                    },
-                    "type": "user",
-                  },
-                  "id": UUID {
-                    "_sdkType": "UUID",
-                    "uuid": "listing1",
-                  },
-                  "images": Array [],
-                  "type": "listing",
-                }
-              }
-              onCloseEnquiryModal={[Function]}
-              onContactUser={[Function]}
-              onManageDisableScrolling={[Function]}
-              onSubmitEnquiry={[Function]}
-              sendEnquiryError={null}
-              sendEnquiryInProgress={false}
-              title="listing1 title"
-            />
           </div>
           <withRouter(injectIntl(BookingPanel))
             authorDisplayName="user-1 display name"
             className="bookingPanel"
             fetchLineItemsError={null}
             fetchLineItemsInProgress={false}
-            fetchTimeSlotsError={null}
             isOwnListing={false}
             lineItems={null}
             listing={
@@ -332,11 +263,11 @@ exports[`ListingPage matches snapshot 1`] = `
                 "type": "listing",
               }
             }
+            monthlyTimeSlots={null}
+            onFetchTimeSlots={[Function]}
             onFetchTransactionLineItems={[Function]}
             onManageDisableScrolling={[Function]}
             onSubmit={[Function]}
-            subTitle="ListingPage.bookingSubTitle"
-            timeSlots={null}
             title={
               <Memo(MemoizedFormattedMessage)
                 id="ListingPage.bookingTitle"
@@ -357,6 +288,23 @@ exports[`ListingPage matches snapshot 1`] = `
           />
         </div>
       </div>
+      <injectIntl(ModalComponent)
+        contentClassName="enquiryModalContent"
+        id="ListingPage.enquiry"
+        isOpen={false}
+        onClose={[Function]}
+        onManageDisableScrolling={[Function]}
+      >
+        <EnquiryForm
+          authorDisplayName="user-1 display name"
+          className="enquiryForm"
+          inProgress={false}
+          listingTitle="listing1 title"
+          onSubmit={[Function]}
+          sendEnquiryError={null}
+          submitButtonWrapperClassName="enquirySubmitButtonWrapper"
+        />
+      </injectIntl(ModalComponent)>
     </LayoutWrapperMain>
     <LayoutWrapperFooter
       className={null}

@@ -1,13 +1,12 @@
 import React from 'react';
 import { FormattedMessage, FormattedDate } from '../../util/reactIntl';
 import moment from 'moment';
-import { LINE_ITEM_NIGHT, DATE_TYPE_DATE, propTypes } from '../../util/types';
-import { dateFromAPIToLocalNoon } from '../../util/dates';
+import { LINE_ITEM_NIGHT, LINE_ITEM_UNITS, DATE_TYPE_DATE, propTypes } from '../../util/types';
 
 import css from './BookingBreakdown.module.css';
 
 const BookingPeriod = props => {
-  const { startDate, endDate, dateType } = props;
+  const { startDate, endDate, dateType, timeZone } = props;
 
   const timeFormatOptions =
     dateType === DATE_TYPE_DATE
@@ -25,6 +24,8 @@ const BookingPeriod = props => {
     day: 'numeric',
   };
 
+  const timeZoneMaybe = timeZone ? { timeZone } : null;
+
   return (
     <>
       <div className={css.bookingPeriod}>
@@ -33,10 +34,10 @@ const BookingPeriod = props => {
             <FormattedMessage id="BookingBreakdown.bookingStart" />
           </div>
           <div className={css.dayInfo}>
-            <FormattedDate value={startDate} {...timeFormatOptions} />
+            <FormattedDate value={startDate} {...timeFormatOptions} {...timeZoneMaybe} />
           </div>
           <div className={css.itemLabel}>
-            <FormattedDate value={startDate} {...dateFormatOptions} />
+            <FormattedDate value={startDate} {...dateFormatOptions} {...timeZoneMaybe} />
           </div>
         </div>
 
@@ -45,10 +46,10 @@ const BookingPeriod = props => {
             <FormattedMessage id="BookingBreakdown.bookingEnd" />
           </div>
           <div className={css.dayInfo}>
-            <FormattedDate value={endDate} {...timeFormatOptions} />
+            <FormattedDate value={endDate} {...timeFormatOptions} {...timeZoneMaybe} />
           </div>
           <div className={css.itemLabel}>
-            <FormattedDate value={endDate} {...dateFormatOptions} />
+            <FormattedDate value={endDate} {...dateFormatOptions} {...timeZoneMaybe} />
           </div>
         </div>
       </div>
@@ -57,23 +58,30 @@ const BookingPeriod = props => {
 };
 
 const LineItemBookingPeriod = props => {
-  const { booking, unitType, dateType } = props;
+  const { booking, unitType, dateType, timeZone } = props;
 
   // Attributes: displayStart and displayEnd can be used to differentiate shown time range
   // from actual start and end times used for availability reservation. It can help in situations
   // where there are preparation time needed between bookings.
   // Read more: https://www.sharetribe.com/api-reference/marketplace.html#bookings
   const { start, end, displayStart, displayEnd } = booking.attributes;
-  const localStartDate = dateFromAPIToLocalNoon(displayStart || start);
-  const localEndDateRaw = dateFromAPIToLocalNoon(displayEnd || end);
+  const localStartDate = displayStart || start;
+  const localEndDateRaw = displayEnd || end;
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
-  const endDay = isNightly ? localEndDateRaw : moment(localEndDateRaw).subtract(1, 'days');
+  const isUnit = unitType === LINE_ITEM_UNITS;
+  const endDay =
+    isUnit || isNightly ? localEndDateRaw : moment(localEndDateRaw).subtract(1, 'days');
 
   return (
     <>
       <div className={css.lineItem}>
-        <BookingPeriod startDate={localStartDate} endDate={endDay} dateType={dateType} />
+        <BookingPeriod
+          startDate={localStartDate}
+          endDate={endDay}
+          dateType={dateType}
+          timeZone={timeZone}
+        />
       </div>
       <hr className={css.totalDivider} />
     </>
