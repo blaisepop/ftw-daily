@@ -40,9 +40,8 @@ class EditListingPhotosPanel extends Component {
         id="EditListingPhotosPanel.title"
         values={{
           listingTitle: (
-            <ListingLink listing={listing}>
-              <FormattedMessage id="EditListingPhotosPanel.listingTitle" />
-            </ListingLink>
+            <ListingLink listing={listing}/>
+             
           ),
         }}
       />

@@ -45,12 +45,9 @@ export const TABS = [
   
   DESCRIPTION,PARTNERID,
   FEATURES,
-<<<<<<< HEAD
   WIDTH,
   POLICY,
-=======
-  //POLICY,
->>>>>>> upstream/master
+ 
   LOCATION,
   PRICING,
   ...availabilityMaybe,
@@ -113,13 +110,9 @@ const tabCompleted = (tab, listing) => {
     case DESCRIPTION:
       return !!(description && title);
     case FEATURES:
-<<<<<<< HEAD
       return !!(publicData && publicData.amenities);
     case WIDTH:
       return !!(publicData && publicData.dimensions);
-=======
-      return !!(publicData && publicData.yogaStyles);
->>>>>>> upstream/master
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined');
     case LOCATION:

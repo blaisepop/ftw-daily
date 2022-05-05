@@ -78,7 +78,7 @@ export const EditListingPageComponent = props => {
     page,
     params,
     scrollingDisabled,
-    allowOnlyOneListing,
+   
     stripeAccountFetched,
     stripeAccount,
     updateStripeAccountError,
@@ -126,19 +126,7 @@ export const EditListingPageComponent = props => {
         };
 
     return <NamedRedirect {...redirectProps} />;
-  } else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
-    // If we allow only one listing per provider, we need to redirect to correct listing.
-    return (
-      <NamedRedirect
-        name="EditListingPage"
-        params={{
-          id: currentUserListing.id.uuid,
-          slug: createSlug(currentUserListing.attributes.title),
-          type: LISTING_PAGE_PARAM_TYPE_EDIT,
-          tab: 'description',
-        }}
-      />
-    );
+  
   } else if (showForm) {
     const {
       createListingDraftError = null,
@@ -194,10 +182,7 @@ export const EditListingPageComponent = props => {
           desktopClassName={css.desktopTopbar}
           mobileClassName={css.mobileTopbar}
         />
-        <UserNav
-          selectedPageName={listing ? 'EditListingPage' : 'NewListingPage'}
-          listing={listing}
-        />
+      
         <EditListingWizard
           id="EditListingWizard"
           className={css.wizard}
@@ -255,10 +240,7 @@ export const EditListingPageComponent = props => {
           desktopClassName={css.desktopTopbar}
           mobileClassName={css.mobileTopbar}
         />
-        <UserNav
-          selectedPageName={listing ? 'EditListingPage' : 'NewListingPage'}
-          listing={listing}
-        />
+       
         <div className={css.placeholderWhileLoading} />
         <Footer />
       </Page>

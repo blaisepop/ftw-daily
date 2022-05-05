@@ -33,7 +33,11 @@ const TopbarMobileMenu = props => {
 
   const user = ensureCurrentUser(currentUser);
   const isAdmin = isAuthenticated && currentUser != null && currentUser.attributes.profile.publicData.admin != null ? currentUser.attributes.profile.publicData.admin : false
-
+  const createListingMaybe = isAdmin ?
+      <NamedLink className={css.createNewListingLink} name="NewListingPage">
+        <FormattedMessage id="TopbarMobileMenu.newListingLink" />
+      </NamedLink>
+      : null
   if (!isAuthenticated) {
     const signup = (
       <NamedLink name="SignupPage" className={css.signupLink}>
@@ -52,11 +56,8 @@ const TopbarMobileMenu = props => {
         <FormattedMessage id="TopbarMobileMenu.signupOrLogin" values={{ signup, login }} />
       </span>
     );
-    const createListingMaybe = isAdmin ?
-      <NamedLink className={css.createNewListingLink} name="NewListingPage">
-        <FormattedMessage id="TopbarMobileMenu.newListingLink" />
-      </NamedLink>
-      : null
+    
+      
     return (
       <div className={css.root}>
         <div className={css.content}>
@@ -104,11 +105,13 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
-        <OwnListingLink
-          listing={currentUserListing}
-          listingFetched={currentUserListingFetched}
-          className={css.navigationLink}
-        />
+        <NamedLink
+          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+          name="ManageListingsPage"
+        >
+          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+        </NamedLink>
+        
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
           name="ProfileSettingsPage"
@@ -123,7 +126,7 @@ const TopbarMobileMenu = props => {
         </NamedLink>
       </div>
       <div className={css.footer}>
-        {createListingMaybe }
+        
       </div>
     </div>
   );

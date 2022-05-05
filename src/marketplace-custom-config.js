@@ -92,19 +92,13 @@ export const filters = [
     config: {},
   },
   {
-<<<<<<< HEAD
+
     id: 'category',
     label: 'Category',
     type: 'SelectSingleFilter',
     group: 'primary',
     queryParamNames: ['pub_category'],
-=======
-    id: 'yogaStyles',
-    label: 'Yoga styles',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_yogaStyles'],
->>>>>>> upstream/master
+
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
@@ -115,19 +109,12 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-<<<<<<< HEAD
+
         { key: 'burger', label: 'Burger' },
         { key: 'pizza', label: 'Pizza' },
         { key: 'crepe', label: 'Crepe' },
         { key: 'thai', label: 'Thai' },
-=======
-        { key: 'ashtanga', label: 'Ashtanga' },
-        { key: 'hatha', label: 'Hatha' },
-        { key: 'kundalini', label: 'Kundalini' },
-        { key: 'restorative', label: 'Restorative' },
-        { key: 'vinyasa', label: 'Vinyasa' },
-        { key: 'yin', label: 'Yin' },
->>>>>>> upstream/master
+
       ],
     },
   },
@@ -143,7 +130,7 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-<<<<<<< HEAD
+
         {
           key: 'starter',
           label: 'Starter',
@@ -164,11 +151,7 @@ export const filters = [
           key: 'aperitive',
           label: 'Aperitive',
         },
-=======
-        { key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
-        { key: '200h', label: 'Registered yoga teacher 200h' },
-        { key: '500h', label: 'Registered yoga teacher 500h' },
->>>>>>> upstream/master
+
       ],
     },
   },
@@ -187,6 +170,45 @@ export const filters = [
         { key: '4to6', label: '4 to 6' },
         { key: '7to9', label: '7 to 9' },
         { key: '10plus', label: '10 plus' },
+      ],
+    },
+  },
+  {
+    id: 'amenities',
+    label: 'Amenities',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_amenities'],
+    config: {
+      // Optional modes: 'has_all', 'has_any'
+      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+      searchMode: 'has_all',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for this web app's UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        {
+          key: 'starter',
+          label: 'Starter',
+        },
+        {
+          key: 'main',
+          label: 'Main',
+        },
+        {
+          key: 'drinks',
+          label: 'Drinks',
+        },
+        {
+          key: 'dessert',
+          label: 'Dessert',
+        },
+        {
+          key: 'aperitive',
+          label: 'Aperitive',
+        },
       ],
     },
   },

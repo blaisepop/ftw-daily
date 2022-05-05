@@ -68,9 +68,7 @@ class EditListingLocationPanel extends Component {
         id="EditListingLocationPanel.title"
         values={{
           listingTitle: (
-            <ListingLink listing={listing}>
-              <FormattedMessage id="EditListingLocationPanel.listingTitle" />
-            </ListingLink>
+            <ListingLink listing={listing}/>
           ),
         }}
       />

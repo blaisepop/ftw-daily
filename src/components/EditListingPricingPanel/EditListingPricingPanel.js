@@ -44,9 +44,9 @@ const EditListingPricingPanel = props => {
       id="EditListingPricingPanel.title"
       values={{
         listingTitle: (
-          <ListingLink listing={listing}>
-            <FormattedMessage id="EditListingPricingPanel.listingTitle" />
-          </ListingLink>
+          <ListingLink listing={listing}/>
+          
+           
         ),
       }}
     />

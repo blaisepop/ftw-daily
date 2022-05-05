@@ -9,11 +9,7 @@
 
   @media (--viewportMedium) {
     flex-basis: 576px;
-<<<<<<< HEAD
     height: fit-content;
-=======
-    height: unset;
->>>>>>> upstream/master
     padding: var(--modalPaddingMedium);
     background-color: var(--matterColorLight);
     margin-top: 12.5vh;

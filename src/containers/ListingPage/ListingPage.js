@@ -41,6 +41,7 @@ import {
   LayoutWrapperFooter,
   Footer,
   BookingPanel,
+  
 } from '../../components';
 import { EnquiryForm } from '../../forms';
 import { TopbarContainer, NotFoundPage } from '../../containers';
@@ -59,7 +60,7 @@ import SectionFeaturesMaybe from './SectionFeaturesMaybe';
 import SectionReviews from './SectionReviews';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
-
+import SectionRulesMaybe from './SectionRulesMaybe';
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
 const { UUID } = sdkTypes;
@@ -76,7 +77,10 @@ const priceData = (price, intl) => {
   }
   return {};
 };
-
+const categoryLabel = (categories, key) => {
+  const cat = categories.find(c => c.key === key);
+  return cat ? cat.label : key;
+};
 export class ListingPageComponent extends Component {
   constructor(props) {
     super(props);
@@ -386,7 +390,6 @@ export class ListingPageComponent extends Component {
       </NamedLink>
     );
 
-<<<<<<< HEAD
     const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig);
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
     const category =
@@ -396,12 +399,9 @@ export class ListingPageComponent extends Component {
           <span className={css.separator}>•</span>
         </span>
       ) : null;
-    console.log(publicData);
-=======
-    const yogaStylesOptions = findOptionsForSelectFilter('yogaStyles', filterConfig);
+   
     const certificateOptions = findOptionsForSelectFilter('certificate', filterConfig);
 
->>>>>>> upstream/master
     return (
       <Page
         title={schemaTitle}
@@ -451,17 +451,12 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
-<<<<<<< HEAD
                  
                   <SectionDescriptionMaybe description={description} /> 
                 
                   <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
                   <SectionRulesMaybe publicData={publicData} /> 
                    <SectionDimensions  publicData={publicData}/>
-=======
-                  <SectionDescriptionMaybe description={description} />
-                  <SectionFeaturesMaybe options={yogaStylesOptions} publicData={publicData} />
->>>>>>> upstream/master
                   <SectionMapMaybe
                     geolocation={geolocation}
                     publicData={publicData}

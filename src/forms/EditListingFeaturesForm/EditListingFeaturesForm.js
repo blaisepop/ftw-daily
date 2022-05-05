@@ -49,7 +49,8 @@ const EditListingFeaturesFormComponent = props => (
         </p>
       ) : null;
 
-      const options = findOptionsForSelectFilter('yogaStyles', filterConfig);
+      const options = findOptionsForSelectFilter('amenities', filterConfig);
+      console.log(filterConfig);
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
