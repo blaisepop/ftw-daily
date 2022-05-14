@@ -11,7 +11,8 @@ import { loadData as ManageListingsPageLoader } from './ManageListingsPage/Manag
 import { loadData as PaymentMethodsPageLoader } from './PaymentMethodsPage/PaymentMethodsPage.duck';
 import { loadData as ProfilePageLoader } from './ProfilePage/ProfilePage.duck';
 import { loadData as SearchPageLoader } from './SearchPage/SearchPage.duck';
-import { loadData as StripePayoutPageLoader } from './StripePayoutPage/StripePayoutPage.duck';
+import { loadData as  StripePayoutPageLoader} from './StripePayoutPage/StripePayoutPage.duck';
+import { loadData as  CalendarPageLoader} from './CalendarPage/CalendarPage.duck';
 import {
   loadData as TransactionPageLoader,
   setInitialValues as TransactionPageInitialValues,
@@ -36,6 +37,9 @@ const getPageDataLoadingAPI = () => {
     },
     ListingPage: {
       loadData: ListingPageLoader,
+    },
+    CalendarPage: {
+      loadData: CalendarPageLoader,
     },
     ManageListingsPage: {
       loadData: ManageListingsPageLoader,

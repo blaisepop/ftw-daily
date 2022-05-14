@@ -41,19 +41,7 @@
   color: var(--failColor);
 }
 
-.paymentHeading {
-  margin: 0 0 12px 0;
-  color: var(--matterColorAnti);
 
-  padding-top: 4px;
-  padding-bottom: 2px;
-
-  @media (--viewportMedium) {
-    margin: 0 0 16px 0;
-    padding-top: 4px;
-    padding-bottom: 4px;
-  }
-}
 
 .paymentMethodSelector {
   margin-bottom: 36px;
@@ -127,8 +115,10 @@
     margin-bottom: 2px;
   }
 }
-
-.messageHeading {
+.bookingAddress{
+  margin-bottom: 40px;
+}
+.messageHeading, .addressHeading ,.paymentHeading{
   color: var(--matterColorAnti);
   margin: 36px 0 12px 0;
 

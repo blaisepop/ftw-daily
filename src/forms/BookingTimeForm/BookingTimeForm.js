@@ -8,12 +8,13 @@ import { timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
 import axios from 'axios';
-import { Form, IconSpinner, PrimaryButton,MenuFieldCheckboxGroup } from '../../components';
+import { Form, IconSpinner, PrimaryButton, MenuFieldCheckboxGroup } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
 import { formatMoney } from '../../util/currency';
 import css from './BookingTimeForm.module.css';
 import { types as sdkTypes } from '../../util/sdkLoader';
+import moment from "moment";
 const { Money } = sdkTypes;
 const label = <h2>Menus</h2>;
 export class BookingTimeFormComponent extends Component {
@@ -27,18 +28,28 @@ export class BookingTimeFormComponent extends Component {
         id: "menus",
         showMinMessage: false,
 
-      }
+      },
+      bookingList:[],
+      showBookedMessage:false
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.alreadyBooked = this.alreadyBooked.bind(this);
     this.totalCost = 0;
     this.url = "https://mobile-food-ch.herokuapp.com/api/v1/menu_items/?partner_number=" + this.props.partnerNumber;
+    this.urlBookings = "https://mobile-food-ch.herokuapp.com/api/v1/bookings/?partner_number=" + this.props.partnerNumber +"&status=Cancelled";
   }
   componentDidMount() {
-    axios.get(this.url)
+    let config = {
+      headers: {
+        'X-User-Token':"HExzbkejGSjXMXKu-HiT",
+        'X-User-Email':"26.mariusremy@gmail.com"
+      }
+    }
+    axios.get(this.url, config)
       .then((resp) => {
         var groupedList = this.groupByFoodType(resp.data)
-        console.log("grouped", groupedList)
+
         this.setState({
           commonProps: {
             label: label,
@@ -49,17 +60,45 @@ export class BookingTimeFormComponent extends Component {
       })
       .catch(function () {
       });
-    }
+    axios.get(this.urlBookings, config)
+      .then((resp) => {
+        resp.data
+        this.setState({
+         bookingList:resp.data});
+      })
+      .catch(function () {
+      });
+  }
 
   handleFormSubmit(e) {
     if (this.totalCost < 80000) {
-      console.log("totalCost",this.totalCost)
+
       this.setState({ showMinMessage: true })
     }
-    else{
-        this.props.onSubmit(e);
+    else {
+      this.props.onSubmit(e);
     }
-  
+
+  }
+  alreadyBooked(start, end){
+    var res=false; 
+    const momentStart=moment(timestampToDate(start));
+    const momentEnd=moment(timestampToDate(end));
+    
+   
+   
+
+    this.state.bookingList.forEach(element => {
+    const momentBookingSart=moment(element.start_time);
+    const momentBookingEnd=moment(element.end_time);
+      
+      if(momentStart.isBetween(momentBookingSart, momentBookingEnd, "[]" )||momentEnd.isBetween(momentBookingSart, momentBookingEnd, "[]" )||momentBookingEnd.isBetween(momentStart, momentEnd, "[]" )||momentBookingEnd.isBetween(momentStart,momentEnd, "[]" )){
+        console.log("attendu")
+        res= true
+      }
+
+    });
+    return res;
   }
   groupByFoodType(liste) {
 
@@ -76,16 +115,17 @@ export class BookingTimeFormComponent extends Component {
         newList[element.item_type] = [element]
       }
     });
-    //console.log("newList",newList)
+
     return newList
 
   }
+
   // When the values of the form are updated we need to fetch
   // lineItems from FTW backend for the EstimatedTransactionMaybe
   // In case you add more fields to the form, make sure you add
   // the values here to the bookingData object.
   handleOnChange(formValues) {
-    const hasFee =this.props.fee!=null;
+    const hasFee = this.props.fee != null;
     const menus = formValues.values && formValues.values.menus ? formValues.values.menus : {};
     const { bookingStartTime, bookingEndTime } = formValues.values;
     const startDate = bookingStartTime ? timestampToDate(bookingStartTime) : null;
@@ -99,15 +139,25 @@ export class BookingTimeFormComponent extends Component {
     const isSameTime = bookingStartTime === bookingEndTime;
 
     if (bookingStartTime && bookingEndTime && !isSameTime && !this.props.fetchLineItemsInProgress) {
-      this.props.onFetchTransactionLineItems({
-        bookingData: { startDate, endDate, menus ,hasFee},
-        listingId,
-        isOwnListing,
-      });
+      
+
+      if(!this.alreadyBooked(bookingStartTime, bookingEndTime)){
+          this.props.onFetchTransactionLineItems({
+          bookingData: { startDate, endDate, menus, hasFee },
+          listingId,
+          isOwnListing,
+          });
+          this.setState({ showBookedMessage: false })
+      }
+      else{
+        this.setState({ showBookedMessage: true })
+      }
+     
     }
   }
 
   render() {
+    console.log("bookingList",this.state.bookingList);
     const { rootClassName, className, price: unitPrice, ...rest } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
@@ -156,7 +206,7 @@ export class BookingTimeFormComponent extends Component {
             fetchLineItemsError,
             fee,
           } = fieldRenderProps;
-          const feeName=fee?fee.name:null
+          const feeName = fee ? fee.name : null
           const formattedFee = fee
             ? formatMoney(
               intl,
@@ -165,13 +215,19 @@ export class BookingTimeFormComponent extends Component {
             : null;
           const feeLabel = intl.formatMessage(
             { id: 'BookingDatesForm.feeLabel' },
-            { fee: formattedFee, name:feeName}
-            
-            
+            { fee: formattedFee, name: feeName }
+
+
           );
           const totalCostError = this.state.showMinMessage ? (
             <p className={css.sideBarError}>
               <FormattedMessage id={"BookingDatesForm.totalCostError"} />
+            </p>
+          ) : null;
+
+          const alreadyBookedError = this.state.showBookedMessage ? (
+            <p className={css.sideBarError}>
+              <FormattedMessage id={"BookingDatesForm.bookedError"} />
             </p>
           ) : null;
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;
@@ -193,17 +249,16 @@ export class BookingTimeFormComponent extends Component {
           const bookingData =
             startDate && endDate
               ? {
-                  unitType,
-                  startDate,
-                  endDate,
-                  timeZone,
-                }
+                unitType,
+                startDate,
+                endDate,
+                timeZone,
+              }
               : null;
 
           const showEstimatedBreakdown =
             bookingData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
-          //console.log(this.totalCost);
-          //console.log(lineItems);
+
           showEstimatedBreakdown && lineItems ? this.totalCost = lineItems[lineItems.length - 1].unitPrice.amount : null;
 
           const bookingInfoMaybe = showEstimatedBreakdown ? (
@@ -227,15 +282,15 @@ export class BookingTimeFormComponent extends Component {
           const feeMaybe = fee ? (
             <div>
               <p>{feeLabel}</p>
-              
-            <input type="hidden"
-             id="fee"
-             name="fee"
-             label={feeLabel}
-             value="fee"></input>
+
+              <input type="hidden"
+                id="fee"
+                name="fee"
+                label={feeLabel}
+                value="fee"></input>
             </div>
-            
-            
+
+
           ) : null;
           const submitButtonClasses = classNames(
             submitButtonWrapperClassName || css.submitButtonWrapper
@@ -279,7 +334,7 @@ export class BookingTimeFormComponent extends Component {
                   timeZone={timeZone}
                 />
               ) : null}
-
+              {alreadyBookedError}
               {<MenuFieldCheckboxGroup {...this.state.commonProps} />}
 
 
@@ -303,7 +358,7 @@ export class BookingTimeFormComponent extends Component {
               }
 
 
-            
+
               <div className={submitButtonClasses}>
                 <PrimaryButton type="submit">
                   <FormattedMessage id="BookingTimeForm.requestToBook" />

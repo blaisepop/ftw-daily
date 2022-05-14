@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { PrimaryButton, SecondaryButton } from '../../components';
-
+import axios from 'axios';
 import css from './TransactionPanel.module.css';
 
 // Functional component as a helper to build ActionButtons for
@@ -18,8 +18,25 @@ const SaleActionButtonsMaybe = props => {
     declineSaleError,
     onAcceptSale,
     onDeclineSale,
+    booking,
+    transactionId
   } = props;
 
+
+
+
+
+  function handleAccept() {
+    onAcceptSale(transactionId);
+    let config = {
+      headers: {
+        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        'X-User-Email': "26.mariusremy@gmail.com"
+      }
+    };
+    axios.post('https://mobile-food-ch.herokuapp.com/api/v1/bookings', booking, config)
+      .then(response => { return response });
+  }
   const buttonsDisabled = acceptInProgress || declineInProgress;
 
   const acceptErrorMessage = acceptSaleError ? (
@@ -45,14 +62,14 @@ const SaleActionButtonsMaybe = props => {
         <SecondaryButton
           inProgress={declineInProgress}
           disabled={buttonsDisabled}
-          onClick={onDeclineSale}
+          onClick={()=>onDeclineSale(transactionId)}
         >
           <FormattedMessage id="TransactionPanel.declineButton" />
         </SecondaryButton>
         <PrimaryButton
           inProgress={acceptInProgress}
           disabled={buttonsDisabled}
-          onClick={onAcceptSale}
+          onClick={handleAccept}
         >
           <FormattedMessage id="TransactionPanel.acceptButton" />
         </PrimaryButton>

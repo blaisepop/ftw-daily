@@ -73,9 +73,9 @@ const BookingPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
-    partnerNumber,
+    
   } = props;
-
+  const partnerNumber=listing?listing.attributes.publicData.partnerNumber:null
   const price = listing.attributes.price;
   const timeZone =
     listing.attributes.availabilityPlan && listing.attributes.availabilityPlan.timezone;
@@ -89,8 +89,8 @@ const BookingPanel = props => {
   const subTitleText = !!subTitle
     ? subTitle
     : showClosedListingHelpText
-    ? intl.formatMessage({ id: 'BookingPanel.subTitleClosedListing' })
-    : null;
+      ? intl.formatMessage({ id: 'BookingPanel.subTitleClosedListing' })
+      : null;
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
@@ -98,16 +98,16 @@ const BookingPanel = props => {
   const unitTranslationKey = isNightly
     ? 'BookingPanel.perNight'
     : isDaily
-    ? 'BookingPanel.perDay'
-    : 'BookingPanel.perUnit';
-
+      ? 'BookingPanel.perDay'
+      : 'BookingPanel.perUnit';
+  const specialRequestMessage = intl.formatMessage({ id: 'BookingPanel.specialRequest' })
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.bookingTitle);
   const fee =
-  listing.attributes.publicData &&
-  listing.attributes.publicData.fee
-    ? listing.attributes.publicData.fee
-    : null;
+    listing.attributes.publicData &&
+      listing.attributes.publicData.fee
+      ? listing.attributes.publicData.fee
+      : null;
   return (
     <div className={classes}>
       <ModalInMobile
@@ -134,6 +134,7 @@ const BookingPanel = props => {
             <h2 className={titleClasses}>{title}</h2>
             {subTitleText ? <div className={css.bookingHelp}>{subTitleText}</div> : null}
           </div>
+          
         </div>
 
         {showBookingTimeForm ? (
@@ -160,6 +161,11 @@ const BookingPanel = props => {
           />
         ) : null}
       </ModalInMobile>
+      <div>
+            <span>{specialRequestMessage}
+              <a href="https://mobile-food.typeform.com/to/uSX7xIRN?utm_source=nav"> <FormattedMessage id="BookingPanel.specialRequestLink"/></a>
+            </span>
+      </div>
       <div className={css.openBookingForm}>
         <div className={css.priceContainer}>
           <div className={css.priceValue} title={priceTitle}>

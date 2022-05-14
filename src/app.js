@@ -82,6 +82,7 @@ const setupLocale = () => {
   // Set the Moment locale globally
   // See: http://momentjs.com/docs/#/i18n/changing-locale/
   moment.locale(config.locale);
+  console.log(moment().format("LLLL"))
 };
 
 export const ClientApp = props => {

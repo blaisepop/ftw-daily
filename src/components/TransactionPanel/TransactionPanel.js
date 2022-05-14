@@ -97,8 +97,11 @@ export class TransactionPanelComponent extends Component {
     this.onSendMessageFormBlur = this.onSendMessageFormBlur.bind(this);
     this.onMessageSubmit = this.onMessageSubmit.bind(this);
     this.scrollToMessage = this.scrollToMessage.bind(this);
+    this.handleOnAcceptSale = this.handleOnAcceptSale.bind(this);
   }
-
+  handleOnAcceptSale(id) {
+    console.log(id);
+  }
   componentDidMount() {
     this.isMobSaf = isMobileSafari();
   }
@@ -196,7 +199,7 @@ export class TransactionPanelComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
     } = this.props;
-
+    console.log(transaction);
     const currentTransaction = ensureTransaction(transaction);
     const currentListing = ensureListing(currentTransaction.listing);
     const currentProvider = ensureUser(currentTransaction.provider);
@@ -217,8 +220,8 @@ export class TransactionPanelComponent extends Component {
       if (txIsEnquired(tx)) {
         const transitions = Array.isArray(nextTransitions)
           ? nextTransitions.map(transition => {
-              return transition.attributes.name;
-            })
+            return transition.attributes.name;
+          })
           : [];
         const hasCorrectNextTransition =
           transitions.length > 0 && transitions.includes(TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY);
@@ -290,12 +293,11 @@ export class TransactionPanelComponent extends Component {
     const unitType = config.bookingUnitType;
     const isNightly = unitType === LINE_ITEM_NIGHT;
     const isDaily = unitType === LINE_ITEM_DAY;
-
     const unitTranslationKey = isNightly
       ? 'TransactionPanel.perNight'
       : isDaily
-      ? 'TransactionPanel.perDay'
-      : 'TransactionPanel.perUnit';
+        ? 'TransactionPanel.perDay'
+        : 'TransactionPanel.perUnit';
 
     const price = currentListing.attributes.price;
     const bookingSubTitle = price
@@ -305,6 +307,19 @@ export class TransactionPanelComponent extends Component {
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
+    console.log(currentListing)
+    const bookingForAPI =
+      {
+        "address": currentTransaction.attributes.metadata.address,
+        "client_id": 2790,
+        "budget_per_guest": "123",
+        "guest_quantity": "35",
+        "start_time": "022-05-18T00:00:00.000Z",
+        "end_time": "022-05-18T00:00:00.000Z",
+        "partner_number": 1514446,
+        "status": "Cancelled"
+      }
+
     const saleButtons = (
       <SaleActionButtonsMaybe
         showButtons={stateData.showSaleButtons}
@@ -312,8 +327,10 @@ export class TransactionPanelComponent extends Component {
         declineInProgress={declineInProgress}
         acceptSaleError={acceptSaleError}
         declineSaleError={declineSaleError}
-        onAcceptSale={() => onAcceptSale(currentTransaction.id)}
-        onDeclineSale={() => onDeclineSale(currentTransaction.id)}
+        onAcceptSale={onAcceptSale}
+        onDeclineSale={onDeclineSale}
+        transactionId={currentTransaction.id}
+        booking={bookingForAPI}
       />
     );
 

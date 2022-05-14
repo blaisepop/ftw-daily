@@ -1,0 +1,82 @@
+
+@import '../../styles/propertySets.css';
+@import '../../styles/customMediaQueries.css';
+
+.calendar{
+    padding: 25px 0;
+    background-color:  white;
+    display: flex;
+    width: 650px
+}
+.root{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    justify-content: top;
+    align-items: top;
+
+}
+.body{
+    width: 100%;
+}
+.calendar .day, .week{
+    position: relative;
+    width:calc(100%/7);
+    height:44px;
+    display:inline-block;
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    z-index:1;
+    text-align:center;
+    
+    
+}
+
+.calendar .day{
+    cursor: pointer;
+    
+  
+}
+.calendar .day:hover>*{
+ 
+    border: 3px solid var(--marketplaceColor);
+}
+.day *{
+    border: 3px solid transparent;
+}
+
+.selected{
+    background-color: var(--marketplaceColor);
+    
+}
+.today{
+    background-color: var(--matterColorAnti);
+
+}
+.beforeToday{
+    color: var(--matterColorAnti);
+}
+.calendar .header{
+    display: flex;
+    width:100%;
+    flex-direction: row;
+    justify-content: center;
+    background-color: white;
+}
+.booked{
+   
+    text-decoration: underline;
+}
+.calendar .header *{
+    margin: 0 50px;    
+}
+.previous, .next{
+    font-size: larger;
+    cursor: pointer;
+}
+.mounthYear{
+    text-align: center;
+    width :250px;
+}

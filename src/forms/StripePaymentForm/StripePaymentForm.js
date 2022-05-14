@@ -165,8 +165,8 @@ const getPaymentMethod = (selectedPaymentMethod, hasDefaultPaymentMethod) => {
   return selectedPaymentMethod == null && hasDefaultPaymentMethod
     ? 'defaultCard'
     : selectedPaymentMethod == null
-    ? 'onetimeCardPayment'
-    : selectedPaymentMethod;
+      ? 'onetimeCardPayment'
+      : selectedPaymentMethod;
 };
 
 // Should we show onetime payment fields and does StripeElements card need attention
@@ -315,7 +315,7 @@ class StripePaymentForm extends Component {
       hasHandledCardPayment,
       defaultPaymentMethod,
     } = this.props;
-    const { initialMessage } = values;
+    const { initialMessage, bookingAddress } = values;
     const { cardValueValid, paymentMethod } = this.state;
     const hasDefaultPaymentMethod = defaultPaymentMethod?.id;
     const selectedPaymentMethod = getPaymentMethod(paymentMethod, hasDefaultPaymentMethod);
@@ -332,6 +332,7 @@ class StripePaymentForm extends Component {
     }
 
     const params = {
+      bookingAddress:bookingAddress,
       message: initialMessage ? initialMessage.trim() : null,
       card: this.card,
       formId,
@@ -397,10 +398,10 @@ class StripePaymentForm extends Component {
       confirmCardPaymentError && confirmCardPaymentError.code === piAuthenticationFailure
         ? intl.formatMessage({ id: 'StripePaymentForm.confirmCardPaymentError' })
         : confirmCardPaymentError
-        ? confirmCardPaymentError.message
-        : confirmPaymentError
-        ? intl.formatMessage({ id: 'StripePaymentForm.confirmPaymentError' })
-        : intl.formatMessage({ id: 'StripePaymentForm.genericError' });
+          ? confirmCardPaymentError.message
+          : confirmPaymentError
+            ? intl.formatMessage({ id: 'StripePaymentForm.confirmPaymentError' })
+            : intl.formatMessage({ id: 'StripePaymentForm.genericError' });
 
     const billingDetailsNameLabel = intl.formatMessage({
       id: 'StripePaymentForm.billingDetailsNameLabel',
@@ -423,6 +424,14 @@ class StripePaymentForm extends Component {
       { id: 'StripePaymentForm.messageLabel' },
       { messageOptionalText: messageOptionalText }
     );
+    const bookingAddressLabel = intl.formatMessage(
+      { id: 'StripePaymentForm.addressLabel' },
+      
+    );
+    const bookingAddressPlaceholder = intl.formatMessage(
+      { id: 'StripePaymentForm.addressPlaceholder' },
+      
+    );
 
     // Asking billing address is recommended in PaymentIntent flow.
     // In CheckoutPage, we send name and email as billing details, but address only if it exists.
@@ -433,6 +442,20 @@ class StripePaymentForm extends Component {
     const hasStripeKey = config.stripe.publishableKey;
     return hasStripeKey ? (
       <Form className={classes} onSubmit={handleSubmit} enforcePagePreloadFor="OrderDetailsPage">
+        <div>
+          <h3 className={css.addressHeading}>
+            <FormattedMessage id="StripePaymentForm.addressHeading" />
+          </h3>
+
+          <FieldTextInput
+            type="text"
+            id={`${formId}-address`}
+            name="BookingAddress"
+            label={bookingAddressLabel}
+            placeholder={bookingAddressPlaceholder}
+            className={css.bookingAddress}
+          />
+        </div>
         {billingDetailsNeeded && !loadingData ? (
           <React.Fragment>
             {hasDefaultPaymentMethod ? (
@@ -554,6 +577,7 @@ StripePaymentForm.defaultProps = {
 };
 
 StripePaymentForm.propTypes = {
+  
   className: string,
   rootClassName: string,
   inProgress: bool,

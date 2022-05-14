@@ -19,7 +19,7 @@ const MenuFieldCheckboxComponent = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const  listClasses= css.list;
-  console.log(options)
+  
 
   return (
     <div className={classes}>

@@ -154,12 +154,11 @@ class DateInputComponent extends Component {
     /* eslint-enable no-unused-vars */
 
     const initialMoment = initialDate ? moment(initialDate) : null;
-
+   
     const date =
       value && value.date instanceof Date && value.date.toString() !== 'Invalid Date'
         ? moment(value.date)
         : initialMoment;
-
     const placeholder = placeholderText || intl.formatMessage({ id: 'FieldDateInput.placeholder' });
 
     const screenReaderInputText =

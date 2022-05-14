@@ -78,7 +78,7 @@
 }
 
 /* Create listing (CTA for providers) */
-.createListingLink {
+.createListingLink, .specialRequestLink{
   @apply --TopbarDesktop_linkHover;
   @apply --marketplaceH5FontStyles;
 
@@ -99,7 +99,7 @@
   }
 }
 
-.createListing {
+.createListing, .specialRequest {
   @apply --TopbarDesktop_label;
 }
 

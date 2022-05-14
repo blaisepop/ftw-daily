@@ -41,7 +41,8 @@ import {
   LayoutWrapperFooter,
   Footer,
   BookingPanel,
-  
+
+
 } from '../../components';
 import { EnquiryForm } from '../../forms';
 import { TopbarContainer, NotFoundPage } from '../../containers';
@@ -210,6 +211,8 @@ export class ListingPageComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
     } = this.props;
+    
+    const isAdmin = isAuthenticated && currentUser != null && currentUser.attributes.profile.publicData.admin != null ? currentUser.attributes.profile.publicData.admin : false
 
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
@@ -254,7 +257,8 @@ export class ListingPageComponent extends Component {
       title = '',
       publicData,
     } = currentListing.attributes;
-    
+    const partnerNumber=publicData && publicData.partnerNumber ? publicData.partnerNumber : null 
+
     const richTitle = (
       <span>
         {richText(title, {
@@ -336,7 +340,7 @@ export class ListingPageComponent extends Component {
 
     const currentAuthor = authorAvailable ? currentListing.author : null;
     const ensuredAuthor = ensureUser(currentAuthor);
-    
+
     // When user is banned or deleted the listing is also deleted.
     // Because listing can be never showed with banned or deleted user we don't have to provide
     // banned or deleted display names for the function
@@ -345,7 +349,7 @@ export class ListingPageComponent extends Component {
     const { formattedPrice, priceTitle } = priceData(price, intl);
 
     const handleBookingSubmit = values => {
-      
+
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED;
       if (isOwnListing || isCurrentlyClosed) {
         window.scrollTo(0, 0);
@@ -373,12 +377,12 @@ export class ListingPageComponent extends Component {
     const twitterImages = listingImages(currentListing, 'twitter');
     const schemaImages = JSON.stringify(facebookImages.map(img => img.url));
     const siteTitle = config.siteTitle;
-    
+
     const schemaTitle = intl.formatMessage(
       { id: 'ListingPage.schemaTitle' },
       { title, price: formattedPrice, siteTitle }
     );
-
+   
     const hostLink = (
       <NamedLink
         className={css.authorNameLink}
@@ -399,9 +403,18 @@ export class ListingPageComponent extends Component {
           <span className={css.separator}>•</span>
         </span>
       ) : null;
+    const paramsCalendar={partnerNumber}
    
     const certificateOptions = findOptionsForSelectFilter('certificate', filterConfig);
-
+    const calendarLinkMaybe = isAdmin ?
+      <NamedLink
+        className={css.calendarLink}
+        name="CalendarPage"
+        params={paramsCalendar}
+        >
+        Voir le calendrier
+      </NamedLink>
+      : null
     return (
       <Page
         title={schemaTitle}
@@ -451,12 +464,14 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
-                 
-                  <SectionDescriptionMaybe description={description} /> 
-                
+                  {calendarLinkMaybe}
+
+
+                  <SectionDescriptionMaybe description={description} />
+
                   <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
-                  <SectionRulesMaybe publicData={publicData} /> 
-                   <SectionDimensions  publicData={publicData}/>
+                  <SectionRulesMaybe publicData={publicData} />
+                  <SectionDimensions publicData={publicData} />
                   <SectionMapMaybe
                     geolocation={geolocation}
                     publicData={publicData}
@@ -479,7 +494,7 @@ export class ListingPageComponent extends Component {
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
                   fetchLineItemsError={fetchLineItemsError}
-                  partnerNumber={publicData && publicData.partnerNumber?publicData.partnerNumber:null}
+                 
                 />
               </div>
             </div>

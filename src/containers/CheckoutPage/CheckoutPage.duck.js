@@ -243,10 +243,12 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
 export const confirmPayment = orderParams => (dispatch, getState, sdk) => {
   dispatch(confirmPaymentRequest());
 
+ 
   const bodyParams = {
     id: orderParams.transactionId,
     transition: TRANSITION_CONFIRM_PAYMENT,
-    params: {},
+    params: {metadata:{ "adress":"7 rue exemple"}},
+   
   };
 
   return sdk.transactions

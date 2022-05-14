@@ -36,14 +36,20 @@
    :to :state/payment-expired}
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
-   :actions [{:name :action/stripe-confirm-payment-intent}],
-   :from :state/pending-payment,
-   :to :state/preauthorized}
+   :actions 
+   [{:name :action/stripe-confirm-payment-intent}
+    {:name :action/privileged-update-metadata}],
+    :from :state/pending-payment,
+    :to :state/preauthorized
+    :privileged? true}
+   }
   {:name :transition/accept,
    :actor :actor.role/provider,
    :actions
    [{:name :action/accept-booking}
-    {:name :action/stripe-capture-payment-intent}],
+    {:name :action/stripe-capture-payment-intent}
+
+    ],
    :from :state/preauthorized,
    :to :state/accepted}
   {:name :transition/decline,

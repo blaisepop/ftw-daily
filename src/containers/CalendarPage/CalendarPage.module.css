@@ -1,0 +1,51 @@
+@import '../../styles/customMediaQueries.css';
+@import '../../styles/propertySets.css';
+
+.pageTitle {
+  text-align: center;
+}
+
+
+
+.staticPageWrapper {
+    width: calc(100% - 48px);
+    max-width: 1056px;
+    margin: 24px auto;
+  
+    @media (--viewportMedium) {
+      width: calc(100% - 72px);
+      margin: 72px auto;
+    }
+  }
+.bookingTitle{
+   /* Font */
+   @apply --marketplaceH3FontStyles;
+   color: var(--matterColorAnti);
+ 
+   margin-top: 0;
+   margin-bottom: 13px;
+   @media (--viewportMedium) {
+     margin-top: 0;
+     margin-bottom: 12px;
+   }
+ }
+.booking{
+  margin: 35px 0;
+}
+.informations{
+  width: 350px;
+}
+.infoContainer{
+  display: flex;
+}
+.bookingInfos{
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  
+}
+.calendarContainer{
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+}

@@ -19,6 +19,7 @@ import {
 import { TopbarSearchForm } from '../../forms';
 
 import css from './TopbarDesktop.module.css';
+import { Link } from 'react-router-dom';
 
 const TopbarDesktop = props => {
   const {
@@ -64,6 +65,12 @@ const TopbarDesktop = props => {
           </span>
         </NamedLink>
       :null
+  const specialRequest=(
+  <a className={css.specialRequestLink} href="https://mobile-food.typeform.com/to/uSX7xIRN?utm_source=nav">
+    <span className={css.specialRequest}>
+            <FormattedMessage id="TopBarDesktop.specialRequest" />
+    </span>
+  </a>)
   const notificationDot = notificationCount > 0 ? <div className={css.notificationDot} /> : null;
 
   const inboxLink = authenticatedOnClientSide ? (
@@ -176,6 +183,7 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
+      {specialRequest}
       {createListingMaybe}
 
       {inboxLink}
