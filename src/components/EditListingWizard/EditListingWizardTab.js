@@ -216,7 +216,7 @@ const EditListingWizardTab = props => {
           {...panelProps(POLICY)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
-            console.log(values);
+           
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
@@ -301,7 +301,7 @@ const EditListingWizardTab = props => {
           {...panelProps(WIDTH)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
-            console.log(values);
+          
             onCompleteEditListingWizardTab(tab, values);
           }}
         />
@@ -316,7 +316,7 @@ const EditListingWizardTab = props => {
           {...panelProps(PARTNERID)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={values => {
-            console.log(values);
+      
             onCompleteEditListingWizardTab(tab, values);
           }}
         />

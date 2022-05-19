@@ -12,7 +12,6 @@ class MenuFieldTextInputComponent extends Component {
   componentDidUpdate(prevProps) {
     // Utilisation classique (pensez bien à comparer les props) :
     //if (this.props.defaultValue !== prevProps.defaultValue) {
-     console.log("coulcoul");
     //}
   }
   render() {
@@ -38,7 +37,7 @@ class MenuFieldTextInputComponent extends Component {
     if (label && !id) {
       throw new Error('id required when a label is given');
     }
-    console.log(input);
+   
     const { valid, invalid, touched, error } = meta;
     const isTextarea = input.type === 'textarea';
 
@@ -146,10 +145,7 @@ MenuFieldTextInputComponent.propTypes = {
 
 class MenuFieldTextInput extends Component {
   componentDidUpdate(prevProps) {
-    // Utilisation classique (pensez bien à comparer les props) :
-    //if (this.props.defaultValue !== prevProps.defaultValue) {
-     console.log("coulcoul2");
-    //}
+  
   }
   componentWillUnmount() {
     

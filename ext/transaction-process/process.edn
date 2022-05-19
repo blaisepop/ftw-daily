@@ -34,6 +34,7 @@
     {:name :action/stripe-refund-payment}],
    :from :state/pending-payment,
    :to :state/payment-expired}
+
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
    :actions 
@@ -42,7 +43,7 @@
     :from :state/pending-payment,
     :to :state/preauthorized
     :privileged? true}
-   }
+ 
   {:name :transition/accept,
    :actor :actor.role/provider,
    :actions

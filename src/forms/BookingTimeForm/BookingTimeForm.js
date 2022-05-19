@@ -8,7 +8,7 @@ import { timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
 import axios from 'axios';
-import { Form, IconSpinner, PrimaryButton, MenuFieldCheckboxGroup } from '../../components';
+import { Form, IconSpinner, PrimaryButton, MenuFieldCheckboxGroup, FieldTextInput } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
 import { formatMoney } from '../../util/currency';
@@ -29,21 +29,22 @@ export class BookingTimeFormComponent extends Component {
         showMinMessage: false,
 
       },
-      bookingList:[],
-      showBookedMessage:false
+      bookingList: [],
+      showBookedMessage: false,
+      showCapacityMessage: false,
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.alreadyBooked = this.alreadyBooked.bind(this);
     this.totalCost = 0;
     this.url = "https://mobile-food-ch.herokuapp.com/api/v1/menu_items/?partner_number=" + this.props.partnerNumber;
-    this.urlBookings = "https://mobile-food-ch.herokuapp.com/api/v1/bookings/?partner_number=" + this.props.partnerNumber +"&status=Cancelled";
+    this.urlBookings = "https://mobile-food-ch.herokuapp.com/api/v1/bookings/?partner_number=" + this.props.partnerNumber + "&status=Cancelled";
   }
   componentDidMount() {
     let config = {
       headers: {
-        'X-User-Token':"HExzbkejGSjXMXKu-HiT",
-        'X-User-Email':"26.mariusremy@gmail.com"
+        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        'X-User-Email': "26.mariusremy@gmail.com"
       }
     }
     axios.get(this.url, config)
@@ -64,7 +65,8 @@ export class BookingTimeFormComponent extends Component {
       .then((resp) => {
         resp.data
         this.setState({
-         bookingList:resp.data});
+          bookingList: resp.data
+        });
       })
       .catch(function () {
       });
@@ -75,26 +77,22 @@ export class BookingTimeFormComponent extends Component {
 
       this.setState({ showMinMessage: true })
     }
-    else {
+    else if (!this.state.showCapacityMessage && !this.state.showBookedMessage) {
       this.props.onSubmit(e);
     }
 
   }
-  alreadyBooked(start, end){
-    var res=false; 
-    const momentStart=moment(timestampToDate(start));
-    const momentEnd=moment(timestampToDate(end));
-    
-   
-   
-
+  alreadyBooked(start, end) {
+    var res = false;
+    const momentStart = moment(timestampToDate(start));
+    const momentEnd = moment(timestampToDate(end));
     this.state.bookingList.forEach(element => {
-    const momentBookingSart=moment(element.start_time);
-    const momentBookingEnd=moment(element.end_time);
-      
-      if(momentStart.isBetween(momentBookingSart, momentBookingEnd, "[]" )||momentEnd.isBetween(momentBookingSart, momentBookingEnd, "[]" )||momentBookingEnd.isBetween(momentStart, momentEnd, "[]" )||momentBookingEnd.isBetween(momentStart,momentEnd, "[]" )){
-        console.log("attendu")
-        res= true
+      const momentBookingSart = moment(element.start_time);
+      const momentBookingEnd = moment(element.end_time);
+
+      if (momentStart.isBetween(momentBookingSart, momentBookingEnd, "[]") || momentEnd.isBetween(momentBookingSart, momentBookingEnd, "[]") || momentBookingEnd.isBetween(momentStart, momentEnd, "[]") || momentBookingEnd.isBetween(momentStart, momentEnd, "[]")) {
+
+        res = true
       }
 
     });
@@ -125,12 +123,12 @@ export class BookingTimeFormComponent extends Component {
   // In case you add more fields to the form, make sure you add
   // the values here to the bookingData object.
   handleOnChange(formValues) {
+    const nbGuest = formValues.values && formValues.values.nbGuest ? formValues.values.nbGuest : null;
     const hasFee = this.props.fee != null;
     const menus = formValues.values && formValues.values.menus ? formValues.values.menus : {};
     const { bookingStartTime, bookingEndTime } = formValues.values;
     const startDate = bookingStartTime ? timestampToDate(bookingStartTime) : null;
     const endDate = bookingEndTime ? timestampToDate(bookingEndTime) : null;
-
     const listingId = this.props.listingId;
     const isOwnListing = this.props.isOwnListing;
 
@@ -139,25 +137,36 @@ export class BookingTimeFormComponent extends Component {
     const isSameTime = bookingStartTime === bookingEndTime;
 
     if (bookingStartTime && bookingEndTime && !isSameTime && !this.props.fetchLineItemsInProgress) {
-      
 
-      if(!this.alreadyBooked(bookingStartTime, bookingEndTime)){
-          this.props.onFetchTransactionLineItems({
-          bookingData: { startDate, endDate, menus, hasFee },
+
+      if (!this.alreadyBooked(bookingStartTime, bookingEndTime)) {
+        this.props.onFetchTransactionLineItems({
+          bookingData: { startDate, endDate, menus, hasFee, nbGuest },
           listingId,
           isOwnListing,
-          });
-          this.setState({ showBookedMessage: false })
+        });
+        this.setState({ showBookedMessage: false })
       }
-      else{
+      else {
         this.setState({ showBookedMessage: true })
       }
-     
+      
+
+    }
+
+    if (nbGuest) {
+      if (Number(nbGuest) < Number(this.props.capacity)) {
+
+        this.setState({ showCapacityMessage: true })
+      }
+      else {
+
+        this.setState({ showCapacityMessage: false })
+      }
     }
   }
 
   render() {
-    console.log("bookingList",this.state.bookingList);
     const { rootClassName, className, price: unitPrice, ...rest } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
@@ -205,6 +214,8 @@ export class BookingTimeFormComponent extends Component {
             fetchLineItemsInProgress,
             fetchLineItemsError,
             fee,
+            capacity,
+
           } = fieldRenderProps;
           const feeName = fee ? fee.name : null
           const formattedFee = fee
@@ -230,12 +241,21 @@ export class BookingTimeFormComponent extends Component {
               <FormattedMessage id={"BookingDatesForm.bookedError"} />
             </p>
           ) : null;
+          const capacityError = this.state.showCapacityMessage ? (
+            <p className={css.sideBarError}>
+              <FormattedMessage id={"BookingDatesForm.capacityError"} />
+            </p>
+          ) : null;
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;
           const endTime = values && values.bookingEndTime ? values.bookingEndTime : null;
 
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingTimeForm.bookingStartTitle',
           });
+          const capacityLabel = intl.formatMessage(
+            { id: 'BookingTimeForm.capacityTitle' },
+            { capacity: capacity },
+          );
           const bookingEndLabel = intl.formatMessage({
             id: 'BookingTimeForm.bookingEndTitle',
           });
@@ -292,6 +312,7 @@ export class BookingTimeFormComponent extends Component {
 
 
           ) : null;
+
           const submitButtonClasses = classNames(
             submitButtonWrapperClassName || css.submitButtonWrapper
           );
@@ -335,6 +356,17 @@ export class BookingTimeFormComponent extends Component {
                 />
               ) : null}
               {alreadyBookedError}
+
+              <FieldTextInput
+                label={capacityLabel}
+                min={capacity}
+                name="nbGuest"
+                id="nbGuest"
+                className={css.capacity}
+                type="number"
+                defaultValue={capacity}
+              />
+              {capacityError}
               {<MenuFieldCheckboxGroup {...this.state.commonProps} />}
 
 

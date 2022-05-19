@@ -11,7 +11,7 @@ import config from '../../config';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
 import { ensurePaymentMethodCard } from '../../util/data';
-
+import * as validators from '../../util/validators';
 import {
   Form,
   PrimaryButton,
@@ -432,6 +432,10 @@ class StripePaymentForm extends Component {
       { id: 'StripePaymentForm.addressPlaceholder' },
       
     );
+    const bookingAdressRequiredMessage = intl.formatMessage({
+      id: 'StripePaymentForm.addressRequidredMessage',
+    });
+    const bookingAdressRequired = validators.required(bookingAdressRequiredMessage);
 
     // Asking billing address is recommended in PaymentIntent flow.
     // In CheckoutPage, we send name and email as billing details, but address only if it exists.
@@ -454,6 +458,8 @@ class StripePaymentForm extends Component {
             label={bookingAddressLabel}
             placeholder={bookingAddressPlaceholder}
             className={css.bookingAddress}
+            validate={bookingAdressRequired}
+            
           />
         </div>
         {billingDetailsNeeded && !loadingData ? (

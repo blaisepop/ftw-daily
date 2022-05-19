@@ -60,7 +60,7 @@ const EditListingPricingPanel = props => {
       className={css.form}
       initialValues={initialValues}
       onSubmit={values => {
-        console.log(values)
+       
         const { price, fee = null , feeName=null} = values;
 
         const updatedValues = {

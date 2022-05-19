@@ -78,6 +78,22 @@ export const filters = [
       step: 5,
     },
   },
+ /* {
+    id: 'capacity',
+    label: 'Capacity',
+    type: 'PriceFilter',
+    group: 'primary',
+    // Note: PriceFilter is fixed filter,
+    // you can't change "queryParamNames: ['price'],"
+    queryParamNames: ['capacity'],
+    // Price filter configuration
+    // Note: unlike most prices this is not handled in subunits
+    config: {
+      min: 0,
+      max: 2000,
+      step: 5,
+    },
+  },*/
   {
     id: 'keyword',
     label: 'Keyword',
@@ -156,23 +172,7 @@ export const filters = [
     },
   },
 
-  {
-    id: 'width',
-    label: 'Width',
-    type: 'SelectSingleFilter',
-    group: 'secondary',
-    queryParamNames: ['truck_width'],
-    config: {
-      // Schema type is enum for SelectSingleFilter
-      schemaType: 'enum',
-    options: [
-        { key: '1to3', label: '1 to 3' },
-        { key: '4to6', label: '4 to 6' },
-        { key: '7to9', label: '7 to 9' },
-        { key: '10plus', label: '10 plus' },
-      ],
-    },
-  },
+ 
   {
     id: 'amenities',
     label: 'Amenities',

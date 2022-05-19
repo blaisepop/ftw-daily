@@ -7,7 +7,6 @@ import css from './SectionRulesMaybe.module.css';
 
 const SectionRulesMaybe = props => {
   const { className, rootClassName, publicData } = props;
-  console.log(publicData);
   const classes = classNames(rootClassName || css.root, className);
   return publicData && publicData.rules ? (
     <div className={classes}>

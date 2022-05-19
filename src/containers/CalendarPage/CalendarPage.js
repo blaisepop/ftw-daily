@@ -22,7 +22,6 @@ function CalendarPage(props) {
     const [bookingList, setBookingList]=useState([])
     const [dateSelected, setDateSelected] = useState(new moment());
     
-    console.log(props);
     const url = "https://mobile-food-ch.herokuapp.com/api/v1/bookings?partner_number="+props.params.partnerNumber+"&status=Completed"
      useEffect(() => {       
        let config = {
@@ -54,7 +53,7 @@ function CalendarPage(props) {
                     end: end
                 })
         });
-        console.log(newList);
+       
         return newList;
     }
 

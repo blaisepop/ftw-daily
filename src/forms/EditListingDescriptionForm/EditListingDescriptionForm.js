@@ -57,6 +57,20 @@ const EditListingDescriptionFormComponent = props => (
         id: 'EditListingDescriptionForm.descriptionRequired',
       });
 
+      const capacityMessage = intl.formatMessage({
+        id: 'EditListingDescriptionForm.capacity',
+      });
+      const capacityPlaceholderMessage = intl.formatMessage({
+        id: 'EditListingDescriptionForm.capacityPlaceholder',
+      });
+
+      const capacityRequiredMessage = intl.formatMessage({
+        id: 'EditListingDescriptionForm.capacityRequired',
+      });
+
+      
+
+
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
         <p className={css.error}>
@@ -110,12 +124,21 @@ const EditListingDescriptionFormComponent = props => (
           />
 
           <CustomCategorySelectFieldMaybe
-             id="category"
-             name="category"
-             categories={categories}
-             intl={intl}
+            id="category"
+            name="category"
+            categories={categories}
+            intl={intl}
           />
-
+          <FieldTextInput
+            id="capacity"
+            name="capacity"
+            className={css.description}
+            type="number"
+            label={capacityMessage}
+            placeholder={capacityPlaceholderMessage}
+            validate={composeValidators(required(capacityRequiredMessage))}
+           
+          />
           <Button
             className={css.submitButton}
             type="submit"

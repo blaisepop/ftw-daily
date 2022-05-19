@@ -97,11 +97,8 @@ export class TransactionPanelComponent extends Component {
     this.onSendMessageFormBlur = this.onSendMessageFormBlur.bind(this);
     this.onMessageSubmit = this.onMessageSubmit.bind(this);
     this.scrollToMessage = this.scrollToMessage.bind(this);
-    this.handleOnAcceptSale = this.handleOnAcceptSale.bind(this);
   }
-  handleOnAcceptSale(id) {
-    console.log(id);
-  }
+ 
   componentDidMount() {
     this.isMobSaf = isMobileSafari();
   }
@@ -199,7 +196,7 @@ export class TransactionPanelComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
     } = this.props;
-    console.log(transaction);
+    
     const currentTransaction = ensureTransaction(transaction);
     const currentListing = ensureListing(currentTransaction.listing);
     const currentProvider = ensureUser(currentTransaction.provider);
@@ -307,8 +304,8 @@ export class TransactionPanelComponent extends Component {
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
-    console.log(currentListing)
-    const bookingForAPI =
+    
+    /*const bookingForAPI =
       {
         "address": currentTransaction.attributes.metadata.address,
         "client_id": 2790,
@@ -318,7 +315,7 @@ export class TransactionPanelComponent extends Component {
         "end_time": "022-05-18T00:00:00.000Z",
         "partner_number": 1514446,
         "status": "Cancelled"
-      }
+      }*/
 
     const saleButtons = (
       <SaleActionButtonsMaybe
@@ -330,7 +327,7 @@ export class TransactionPanelComponent extends Component {
         onAcceptSale={onAcceptSale}
         onDeclineSale={onDeclineSale}
         transactionId={currentTransaction.id}
-        booking={bookingForAPI}
+        booking={"bookingForAPI"}
       />
     );
 

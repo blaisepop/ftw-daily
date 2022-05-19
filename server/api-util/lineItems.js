@@ -61,7 +61,7 @@ const resolveFeeName=listing=>{
 exports.transactionLineItems = (listing, bookingData) => {
   
   const unitPrice = listing.attributes.price;
-  const { startDate, endDate, menus, hasFee, } = bookingData;
+  const { startDate, endDate, menus, hasFee, nbGuest } = bookingData;
 
   /**
    * If you want to use pre-defined component and translations for printing the lineItems base price for booking,
@@ -106,14 +106,22 @@ exports.transactionLineItems = (listing, bookingData) => {
    : [];
   
 
+  const guests=
+    {
+      code:'line-item/Personnes',
+      unitPrice: new Money(0,"CHF"),
+      quantity:nbGuest,
+      includeFor: ['customer', 'provider'],
+
+    }
   
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([booking, ...menus1, ...fee]),
+    unitPrice: calculateTotalFromLineItems([booking, ...menus1, ...fee, guests]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
-  const lineItems = [booking, ...menus1,...fee, providerCommission];
+  const lineItems = [booking, ...menus1,...fee,guests, providerCommission];
   
 
   return lineItems;

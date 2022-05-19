@@ -9,6 +9,7 @@ import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
 import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATETIME } from '../../util/types';
+import axios from 'axios';
 import {
   ensureListing,
   ensureCurrentUser,
@@ -73,8 +74,8 @@ const paymentFlow = (selectedPaymentMethod, saveAfterOnetimePayment) => {
   return selectedPaymentMethod === 'defaultCard'
     ? USE_SAVED_CARD
     : saveAfterOnetimePayment
-    ? PAY_AND_SAVE_FOR_LATER_USE
-    : ONETIME_PAYMENT;
+      ? PAY_AND_SAVE_FOR_LATER_USE
+      : ONETIME_PAYMENT;
 };
 
 const initializeOrderPage = (initialValues, routes, dispatch) => {
@@ -89,8 +90,8 @@ const checkIsPaymentExpired = existingTransaction => {
   return txIsPaymentExpired(existingTransaction)
     ? true
     : txIsPaymentPending(existingTransaction)
-    ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
-    : false;
+      ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
+      : false;
 };
 
 export class CheckoutPageComponent extends Component {
@@ -112,9 +113,9 @@ export class CheckoutPageComponent extends Component {
 
   componentDidMount() {
     if (window) {
-      
+
       this.loadInitialData();
-      
+
     }
   }
 
@@ -144,12 +145,12 @@ export class CheckoutPageComponent extends Component {
       fetchStripeCustomer,
       history,
     } = this.props;
-
+    console.log(bookingData)
     // Fetch currentUser with stripeCustomer entity
     // Note: since there's need for data loading in "componentWillMount" function,
     //       this is added here instead of loadData static function.
     fetchStripeCustomer();
-    
+
     // Browser's back navigation should not rewrite data in session store.
     // Action is 'POP' on both history.back() and page refresh cases.
     // Action is 'PUSH' when user has directed through a link
@@ -161,7 +162,7 @@ export class CheckoutPageComponent extends Component {
       // Store data only if data is passed through props and user has navigated through a link.
       storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY);
     }
-    
+
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
       ? { bookingData, bookingDates, listing, transaction }
@@ -185,7 +186,7 @@ export class CheckoutPageComponent extends Component {
       const listingId = pageData.listing.id;
       const transactionId = tx ? tx.id : null;
       const { bookingStart, bookingEnd } = pageData.bookingDates;
-     
+
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
@@ -194,20 +195,21 @@ export class CheckoutPageComponent extends Component {
           listingId,
           bookingStart,
           bookingEnd,
-          menus:pageData.bookingData.menus,
+          menus: pageData.bookingData.menus,
           hasFee: pageData.bookingData.fee?.length > 0,
+          nbGuest: pageData.bookingData.nbGuest,
         },
         transactionId
       );
-      
+
     }
-    
+
     this.setState({ pageData: pageData || {}, dataLoaded: true });
-    
+
   }
 
   handlePaymentIntent(handlePaymentParams) {
-    
+
     const {
       currentUser,
       stripeCustomerFetched,
@@ -289,11 +291,11 @@ export class CheckoutPageComponent extends Component {
       const paymentParams =
         selectedPaymentFlow !== USE_SAVED_CARD
           ? {
-              payment_method: {
-                billing_details: billingDetails,
-                card: card,
-              },
-            }
+            payment_method: {
+              billing_details: billingDetails,
+              card: card,
+            },
+          }
           : { payment_method: stripePaymentMethodId };
 
       const params = {
@@ -373,15 +375,16 @@ export class CheckoutPageComponent extends Component {
       selectedPaymentFlow === USE_SAVED_CARD && hasDefaultPaymentMethod
         ? { paymentMethod: stripePaymentMethodId }
         : selectedPaymentFlow === PAY_AND_SAVE_FOR_LATER_USE
-        ? { setupPaymentMethodForSaving: true }
-        : {};
-      
+          ? { setupPaymentMethodForSaving: true }
+          : {};
+
     const orderParams = {
       listingId: pageData.listing.id,
       bookingStart: tx.booking.attributes.start,
       bookingEnd: tx.booking.attributes.end,
-      menus:pageData.bookingData.menus,
+      menus: pageData.bookingData.menus,
       hasFee: pageData.bookingData?.fee?.length > 0,
+      nbGuest: pageData.bookingData.nbGuest,
       ...optionalPaymentParams,
     };
 
@@ -389,12 +392,36 @@ export class CheckoutPageComponent extends Component {
   }
 
   handleSubmit(values) {
+    const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
+
+    const partnerNumber = this.state.pageData.listing.attributes.publicData.partnerNumber
+    const bookingForCRM =
+    {
+      "booking":
+        {
+          "address": values.formValues.BookingAddress,
+          "budget_per_guest": "12",
+          "guest_quantity": "35",
+          "start_time": "022-04-18T00:00:00.000Z",
+          "end_time": "022-04-18T00:00:00.000Z",
+          "partner_number": partnerNumber,
+          "sharetribe_user_id":currentUser.id.uuid,
+          "status": "Cancelled"
+        }
+
+    }
+    let config = {
+      headers: {
+        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        'X-User-Email': "26.mariusremy@gmail.com"
+      }
+    };
+    
     if (this.state.submitting) {
       return;
     }
     this.setState({ submitting: true });
 
-    const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
     const { card, message, paymentMethod, formValues } = values;
     const {
       name,
@@ -457,7 +484,16 @@ export class CheckoutPageComponent extends Component {
 
         initializeOrderPage(initialValues, routes, dispatch);
         clearData(STORAGE_KEY);
-        history.push(orderDetailsPath);
+        axios.post('https://mobile-food-ch.herokuapp.com/api/v1/bookings', bookingForCRM, config)
+        .then(response => {
+          history.push(orderDetailsPath);
+        }) 
+        .catch(error => { 
+          console.error(error) ;
+          this.setState({ submitting: false });
+        });
+        
+       
       })
       .catch(err => {
         console.error(err);
@@ -494,7 +530,7 @@ export class CheckoutPageComponent extends Component {
   }
 
   render() {
-   
+
     const {
       scrollingDisabled,
       speculateTransactionInProgress,
@@ -509,7 +545,9 @@ export class CheckoutPageComponent extends Component {
       paymentIntent,
       retrievePaymentIntentError,
       stripeCustomerFetched,
+      bookingData,
     } = this.props;
+  
 
     // Since the listing data is already given from the ListingPage
     // and stored to handle refreshes, it might not have the possible
@@ -517,11 +555,11 @@ export class CheckoutPageComponent extends Component {
     // initiate or the speculative initiate fail due to the listing
     // being deleted or closec, we should dig the information from the
     // errors and not the listing data.
-   
+
     const listingNotFound =
       isTransactionInitiateListingNotFoundError(speculateTransactionError) ||
       isTransactionInitiateListingNotFoundError(initiateOrderError);
-      
+
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress;
 
     const { listing, bookingDates, transaction } = this.state.pageData;
@@ -529,10 +567,10 @@ export class CheckoutPageComponent extends Component {
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null);
     const currentListing = ensureListing(listing);
     const currentAuthor = ensureUser(currentListing.author);
-   
+
     const listingTitle = currentListing.attributes.title;
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { listingTitle });
-   
+
     const pageProps = { title, scrollingDisabled };
     const topbar = (
       <div className={css.topbar}>
@@ -730,8 +768,8 @@ export class CheckoutPageComponent extends Component {
     const unitTranslationKey = isNightly
       ? 'CheckoutPage.perNight'
       : isDaily
-      ? 'CheckoutPage.perDay'
-      : 'CheckoutPage.perUnit';
+        ? 'CheckoutPage.perDay'
+        : 'CheckoutPage.perUnit';
 
     const price = currentListing.attributes.price;
     const formattedPrice = formatMoney(intl, price);

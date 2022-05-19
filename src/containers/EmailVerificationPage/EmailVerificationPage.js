@@ -9,6 +9,7 @@ import { verify } from '../../ducks/EmailVerification.duck';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { parse } from '../../util/urlHelpers';
 import { ensureCurrentUser } from '../../util/data';
+import axios from 'axios';
 import {
   Page,
   LayoutSingleColumn,
@@ -69,7 +70,36 @@ export const EmailVerificationPageComponent = props => {
   // If the verify API call is successfull and the user has verified email
   // We can redirect user forward from email verification page.
   if (isVerified && user && user.attributes.emailVerified) {
-    return <NamedRedirect name="LandingPage" />;
+    const userForCRM={
+    
+          "client": {
+            "first_name": user.attributes.profile.firstName,
+            "last_name":  user.attributes.profile.lastName,
+            "email": user.attributes.email,
+            "phone_number": "",
+            "status":  "Sharetribe",
+            "comment": "",
+            "company": "",
+            "sharetribe_user_id": user.id.uuid
+        }
+
+    }
+    let config = {
+      headers: {
+        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        'X-User-Email': "26.mariusremy@gmail.com"
+      }
+    };
+    console.log(userForCRM);
+    axios.post('https://mobile-food-ch.herokuapp.com/api/v1/clients', userForCRM, config)
+        .then(response => {
+         // return <NamedRedirect name="LandingPage" />;
+        })
+        .catch(error => { 
+          console.error(error) ;
+          this.setState({ submitting: false });
+        });
+   // 
   }
 
   return (

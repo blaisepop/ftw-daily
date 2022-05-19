@@ -663,7 +663,6 @@ export const fetchNextTransitions = id => (dispatch, getState, sdk) => {
 
 export const fetchTransactionLineItems = ({ bookingData, listingId, isOwnListing }) => dispatch => {
   dispatch(fetchLineItemsRequest());
-  console.log("ici2");
 
   transactionLineItems({ bookingData, listingId, isOwnListing })
     .then(response => {

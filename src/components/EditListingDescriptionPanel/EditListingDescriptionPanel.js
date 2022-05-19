@@ -41,20 +41,20 @@ const EditListingDescriptionPanel = props => {
   );
 
   const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters);
-  console.log(categoryOptions)
+  
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingDescriptionForm
         className={css.form}
-        initialValues={{ title, description, category: publicData.category }}
+        initialValues={{ title, description, category: publicData.category, capacity: publicData.capacity }}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, category } = values;
+          const { title, description, category,capacity } = values;
           const updateValues = {
             title: title.trim(),
             description,
-            publicData: { category },
+            publicData: { category, capacity },
           };
 
           onSubmit(updateValues);

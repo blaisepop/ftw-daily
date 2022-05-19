@@ -318,6 +318,7 @@ export const speculateTransaction = (orderParams, transactionId) => (dispatch, g
     endDate: orderParams.bookingEnd,
     menus:orderParams.menus,
     hasFee: orderParams.hasFee,
+    nbGuest:orderParams.nbGuest,
   };
 
   const params = {

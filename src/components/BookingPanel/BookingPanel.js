@@ -76,6 +76,7 @@ const BookingPanel = props => {
     
   } = props;
   const partnerNumber=listing?listing.attributes.publicData.partnerNumber:null
+  const capacity=listing?listing.attributes.publicData.capacity:null
   const price = listing.attributes.price;
   const timeZone =
     listing.attributes.availabilityPlan && listing.attributes.availabilityPlan.timezone;
@@ -157,6 +158,7 @@ const BookingPanel = props => {
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
             partnerNumber={partnerNumber}
+            capacity={capacity}
             fee={fee}
           />
         ) : null}
