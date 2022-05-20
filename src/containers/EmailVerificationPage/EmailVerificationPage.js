@@ -9,7 +9,8 @@ import { verify } from '../../ducks/EmailVerification.duck';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import { parse } from '../../util/urlHelpers';
 import { ensureCurrentUser } from '../../util/data';
-import axios from 'axios';
+import { addClient } from '../../util/apiCRM';
+
 import {
   Page,
   LayoutSingleColumn,
@@ -45,7 +46,10 @@ const parseVerificationToken = search => {
 
   return null;
 };
+const postClient= async(client)=>{
+  await addClient(client)
 
+}
 export const EmailVerificationPageComponent = props => {
   const {
     currentUser,
@@ -90,16 +94,10 @@ export const EmailVerificationPageComponent = props => {
         'X-User-Email': "26.mariusremy@gmail.com"
       }
     };
-    console.log(userForCRM);
-    axios.post('https://mobile-food-ch.herokuapp.com/api/v1/clients', userForCRM, config)
-        .then(response => {
-         // return <NamedRedirect name="LandingPage" />;
-        })
-        .catch(error => { 
-          console.error(error) ;
-          this.setState({ submitting: false });
-        });
-   // 
+    
+    //post client
+    postClient(userForCRM)
+    
   }
 
   return (

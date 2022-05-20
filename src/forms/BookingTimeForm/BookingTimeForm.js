@@ -1,3 +1,4 @@
+import { getMenus, getBookings } from '../../util/apiCRM';
 import React, { Component } from 'react';
 import { array, bool, func, object, string } from 'prop-types';
 import { compose } from 'redux';
@@ -7,7 +8,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
-import axios from 'axios';
+
 import { Form, IconSpinner, PrimaryButton, MenuFieldCheckboxGroup, FieldTextInput } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
@@ -36,40 +37,37 @@ export class BookingTimeFormComponent extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.alreadyBooked = this.alreadyBooked.bind(this);
+    this.fetchMenus = this.fetchMenus.bind(this);
     this.totalCost = 0;
     this.url = "https://mobile-food-ch.herokuapp.com/api/v1/menu_items/?partner_number=" + this.props.partnerNumber;
     this.urlBookings = "https://mobile-food-ch.herokuapp.com/api/v1/bookings/?partner_number=" + this.props.partnerNumber + "&status=Cancelled";
+
+  }
+  fetchMenus = async () => {
+    const data = await getMenus(this.props.partnerNumber);
+    var groupedList = this.groupByFoodType(data);
+    this.setState({
+      commonProps: {
+        label: label,
+        options: groupedList,
+        id: "menus",
+      }
+    });
+
+  }
+  fetchBookings = async () => {
+    const data = await getBookings(this.props.partnerNumber);
+    this.setState({
+      bookingList: data
+    });
+
   }
   componentDidMount() {
-    let config = {
-      headers: {
-        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
-        'X-User-Email': "26.mariusremy@gmail.com"
-      }
-    }
-    axios.get(this.url, config)
-      .then((resp) => {
-        var groupedList = this.groupByFoodType(resp.data)
+   
 
-        this.setState({
-          commonProps: {
-            label: label,
-            options: groupedList,
-            id: "menus",
-          }
-        });
-      })
-      .catch(function () {
-      });
-    axios.get(this.urlBookings, config)
-      .then((resp) => {
-        resp.data
-        this.setState({
-          bookingList: resp.data
-        });
-      })
-      .catch(function () {
-      });
+    this.fetchMenus();
+    this.fetchBookings();
+    
   }
 
   handleFormSubmit(e) {
@@ -150,7 +148,7 @@ export class BookingTimeFormComponent extends Component {
       else {
         this.setState({ showBookedMessage: true })
       }
-      
+
 
     }
 
@@ -301,16 +299,17 @@ export class BookingTimeFormComponent extends Component {
           ) : null;
           const feeMaybe = fee ? (
             <div>
-              <p>{feeLabel}</p>
-
-              <input type="hidden"
-                id="fee"
-                name="fee"
-                label={feeLabel}
-                value="fee"></input>
-            </div>
-
-
+              
+            <FieldTextInput
+              id={"fee"}
+              name="fee"
+              label={feeLabel}
+              defaultValue="fee"
+              readonly
+              type="hidden"
+              
+            />
+          </div>
           ) : null;
 
           const submitButtonClasses = classNames(

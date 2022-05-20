@@ -9,7 +9,7 @@ import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes';
 import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATETIME } from '../../util/types';
-import axios from 'axios';
+import {addBooking} from '../../util/apiCRM';
 import {
   ensureListing,
   ensureCurrentUser,
@@ -56,6 +56,7 @@ import {
 } from './CheckoutPage.duck';
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
+
 
 const STORAGE_KEY = 'CheckoutPage';
 
@@ -110,7 +111,10 @@ export class CheckoutPageComponent extends Component {
     this.handlePaymentIntent = this.handlePaymentIntent.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  postBooking = async (booking, orderDetailsPath, history) =>  {
+    await addBooking(booking);
+    history.push(orderDetailsPath);
+  }
   componentDidMount() {
     if (window) {
 
@@ -145,7 +149,7 @@ export class CheckoutPageComponent extends Component {
       fetchStripeCustomer,
       history,
     } = this.props;
-    console.log(bookingData)
+   
     // Fetch currentUser with stripeCustomer entity
     // Note: since there's need for data loading in "componentWillMount" function,
     //       this is added here instead of loadData static function.
@@ -392,6 +396,12 @@ export class CheckoutPageComponent extends Component {
   }
 
   handleSubmit(values) {
+    const pageData=this.state.pageData;
+    const endDate=pageData.bookingData.bookingEndDate.date.toISOString();
+    const startDate=pageData.bookingData.bookingEndDate.date.toISOString();
+    const nbGuest=pageData.bookingData.nbGuest
+    
+    
     const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
 
     const partnerNumber = this.state.pageData.listing.attributes.publicData.partnerNumber
@@ -401,21 +411,16 @@ export class CheckoutPageComponent extends Component {
         {
           "address": values.formValues.BookingAddress,
           "budget_per_guest": "12",
-          "guest_quantity": "35",
-          "start_time": "022-04-18T00:00:00.000Z",
-          "end_time": "022-04-18T00:00:00.000Z",
+          "guest_quantity": nbGuest,
+          "start_time": startDate,
+          "end_time": endDate,
           "partner_number": partnerNumber,
           "sharetribe_user_id":currentUser.id.uuid,
           "status": "Cancelled"
         }
 
     }
-    let config = {
-      headers: {
-        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
-        'X-User-Email': "26.mariusremy@gmail.com"
-      }
-    };
+   
     
     if (this.state.submitting) {
       return;
@@ -484,14 +489,9 @@ export class CheckoutPageComponent extends Component {
 
         initializeOrderPage(initialValues, routes, dispatch);
         clearData(STORAGE_KEY);
-        axios.post('https://mobile-food-ch.herokuapp.com/api/v1/bookings', bookingForCRM, config)
-        .then(response => {
-          history.push(orderDetailsPath);
-        }) 
-        .catch(error => { 
-          console.error(error) ;
-          this.setState({ submitting: false });
-        });
+        //post booking
+        
+        this.postBooking(bookingForCRM, orderDetailsPath, history)
         
        
       })

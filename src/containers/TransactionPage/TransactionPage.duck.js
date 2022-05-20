@@ -22,7 +22,7 @@ import {
 import { findNextBoundary, nextMonthFn, monthIdStringInTimeZone } from '../../util/dates';
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { fetchCurrentUserNotifications } from '../../ducks/user.duck';
-import axios from 'axios';
+
 
 const { UUID } = sdkTypes;
 

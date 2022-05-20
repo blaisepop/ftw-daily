@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import moment from 'moment';
 import Calendar from "./Calendar.js"
+import { getBookings } from '../../util/apiCRM.js';
 import { StaticPage, TopbarContainer } from '../../containers';
 import 'react-calendar/dist/Calendar.css';
 import {
@@ -14,7 +15,6 @@ import {
 } from '../../components';
 import localization from 'moment/locale/fr';
 import css from './CalendarPage.module.css';
-import { element } from 'prop-types';
 function CalendarPage(props) {
 
     moment.locale('fr', localization)
@@ -22,24 +22,15 @@ function CalendarPage(props) {
     const [bookingList, setBookingList]=useState([])
     const [dateSelected, setDateSelected] = useState(new moment());
     
-    const url = "https://mobile-food-ch.herokuapp.com/api/v1/bookings?partner_number="+props.params.partnerNumber+"&status=Completed"
+    //get booking
      useEffect(() => {       
-       let config = {
-            headers: {
-              'X-User-Token':"HExzbkejGSjXMXKu-HiT",
-              'X-User-Email':"26.mariusremy@gmail.com"
-            }
-          }
-        axios.get(url, config)
-          .then((resp) => {
-           setBookingList(resp.data);
-          })
-          .catch(function () {
-          });
-        
+        fetchBookings()
     },  [value]);
   
-       
+    const fetchBookings = async()=>{
+        const data = await getBookings(props.params.partnerNumber);
+        setBookingList(data);
+    }
     function formatBookingList(list) {
         var newList = [];
         list.forEach((booking) => {
