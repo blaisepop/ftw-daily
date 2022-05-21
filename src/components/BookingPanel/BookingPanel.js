@@ -86,7 +86,7 @@ const BookingPanel = props => {
   const showClosedListingHelpText = listing.id && isClosed;
   const { formattedPrice, priceTitle } = priceData(price, intl);
   const isBook = !!parse(location.search).book;
-
+  console.log(unitType);
   const subTitleText = !!subTitle
     ? subTitle
     : showClosedListingHelpText

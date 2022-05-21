@@ -34,7 +34,7 @@ import css from './EditListingWizard.module.css';
 
 // Show availability calendar only if environment variable availabilityEnabled is true
 const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
-
+console.log("availability",config.enableAvailability )
 // You can reorder these panels.
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
