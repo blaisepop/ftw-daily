@@ -63,7 +63,6 @@ export const EditListingPartnerIDFormComponent = props => (
             className={css.partnerID}
             type="textarea"
             label={numberLabelMessage}
-            placeholder={numberPlaceholderMessage}
           />
 
           <Button

@@ -35,8 +35,8 @@ const priceData = (price, intl) => {
   return {};
 };
 
-const getCertificateInfo = (certificateOptions, key) => {
-  return certificateOptions.find(c => c.key === key);
+const getCategoryInfo = (categoryOptions, key) => {
+  return categoryOptions.find(c => c.key === key);
 };
 
 class ListingImage extends Component {
@@ -64,10 +64,11 @@ export const ListingCardComponent = props => {
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
-  const certificateOptions = findOptionsForSelectFilter('certificate', filtersConfig);
-  const certificate = publicData
-    ? getCertificateInfo(certificateOptions, publicData.certificate)
+  const categoryOptions = findOptionsForSelectFilter('category', filtersConfig);
+  const category = publicData
+    ? getCategoryInfo(categoryOptions, publicData.category)
     : null;
+  console.log(publicData);
   const { formattedPrice, priceTitle } = priceData(price, intl);
 
   const unitType = config.bookingUnitType;
@@ -98,14 +99,14 @@ export const ListingCardComponent = props => {
         </div>
       </div>
       <div className={css.info}>
-        <div className={css.price}>
+        {/*<div className={css.price}>
           <div className={css.priceValue} title={priceTitle}>
             {formattedPrice}
           </div>
           <div className={css.perUnit}>
             <FormattedMessage id={unitTranslationKey} />
           </div>
-        </div>
+        </div>*/}
         <div className={css.mainInfo}>
           <div className={css.title}>
             {richText(title, {
@@ -114,8 +115,8 @@ export const ListingCardComponent = props => {
             })}
           </div>
           <div className={css.certificateInfo}>
-            {certificate && !certificate.hideFromListingInfo ? (
-              <span>{certificate.label}</span>
+            {category && !category.hideFromListingInfo ? (
+              <span>{category.label}</span>
             ) : null}
           </div>
         </div>

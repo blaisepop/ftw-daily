@@ -59,6 +59,8 @@ export const filters = [
         { key: '0', label: 'toutes durées' },
         { key: '60', label: '1 heure', shortLabel: '1h' },
         { key: '120', label: '2 heures', shortLabel: '2h' },
+        { key: '180', label: '3 heure', shortLabel: '3h' },
+        { key: '240', label: '4 heures', shortLabel: '4h' },
       ],
     },
   },
@@ -118,12 +120,9 @@ export const filters = [
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      searchMode: 'has_all',
+      schemaType: 'enum',
 
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for this web app's UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
+    
       options: [
 
         { key: 'burger', label: 'Burger' },
@@ -135,45 +134,6 @@ export const filters = [
     },
   },
   {
-    id: 'certificate',
-    label: 'Certificate',
-    type: 'SelectSingleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_certificate'],
-    config: {
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for the UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-
-        {
-          key: 'starter',
-          label: 'Starter',
-        },
-        {
-          key: 'main',
-          label: 'Main',
-        },
-        {
-          key: 'drinks',
-          label: 'Drinks',
-        },
-        {
-          key: 'dessert',
-          label: 'Dessert',
-        },
-        {
-          key: 'aperitive',
-          label: 'Aperitive',
-        },
-
-      ],
-    },
-  },
-
- 
-  {
     id: 'amenities',
     label: 'Amenities',
     type: 'SelectMultipleFilter',
@@ -182,8 +142,8 @@ export const filters = [
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      searchMode: 'has_all',
-
+      
+      schemaType: 'enum',
       // "key" is the option you see in Flex Console.
       // "label" is set here for this web app's UI only.
       // Note: label is not added through the translation files

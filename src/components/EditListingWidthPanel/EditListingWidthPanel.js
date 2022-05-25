@@ -29,8 +29,9 @@ const EditListingWidthPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
+  console.log(currentListing.attributes)
   const { publicData } = currentListing.attributes;
-
+  const { dimensions} = publicData;
   const panelTitle = currentListing.id ? (
     <FormattedMessage
       id="EditListingWidthPanel.title"
@@ -43,13 +44,14 @@ const EditListingWidthPanel = props => {
     'width',
     config.custom.filters
   );
-
+    //console.log(width, height, length)
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingWidthForm
+        initialValues={dimensions}
+
         className={css.form}
-        
         onSubmit={values => {
           const { width, height, length } = values;
           const updateValues = {
@@ -59,6 +61,7 @@ const EditListingWidthPanel = props => {
           };
           onSubmit(updateValues);
         }}
+
         onChange={onChange}
         saveActionMsg={submitButtonText}
         updated={panelUpdated}

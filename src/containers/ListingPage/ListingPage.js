@@ -393,8 +393,9 @@ export class ListingPageComponent extends Component {
         {authorDisplayName}
       </NamedLink>
     );
-
-    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig);
+   
+    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig); 
+   
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
     const category =
       publicData && publicData.category ? (

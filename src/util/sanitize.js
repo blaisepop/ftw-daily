@@ -74,8 +74,8 @@ export const sanitizeListing = entity => {
   const { title, description, publicData, ...restAttributes } = attributes || {};
 
   const sanitizeLocation = location => {
-    const { address, building } = location || {};
-    return { address: sanitizeText(address), building: sanitizeText(building) };
+    const { address } = location || {};
+    return { address: sanitizeText(address) };
   };
 
   const sanitizePublicData = publicData => {

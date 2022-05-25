@@ -7,7 +7,7 @@ import css from './TransactionPanel.module.css';
 // Functional component as a helper to build AddressLinkMaybe
 const AddressLinkMaybe = props => {
   const { className, rootClassName, location, geolocation, showAddress } = props;
-  const { address, building } = location || {};
+  const { address} = location || {};
   const { lat, lng } = geolocation || {};
   const hrefToGoogleMaps = geolocation
     ? `https://maps.google.com/?q=${lat},${lng}`
@@ -16,7 +16,7 @@ const AddressLinkMaybe = props => {
     : null;
 
   const fullAddress =
-    typeof building === 'string' && building.length > 0 ? `${building}, ${address}` : address;
+     address;
 
   const classes = classNames(rootClassName || css.address, className);
   return showAddress && hrefToGoogleMaps ? (

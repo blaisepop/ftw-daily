@@ -38,11 +38,10 @@
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
    :actions 
-   [{:name :action/stripe-confirm-payment-intent}
-    {:name :action/privileged-update-metadata}],
+   [{:name :action/stripe-confirm-payment-intent}],
     :from :state/pending-payment,
     :to :state/preauthorized
-    :privileged? true}
+    }
  
   {:name :transition/accept,
    :actor :actor.role/provider,

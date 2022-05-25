@@ -50,13 +50,7 @@ export const EditListingLocationFormComponent = props => (
         id: 'EditListingLocationForm.optionalText',
       });
 
-      const buildingMessage = intl.formatMessage(
-        { id: 'EditListingLocationForm.building' },
-        { optionalText: optionalText }
-      );
-      const buildingPlaceholderMessage = intl.formatMessage({
-        id: 'EditListingLocationForm.buildingPlaceholder',
-      });
+      
 
       const { updateListingError, showListingsError } = fetchErrors || {};
       const errorMessage = updateListingError ? (
@@ -99,14 +93,7 @@ export const EditListingLocationFormComponent = props => (
             )}
           />
 
-          <FieldTextInput
-            className={css.building}
-            type="text"
-            name="building"
-            id="building"
-            label={buildingMessage}
-            placeholder={buildingPlaceholderMessage}
-          />
+          
 
           <Button
             className={css.submitButton}

@@ -72,7 +72,7 @@ export const EditListingWidthFormComponent = props => (
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
-
+ 
           <FieldTextInput
             id="width"
             name="width"
