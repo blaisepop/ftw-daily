@@ -8,6 +8,11 @@ import { EditListingPricingForm } from '../../forms';
 import { ensureOwnListing } from '../../util/data';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import config from '../../config';
+import {
+  convertUnitToSubUnit,
+  ensureDotSeparator,
+  unitDivisor,
+} from '../../util/currency';
 
 import css from './EditListingPricingPanel.module.css';
 
@@ -54,6 +59,22 @@ const EditListingPricingPanel = props => {
     <FormattedMessage id="EditListingPricingPanel.createListingTitle" />
   );
 
+  const getPrice = (unformattedValue, currencyConfig) => {
+    const isEmptyString = unformattedValue === '';
+    console.log("isempty", isEmptyString);
+    try {
+      return isEmptyString
+      
+        ? null
+        : new Money(
+            convertUnitToSubUnit(unformattedValue, unitDivisor(currencyConfig.currency)),
+            currencyConfig.currency
+          );
+    } catch (e) {
+      console.log("incatch", e);
+      return null;
+    }
+  };
   const priceCurrencyValid = price instanceof Money ? price.currency === config.currency : true;
   const form = priceCurrencyValid ? (
     <EditListingPricingForm
@@ -61,8 +82,12 @@ const EditListingPricingPanel = props => {
       initialValues={initialValues}
       onSubmit={values => {
        
-        const { price, fee = null , feeName=null} = values;
-
+        const {fee = null , feeName=null} = values;
+       
+        
+        
+        const price = getPrice(ensureDotSeparator("0"), config.currencyConfig);
+        console.log(price); 
         const updatedValues = {
           price,
           publicData: {

@@ -32,7 +32,7 @@ class ImageCarousel extends Component {
     }
   }
   prev() {
-    const count = this.props.images.length;
+    const count =this.props.listImagesFromMedia?this.props.listImagesFromMedia.length:this.props.images.length;
     if (count < 2) {
       return;
     }
@@ -42,7 +42,8 @@ class ImageCarousel extends Component {
     });
   }
   next() {
-    const count = this.props.images.length;
+    const count =this.props.listImagesFromMedia?this.props.listImagesFromMedia.length:this.props.images.length;
+
     if (count < 2) {
       return;
     }
@@ -52,20 +53,20 @@ class ImageCarousel extends Component {
     });
   }
   render() {
-    const { rootClassName, className, images, intl } = this.props;
+    const { rootClassName, className, images, intl, listImagesFromMedia} = this.props;
     const classes = classNames(rootClassName || css.root, className);
-
+    const imagesCount=listImagesFromMedia?listImagesFromMedia.length:images.length;
     const naturalIndex = this.state.selectedImageIndex + 1;
     const imageIndex =
-      images.length > 0 ? (
+    imagesCount > 0 ? (
         <span className={css.imageIndex}>
-          {naturalIndex}/{images.length}
+          {naturalIndex}/{imagesCount}
         </span>
       ) : null;
     const prevButton =
-      images.length > 1 ? <button className={css.prev} onClick={this.prev} /> : null;
+    imagesCount > 1 ? <button className={css.prev} onClick={this.prev} /> : null;
     const nextButton =
-      images.length > 1 ? <button className={css.next} onClick={this.next} /> : null;
+    imagesCount > 1 ? <button className={css.next} onClick={this.next} /> : null;
 
     const imageAltText = intl.formatMessage(
       {
@@ -73,7 +74,7 @@ class ImageCarousel extends Component {
       },
       {
         index: naturalIndex,
-        count: images.length,
+        count: imagesCount,
       }
     );
 
@@ -89,7 +90,7 @@ class ImageCarousel extends Component {
       });
     };
 
-    const currentImageIsLoaded = images.length === 0 || this.state.selectedImageLoaded;
+    const currentImageIsLoaded = imagesCount === 0 || this.state.selectedImageLoaded;
     const loadingIconClasses = classNames(css.loading, {
       [css.loadingVisible]: !currentImageIsLoaded,
     });
@@ -105,6 +106,7 @@ class ImageCarousel extends Component {
             className={imageClasses}
             alt={imageAltText}
             image={images[this.state.selectedImageIndex]}
+            imageFromMedia={listImagesFromMedia?listImagesFromMedia[this.state.selectedImageIndex]:null}
             onLoad={markImageLoaded(this.state.selectedImageIndex)}
             onError={markImageLoaded(this.state.selectedImageIndex)}
             variants={['scaled-small', 'scaled-medium', 'scaled-large', 'scaled-xlarge']}

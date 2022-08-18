@@ -86,6 +86,7 @@
 }
 
 .aspectWrapper {
+  overflow: hidden;
   position: relative;
   padding-bottom: 66.6667%; /* 3:2 Aspect Ratio */
   background-color: var(--matterColorNegative); /* Loading BG color */
@@ -275,6 +276,7 @@
 }
 
 .detailsAspectWrapper {
+  overflow: hidden;
   position: relative;
   padding-bottom: 66.6667%; /* 3:2 Aspect Ratio */
   background-color: var(--matterColorNegative); /* Loading BG color */

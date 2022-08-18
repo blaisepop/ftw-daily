@@ -43,10 +43,15 @@ import NoImageIcon from './NoImageIcon';
 import css from './ResponsiveImage.module.css';
 
 const ResponsiveImage = props => {
-  const { className, rootClassName, alt, noImageMessage, image, variants, ...rest } = props;
+  const { className, rootClassName, alt, noImageMessage, image, variants,imageFromMedia, ...rest } = props;
+
   const classes = classNames(rootClassName || css.root, className);
 
-  if (image == null || variants.length === 0) {
+
+
+  if ((image == null  )|| variants.length === 0) {
+    if(imageFromMedia==null){
+    
     const noImageClasses = classNames(rootClassName || css.root, css.noImageContainer, className);
 
     const noImageMessageText = noImageMessage || <FormattedMessage id="ResponsiveImage.noImage" />;
@@ -58,23 +63,39 @@ const ResponsiveImage = props => {
         </div>
       </div>
     );
+    }
+    else{
+      const imgProps = {
+        className: classes,
+        srcSet:imageFromMedia,
+        ...rest,
+      };
+      return(
+    
+         <img alt={alt} {...imgProps}/>
+       
+      );
+         
+      
+      
+    
+    }
+    
   }
-
   const imageVariants = image.attributes.variants;
-
+ 
   const srcSet = variants
     .map(variantName => {
       const variant = imageVariants[variantName];
-
       if (!variant) {
         // Variant not available (most like just not loaded yet)
         return null;
       }
-      return `${variant.url} ${variant.width}w`;
+      const url=imageFromMedia?imageFromMedia:variant.url;
+      return `${url} ${variant.width}w`;
     })
     .filter(v => v != null)
     .join(', ');
-
   const imgProps = {
     className: classes,
     srcSet,

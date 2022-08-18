@@ -71,7 +71,7 @@
 
   @media (--viewportLarge) {
     display: block;
-    margin-bottom: 30px;
+    
   }
 }
 .desktopPriceContainer {
@@ -112,12 +112,18 @@
 }
 
 .bookingTitle {
-  /* Font */
-  @apply --marketplaceH3FontStyles;
-  color: var(--matterColor);
-
-  margin-top: 0;
-  margin-bottom: 2px;
+   /* Font */
+   @apply --marketplaceModalTitleStyles;
+   color: var(--matterColor);
+ 
+   /* Layout */
+   width: 100%;
+   margin-top: 0;
+   margin-bottom: 0;
+   @media (--viewportMedium) {
+     margin-top: 0;
+     margin-bottom: 2px;
+   }
 }
 
 .bookingHelp {

@@ -99,7 +99,8 @@ export const EditListingPricingFormComponent = props => (
               <FormattedMessage id="EditListingPricingForm.showListingFailed" />
             </p>
           ) : null}
-          <FieldCurrencyInput
+        {  /*<FieldCurrencyInput
+           
             id="price"
             name="price"
             className={css.priceInput}
@@ -108,7 +109,7 @@ export const EditListingPricingFormComponent = props => (
             placeholder={pricePlaceholderMessage}
             currencyConfig={config.currencyConfig}
             validate={priceValidators}
-          />
+          />*/}
 
           <FieldTextInput
             id="feeName"

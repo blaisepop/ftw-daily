@@ -9,7 +9,6 @@ const SectionFeaturesMaybe = props => {
   if (!publicData) {
     return null;
   }
-  console.log("publicdata",publicData);
   const selectedOptions = publicData && publicData.amenities ? publicData.amenities : [];
   const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
 

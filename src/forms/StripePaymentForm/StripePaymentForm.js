@@ -294,8 +294,11 @@ class StripePaymentForm extends Component {
   handleCardValueChange(event) {
     const { intl } = this.props;
     const { error, complete } = event;
+    console.log(event);
+    console.log(event.value.postalCode.length);
 
-    const postalCode = event.value.postalCode;
+    const postalCode = event.value.postalCode.length===4?"0"+event.value.postalCode:event.value.postalCode;
+    console.log(postalCode)
     if (this.finalFormAPI) {
       this.finalFormAPI.change('postal', postalCode);
     }

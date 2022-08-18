@@ -117,11 +117,11 @@ exports.transactionLineItems = (listing, bookingData) => {
   
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([booking, ...menus1, ...fee, guests]),
+    unitPrice: calculateTotalFromLineItems([ ...menus1, ...fee, guests]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
-  const lineItems = [booking, ...menus1,...fee, guests, providerCommission];
+  const lineItems = [ ...menus1,...fee, guests, providerCommission];
   
 
   return lineItems;

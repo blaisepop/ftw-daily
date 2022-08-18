@@ -259,6 +259,11 @@ export class ListingPageComponent extends Component {
     } = currentListing.attributes;
     const partnerNumber=publicData && publicData.partnerNumber ? publicData.partnerNumber : null 
 
+    //Get images from public data
+    const publicMedia=publicData && publicData.media?publicData.media:null;
+    const listImagesFromMedia=publicMedia && publicMedia.pictures ? publicMedia.pictures:null
+
+
     const richTitle = (
       <span>
         {richText(title, {
@@ -269,7 +274,7 @@ export class ListingPageComponent extends Component {
     );
 
     const bookingTitle = (
-      <FormattedMessage id="ListingPage.bookingTitle" values={{ title: richTitle }} />
+      <FormattedMessage id="ListingPage.bookingTitle"  />
     );
 
     const topbar = <TopbarContainer />;
@@ -395,7 +400,6 @@ export class ListingPageComponent extends Component {
     );
    
     const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig); 
-   
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
     const category =
       publicData && publicData.category ? (
@@ -451,6 +455,7 @@ export class ListingPageComponent extends Component {
                 onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
                 handleViewPhotosClick={handleViewPhotosClick}
                 onManageDisableScrolling={onManageDisableScrolling}
+                listImagesFromMedia={listImagesFromMedia?listImagesFromMedia:null}
               />
               <div className={css.contentContainer}>
                 <SectionAvatar user={currentAuthor} params={params} />
@@ -478,7 +483,7 @@ export class ListingPageComponent extends Component {
                     publicData={publicData}
                     listingId={currentListing.id}
                   />
-                  <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                 {/* <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />*/}
                 </div>
                 <BookingPanel
                   className={css.bookingPanel}

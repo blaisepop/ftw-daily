@@ -37,11 +37,11 @@ export const filters = [
   {
     id: 'dates-length',
     label: 'Dates',
-    type: 'BookingDateRangeLengthFilter',
+    type: 'BookingDateRangeFilter',
     group: 'primary',
     // Note: BookingDateRangeFilter is fixed filter,
     // you can't change "queryParamNames: ['dates'],"
-    queryParamNames: ['dates', 'minDuration'],
+    queryParamNames: ['dates'],
     config: {
       // A global time zone to use in availability searches. As listings
       // can be in various time zones, we must decide what time zone we
@@ -55,13 +55,7 @@ export const filters = [
       searchTimeZone: 'Etc/UTC',
 
       // Options for the minimum duration of the booking
-      options: [
-        { key: '0', label: 'toutes durées' },
-        { key: '60', label: '1 heure', shortLabel: '1h' },
-        { key: '120', label: '2 heures', shortLabel: '2h' },
-        { key: '180', label: '3 heure', shortLabel: '3h' },
-        { key: '240', label: '4 heures', shortLabel: '4h' },
-      ],
+     
     },
   },
   {

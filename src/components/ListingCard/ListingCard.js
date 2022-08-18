@@ -41,7 +41,13 @@ const getCategoryInfo = (categoryOptions, key) => {
 
 class ListingImage extends Component {
   render() {
-    return <ResponsiveImage {...this.props} />;
+    
+      return (
+      <div className={css.riContainer}>
+        <ResponsiveImage {...this.props} />
+      </div>)
+    
+    
   }
 }
 const LazyImage = lazyLoadWithDimensions(ListingImage, { loadAfterInitialRendering: 3000 });
@@ -61,14 +67,25 @@ export const ListingCardComponent = props => {
   const id = currentListing.id.uuid;
   const { title = '', price, publicData } = currentListing.attributes;
   const slug = createSlug(title);
-  const firstImage =
-    currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
+
+  //Get images from public data
+  const publicMedia=publicData && publicData.media?publicData.media:null;
+  const listImagesFromMedia=publicMedia && publicMedia.pictures ? publicMedia.pictures:null
+  let hasImages=false;
+  let firstImageFromMedia=null
+  if(listImagesFromMedia){
+    firstImageFromMedia=listImagesFromMedia[0]
+    
+  }else{
+    hasImages = currentListing.images && currentListing.images.length > 0;
+  }
+  const firstImage = hasImages ? currentListing.images[0] : null;
+ 
   const categoryOptions = findOptionsForSelectFilter('category', filtersConfig);
   const category = publicData
     ? getCategoryInfo(categoryOptions, publicData.category)
     : null;
-  console.log(publicData);
   const { formattedPrice, priceTitle } = priceData(price, intl);
 
   const unitType = config.bookingUnitType;
@@ -92,6 +109,7 @@ export const ListingCardComponent = props => {
           <LazyImage
             rootClassName={css.rootForImage}
             alt={title}
+            imageFromMedia={firstImageFromMedia}
             image={firstImage}
             variants={['landscape-crop', 'landscape-crop2x']}
             sizes={renderSizes}

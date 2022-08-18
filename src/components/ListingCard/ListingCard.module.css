@@ -10,7 +10,12 @@
     text-decoration: none;
   }
 }
-
+.riContainer{
+  min-height: 100%;
+  max-height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 .threeToTwoWrapper {
   /* Layout */
   display: block;
@@ -32,7 +37,7 @@
 
 .rootForImage {
   /* Layout - image will take space defined by aspect ratio wrapper */
-  position: absolute;
+  position: relative;
   top: 0;
   bottom: 0;
   left: 0;

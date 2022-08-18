@@ -76,7 +76,7 @@ export class BookingDateRangeFilterComponent extends Component {
       ? intl.formatMessage(
           { id: 'BookingDateRangeFilter.labelSelectedPlain' },
           {
-            dates: `${formattedStartDate} - ${formattedEndDate}`,
+            dates: `${formattedStartDate} `,
           }
         )
       : label
@@ -87,7 +87,7 @@ export class BookingDateRangeFilterComponent extends Component {
       ? intl.formatMessage(
           { id: 'BookingDateRangeFilter.labelSelectedPopup' },
           {
-            dates: `${formattedStartDate} - ${formattedEndDate}`,
+            dates: `${formattedStartDate} `,
           }
         )
       : label

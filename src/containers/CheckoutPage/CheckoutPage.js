@@ -103,6 +103,7 @@ export class CheckoutPageComponent extends Component {
       pageData: {},
       dataLoaded: false,
       submitting: false,
+      postError:false,
     };
     this.stripe = null;
 
@@ -111,9 +112,16 @@ export class CheckoutPageComponent extends Component {
     this.handlePaymentIntent = this.handlePaymentIntent.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  postBooking = async (booking, orderDetailsPath, history) =>  {
-    await addBooking(booking);
-    history.push(orderDetailsPath);
+  postBooking(booking, values) {
+     addBooking(booking)
+    .then(resp=>{
+      this.submit(values)
+    })
+    .catch(e=>{
+
+      console.error(e)
+      this.setState({ postError: true});
+    });
   }
   componentDidMount() {
     if (window) {
@@ -421,7 +429,15 @@ export class CheckoutPageComponent extends Component {
 
     }
    
+    //post booking
     
+    this.postBooking(bookingForCRM, values)
+    
+  }
+    
+  submit(values) {
+    const pageData=this.state.pageData;
+    const { history, speculatedTransaction, currentUser, paymentIntent, dispatch } = this.props;
     if (this.state.submitting) {
       return;
     }
@@ -489,17 +505,15 @@ export class CheckoutPageComponent extends Component {
 
         initializeOrderPage(initialValues, routes, dispatch);
         clearData(STORAGE_KEY);
-        //post booking
-        
-        this.postBooking(bookingForCRM, orderDetailsPath, history)
-        
-       
+        history.push(orderDetailsPath);
       })
       .catch(err => {
-        console.error(err);
+     
+        
         this.setState({ submitting: false });
       });
   }
+
 
   onStripeInitialized(stripe) {
     this.stripe = stripe;
@@ -660,10 +674,22 @@ export class CheckoutPageComponent extends Component {
       !retrievePaymentIntentError &&
       !isPaymentExpired
     );
+      //Get images from public data
+    const publicData=currentListing && currentListing.attributes ? currentListing.attributes.publicData:null
+    const publicMedia=publicData && publicData.media?publicData.media:null;
 
-    const firstImage =
-      currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
-
+    const listImagesFromMedia=publicMedia && publicMedia.pictures ? publicMedia.pictures:null
+    let hasImages=false;
+    let firstImageFromMedia=null
+    if(listImagesFromMedia)
+    {
+      firstImageFromMedia=listImagesFromMedia[0]
+    }
+    else
+    {
+      hasImages = currentListing.images && currentListing.images.length > 0;
+    }
+  const firstImage = hasImages ? currentListing.images[0] : null;
     const listingLink = (
       <NamedLink
         name="ListingPage"
@@ -733,7 +759,13 @@ export class CheckoutPageComponent extends Component {
         <FormattedMessage id="CheckoutPage.speculateTransactionError" />
       </p>
     ) : null;
+
     let speculateErrorMessage = null;
+    const postErrorMessage= this.state.postError ? (
+        <p className={css.speculateError}>
+          <FormattedMessage id="CheckoutPage.postError"/>
+        </p>
+      ) : null;
 
     if (isTransactionInitiateMissingStripeAccountError(speculateTransactionError)) {
       speculateErrorMessage = (
@@ -803,6 +835,7 @@ export class CheckoutPageComponent extends Component {
             <ResponsiveImage
               rootClassName={css.rootForImage}
               alt={listingTitle}
+              imageFromMedia={firstImageFromMedia}
               image={firstImage}
               variants={['landscape-crop', 'landscape-crop2x']}
             />
@@ -862,6 +895,7 @@ export class CheckoutPageComponent extends Component {
                   />
                 </p>
               ) : null}
+              {postErrorMessage}
             </section>
           </div>
 
@@ -870,6 +904,7 @@ export class CheckoutPageComponent extends Component {
               <ResponsiveImage
                 rootClassName={css.rootForImage}
                 alt={listingTitle}
+                imageFromMedia={firstImageFromMedia}
                 image={firstImage}
                 variants={['landscape-crop', 'landscape-crop2x']}
               />
@@ -882,6 +917,7 @@ export class CheckoutPageComponent extends Component {
               <p className={css.detailsSubtitle}>{detailsSubTitle}</p>
             </div>
             {speculateTransactionErrorMessage}
+            
             {breakdown}
           </div>
         </div>

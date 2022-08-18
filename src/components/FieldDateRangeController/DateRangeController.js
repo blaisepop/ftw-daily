@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  DayPickerSingleDateController,
   DayPickerRangeController,
   isInclusivelyAfterDay,
   isInclusivelyBeforeDay,
@@ -95,15 +96,17 @@ class DateRangeController extends Component {
 
   onDatesChange(values) {
     const { startDate, endDate } = values;
-
+    console.log("datesChanges", values);
     const start = startDate ? startDate.toDate() : null;
-    const end = endDate ? endDate.toDate() : null;
+    const end = startDate ? startDate.toDate() : null;
+    
 
-    this.setState({ startDate, endDate });
-
-    if (startDate && endDate) {
+        this.setState({ startDate, startDate });
+   
+    if (startDate /*&& endDate*/) {
       this.props.onChange({ startDate: start, endDate: end });
     }
+    
   }
 
   onFocusChange(focusedInput) {
@@ -160,7 +163,9 @@ class DateRangeController extends Component {
     const endDate = isSelected ? endDateFromForm : endDateFromState;
 
     return (
-      <div className={classes}>
+      <div>
+        <div className={classes}>
+        
         <DayPickerRangeController
           {...controllerProps}
           startDate={startDate}
@@ -170,6 +175,11 @@ class DateRangeController extends Component {
           onFocusChange={this.onFocusChange}
         />
       </div>
+      <div className={classes}>
+    
+    </div>
+      </div>
+      
     );
   }
 }
