@@ -58,9 +58,9 @@ export const filters = [
      
     },
   },
-  {
+  /* {
     id: 'price',
-    label: 'Price',
+    label: 'Prix',
     type: 'PriceFilter',
     group: 'primary',
     // Note: PriceFilter is fixed filter,
@@ -74,7 +74,7 @@ export const filters = [
       step: 5,
     },
   },
- /* {
+ {
     id: 'capacity',
     label: 'Capacity',
     type: 'PriceFilter',
@@ -92,7 +92,7 @@ export const filters = [
   },*/
   {
     id: 'keyword',
-    label: 'Keyword',
+    label: 'Mot clé',
     type: 'KeywordFilter',
     group: 'primary',
     // Note: KeywordFilter is fixed filter,
@@ -106,7 +106,7 @@ export const filters = [
   {
 
     id: 'category',
-    label: 'Category',
+    label: 'Catégorie',
     type: 'SelectSingleFilter',
     group: 'primary',
     queryParamNames: ['pub_category'],
@@ -129,7 +129,7 @@ export const filters = [
   },
   {
     id: 'amenities',
-    label: 'Amenities',
+    label: 'Agréments',
     type: 'SelectMultipleFilter',
     group: 'secondary',
     queryParamNames: ['pub_amenities'],
@@ -145,15 +145,15 @@ export const filters = [
       options: [
         {
           key: 'starter',
-          label: 'Starter',
+          label: 'Entrée',
         },
         {
           key: 'main',
-          label: 'Main',
+          label: 'Principal',
         },
         {
           key: 'drinks',
-          label: 'Drinks',
+          label: 'Boissons',
         },
         {
           key: 'dessert',
@@ -161,7 +161,7 @@ export const filters = [
         },
         {
           key: 'aperitive',
-          label: 'Aperitive',
+          label: 'Apéritif',
         },
       ],
     },
