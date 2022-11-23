@@ -15,6 +15,7 @@
   max-height: 100%;
   width: 100%;
   overflow: hidden;
+  display: flex;
 }
 .threeToTwoWrapper {
   /* Layout */
@@ -43,6 +44,8 @@
   left: 0;
   right: 0;
   width: 100%;
+  min-height: 100%;
+  max-height: 100%;
   border-radius: var(--borderRadius);
 }
 
