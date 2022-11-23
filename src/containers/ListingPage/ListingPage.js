@@ -213,7 +213,6 @@ export class ListingPageComponent extends Component {
     } = this.props;
     
     const isAdmin = isAuthenticated && currentUser != null && currentUser.attributes.profile.publicData.admin != null ? currentUser.attributes.profile.publicData.admin : false
-    console.log(currentUser);
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
     const isDraftVariant = rawParams.variant === LISTING_PAGE_DRAFT_VARIANT;
