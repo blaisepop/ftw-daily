@@ -44,7 +44,7 @@ const defaultDirectives = {
     ...devImagesMaybe,
     '*.imgix.net',
     'sharetribe.imgix.net', // Safari 9.1 didn't recognize asterisk rule.
-
+    'https://res-1.cloudinary.com',
     // Styleguide placeholder images
     'lorempixel.com',
     'via.placeholder.com',

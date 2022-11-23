@@ -816,7 +816,7 @@ export class CheckoutPageComponent extends Component {
       currentUser && currentUser.attributes
         ? `${currentUser.attributes.profile.firstName} ${currentUser.attributes.profile.lastName}`
         : null;
-
+      
     // If paymentIntent status is not waiting user action,
     // confirmCardPayment has been called previously.
     const hasPaymentIntentUserActionsDone =

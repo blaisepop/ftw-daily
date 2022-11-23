@@ -128,7 +128,7 @@ export class ListingPageComponent extends Component {
     };
 
     const saveToSessionStorage = !this.props.currentUser;
-
+    
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
@@ -213,7 +213,7 @@ export class ListingPageComponent extends Component {
     } = this.props;
     
     const isAdmin = isAuthenticated && currentUser != null && currentUser.attributes.profile.publicData.admin != null ? currentUser.attributes.profile.publicData.admin : false
-
+    console.log(currentUser);
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
     const isDraftVariant = rawParams.variant === LISTING_PAGE_DRAFT_VARIANT;
@@ -315,6 +315,7 @@ export class ListingPageComponent extends Component {
       return (
         <Page title={loadingTitle} scrollingDisabled={scrollingDisabled}>
           <LayoutSingleColumn className={css.pageRoot}>
+
             <LayoutWrapperTopbar>{topbar}</LayoutWrapperTopbar>
             <LayoutWrapperMain>
               <p className={css.loadingText}>
@@ -457,7 +458,9 @@ export class ListingPageComponent extends Component {
                 onManageDisableScrolling={onManageDisableScrolling}
                 listImagesFromMedia={listImagesFromMedia?listImagesFromMedia:null}
               />
+
               <div className={css.contentContainer}>
+
                 <SectionAvatar user={currentAuthor} params={params} />
                 <div className={css.mainContent}>
                   <SectionHeading
