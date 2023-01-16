@@ -4,8 +4,10 @@ import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { txIsCanceled, txIsDelivered, txIsDeclined } from '../../util/transaction';
 import { propTypes } from '../../util/types';
+const _ = require('lodash');
 
 import css from './BookingBreakdown.module.css';
+import config from '../../config';
 
 const LineItemUnitPrice = props => {
   const { transaction, isProvider, intl } = props;
@@ -28,7 +30,10 @@ const LineItemUnitPrice = props => {
   const totalPrice = isProvider
     ? transaction.attributes.payoutTotal
     : transaction.attributes.payinTotal;
-  const formattedTotalPrice = formatMoney(intl, totalPrice);
+  
+  let t=_.cloneDeep(totalPrice);
+  t.amount/=config.mfCommission;
+  const formattedTotalPrice = formatMoney(intl, t);
 
   return (
     <>

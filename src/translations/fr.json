@@ -954,7 +954,7 @@
   "StripePaymentForm.genericError": "Impossible de traiter ces détails de paiement. Veuillez essayer de nouveau.",
   "StripePaymentForm.confirmCardPaymentError": "Nous n'avons pas pu valider votre méthode de paiement. Veuillez vérifier vos informations et essayer de nouveau.",
   "StripePaymentForm.messageHeading": "Message",
-  "StripePaymentForm.messageLabel": "Prenez un moment dire quelques mots au propriétaire {messageOptionalText}",
+  "StripePaymentForm.messageLabel": "Prenez un moment dire quelques mots au propriétaire",
   "StripePaymentForm.messageOptionalText": "• optionel",
   "StripePaymentForm.messagePlaceholder": "Bonjour {name} ! J'aimerais…",
   "StripePaymentForm.missingStripeKey": "La \"Stripe publishable key\" n'a pas été configurée pour cette place de marché. Hélas, réserver cette annonce n'est pas possible pour le moment.",

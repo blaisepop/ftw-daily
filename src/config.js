@@ -5,7 +5,7 @@ import { currencyConfiguration } from './currency-config';
 
 const env = process.env.REACT_APP_ENV;
 const dev = process.env.REACT_APP_ENV === 'development';
-
+const mfCommission = 0.08//process.env.MOBILE_FOOD_COMMISSION;
 // If you want to change the language, remember to also change the
 // locale data and the messages in the app.js file.
 const locale = 'fr';
@@ -32,8 +32,8 @@ const sortSearchByDistance = false;
 //
 // In a way, 'processAlias' defines which transaction process (or processes)
 // this particular web application is able to handle.
-//const bookingProcessAlias = 'flex-hourly-default-process/release-1';
-const bookingProcessAlias = 'flex-default-process/release-1';
+const bookingProcessAlias = 'flex-hourly-default-process/release-1';
+//const bookingProcessAlias = 'flex-default-process/release-1';
 
 // The transaction line item code for the main unit type in bookings.
 //
@@ -198,6 +198,7 @@ const maps = {
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
 const config = {
+  mfCommission,
   env,
   dev,
   locale,

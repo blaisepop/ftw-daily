@@ -112,7 +112,6 @@ const EstimatedBreakdownMaybe = props => {
     startDate && endDate && lineItems
       ? estimatedTransaction(startDate, endDate, lineItems, userRole)
       : null;
-
   return tx ? (
     <BookingBreakdown
       className={css.receipt}

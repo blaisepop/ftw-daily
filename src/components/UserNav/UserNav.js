@@ -46,9 +46,7 @@ const UserNav = props => {
   const classes = classNames(rootClassName || css.root, className);
 
   const tabs = [
-    {
-      ...listingTab(listing, selectedPageName),
-    },
+      
     {
       text: <FormattedMessage id="UserNav.profileSettingsPage" />,
       selected: selectedPageName === 'ProfileSettingsPage',

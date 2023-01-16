@@ -34,11 +34,11 @@ class SearchMapPriceLabel extends Component {
     const classes = classNames(rootClassName || css.root, className);
     const priceLabelClasses = classNames(css.priceLabel, { [css.priceLabelActive]: isActive });
     const caretClasses = classNames(css.caret, { [css.caretActive]: isActive });
-
+    const listingName=currentListing&&currentListing.attributes&&currentListing.attributes.title?currentListing.attributes.title:null;
     return (
       <button className={classes} onClick={() => onListingClicked(currentListing)}>
         <div className={css.caretShadow} />
-        <div className={priceLabelClasses}>{formattedPrice}</div>
+        <div className={priceLabelClasses}>{listingName}</div>
         <div className={caretClasses} />
       </button>
     );

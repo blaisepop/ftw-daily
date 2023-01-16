@@ -10,8 +10,8 @@
    [{:name :action/create-booking,
      :config {:observe-availability? true, :type :time}}
     {:name :action/privileged-set-line-items}
-    {:name :action/stripe-create-payment-intent}],
-   :to :state/pending-payment
+    ],
+   :to :state/preauthorized
    :privileged? true}
   {:name :transition/request-payment-after-enquiry,
    :actor :actor.role/customer,
@@ -19,27 +19,27 @@
    [{:name :action/create-booking,
      :config {:observe-availability? true, :type :time}}
     {:name :action/privileged-set-line-items}
-    {:name :action/stripe-create-payment-intent}],
+    ],
    :from :state/enquiry,
-   :to :state/pending-payment
+   :to :state/preauthorized 
    :privileged? true}
   {:name :transition/expire-payment,
    :at
    {:fn/plus
-    [{:fn/timepoint [:time/first-entered-state :state/pending-payment]}
+    [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
      {:fn/period ["PT15M"]}]},
    :actions
    [{:name :action/decline-booking}
     {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
-   :from :state/pending-payment,
+    ],
+   :from :state/preauthorized,
    :to :state/payment-expired}
 
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
    :actions 
-   [{:name :action/stripe-confirm-payment-intent}],
-    :from :state/pending-payment,
+   [],
+    :from :state/preauthorized,
     :to :state/preauthorized
     }
  
@@ -47,7 +47,7 @@
    :actor :actor.role/provider,
    :actions
    [{:name :action/accept-booking}
-    {:name :action/stripe-capture-payment-intent}
+    
 
     ],
    :from :state/preauthorized,
@@ -57,7 +57,7 @@
    :actions
    [{:name :action/decline-booking}
     {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
+    ],
    :from :state/preauthorized,
    :to :state/declined}
   {:name :transition/expire,
@@ -71,12 +71,12 @@
    :actions
    [{:name :action/decline-booking}
     {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
+    ],
    :from :state/preauthorized,
    :to :state/declined}
   {:name :transition/complete,
    :at {:fn/timepoint [:time/booking-end]},
-   :actions [{:name :action/stripe-create-payout}],
+   :actions [],
    :from :state/accepted,
    :to :state/delivered}
   {:name :transition/cancel,
@@ -84,7 +84,7 @@
    :actions
    [{:name :action/cancel-booking}
     {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}],
+    ],
    :from :state/accepted,
    :to :state/cancelled}
   {:name :transition/review-1-by-provider,

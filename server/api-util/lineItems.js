@@ -5,10 +5,11 @@ const { Money } = types;
 // This bookingUnitType needs to be one of the following:
 // line-item/night, line-item/day or line-item/units
 const bookingUnitType = 'line-item/units';
-const PROVIDER_COMMISSION_PERCENTAGE = -10;
+const PROVIDER_COMMISSION_PERCENTAGE = -100;
+const MOBILE_FOOD_COMMISSION=0.08;
 const resolveMenuPrice = key => {
   const mount=Number(key.split('-')[2])
-    return new Money( mount, "CHF"); 
+    return new Money( mount*MOBILE_FOOD_COMMISSION, "CHF"); 
 };
 const getId = key=>{
   return  key.split('-')[1];
@@ -22,7 +23,7 @@ const resolveFeePrice = listing => {
   const { amount, currency } = fee;
 
   if (amount && currency) {
-    return new Money(amount, currency);
+    return new Money(amount*MOBILE_FOOD_COMMISSION, currency);
   }
 
   return null;
@@ -122,7 +123,6 @@ exports.transactionLineItems = (listing, bookingData) => {
     includeFor: ['provider'],
   };
   const lineItems = [ ...menus1,...fee, guests, providerCommission];
-  
-
+ 
   return lineItems;
 };

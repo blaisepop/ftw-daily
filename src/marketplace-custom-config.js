@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /*
  * Marketplace specific configuration.
  *
@@ -32,7 +34,17 @@
  *         and tie them with correct extended data key
  *         (i.e. pub_<key> or meta_<key>).
  */
-
+/*var opt=[]
+axios.get("http://localhost:5000/api/v1/food_types") .then(resp=>{
+ var listeFiltersType=resp.data
+  listeFiltersType.forEach(element => {
+   const obj={key: element.name.toLowerCase(), label: element.name};
+    opt.push(obj);
+  });
+})
+.catch(e=>{
+ throw(e);
+})*/
 export const filters = [
   {
     id: 'dates-length',
@@ -117,14 +129,15 @@ export const filters = [
       schemaType: 'enum',
 
     
-      options: [
+     // options: opt,
+     options:[
 
-        { key: 'burger', label: 'Burger' },
-        { key: 'pizza', label: 'Pizza' },
-        { key: 'crepe', label: 'Crepe' },
-        { key: 'thai', label: 'Thai' },
+      { key: 'burger', label: 'Burger' },
+      { key: 'pizza', label: 'Pizza' },
+      { key: 'crepe', label: 'Crepe' },
+      { key: 'thai', label: 'Thai' },
 
-      ],
+    ],
     },
   },
   {

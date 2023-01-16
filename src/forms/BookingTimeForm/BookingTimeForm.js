@@ -8,7 +8,7 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import { timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
-
+import axios from 'axios';
 import { Form, IconSpinner, PrimaryButton, MenuFieldCheckboxGroup, FieldTextInput } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
@@ -16,6 +16,7 @@ import { formatMoney } from '../../util/currency';
 import css from './BookingTimeForm.module.css';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import moment from "moment";
+import d from 'final-form-arrays';
 const { Money } = sdkTypes;
 const label = <h2>Menus</h2>;
 export class BookingTimeFormComponent extends Component {
@@ -71,11 +72,18 @@ export class BookingTimeFormComponent extends Component {
   }
 
   handleFormSubmit(e) {
-    if (this.totalCost < 80000) {
+    if (this.totalCost < 80000*config.mfCommission) {
 
       this.setState({ showMinMessage: true })
     }
     else if (!this.state.showCapacityMessage && !this.state.showBookedMessage) {
+      const config = {
+        headers: { 
+          'X-User-Token': "t-wCWAyLtsToftoF9Rrq",//"HExzbkejGSjXMXKu-HiT",
+          'X-User-Email': "26.mariusremy@gmail.com"
+        }
+    }
+      //axios.get("http://localhost:5000/api/v1/payments", config).then((resp)=>console.log(resp.data))
       this.props.onSubmit(e);
     }
 

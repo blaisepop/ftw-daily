@@ -45,3 +45,6 @@ export const addBooking=(booking)=>{
 export const addClient=(booking)=>{
     return post("clients", booking);
 }
+export const paymentIntent=(data)=>{
+    return post(paymentIntent, data);
+}

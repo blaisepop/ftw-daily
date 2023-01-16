@@ -10,12 +10,14 @@
  * component for them that can be used in the `BookingBreakdown` component.
  */
 import React from 'react';
+const _ = require('lodash');
 import { intlShape } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { humanizeLineItemCode } from '../../util/data';
 import { LINE_ITEMS, propTypes } from '../../util/types';
 
 import css from './BookingBreakdown.module.css';
+import config from '../../config';
 
 const LineItemUnknownItemsMaybe = props => {
   const { transaction, isProvider, intl } = props;
@@ -33,13 +35,16 @@ const LineItemUnknownItemsMaybe = props => {
     <React.Fragment>
       {items.map((item, i) => {
         const quantity = item.quantity;
-
+       
+        let itemCopy=_.cloneDeep(item);
+        
+        itemCopy.lineTotal.amount=itemCopy.lineTotal.amount/config.mfCommission;
         const label =
           quantity && quantity > 1
             ? `${humanizeLineItemCode(item.code)} x ${quantity}`
             : humanizeLineItemCode(item.code);
-
-        const formattedTotal = formatMoney(intl, item.lineTotal);
+        
+        const formattedTotal = formatMoney(intl, itemCopy.lineTotal);
         return (
           <div key={`${i}-item.code`} className={css.lineItem}>
             <span className={css.itemLabel}>{label}</span>

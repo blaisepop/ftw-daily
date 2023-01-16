@@ -163,7 +163,7 @@ class PaymentMethodsForm extends Component {
       formId,
       formValues: values,
     };
-
+    console.log("ici")
     onSubmit(params);
   }
 

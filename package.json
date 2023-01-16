@@ -11,6 +11,8 @@
     "@mapbox/polyline": "^1.1.1",
     "@sentry/browser": "^6.15.0",
     "@sentry/node": "^6.15.0",
+    "@stripe/react-stripe-js": "^1.16.3",
+    "@stripe/stripe-js": "^1.46.0",
     "array-includes": "^3.1.4",
     "array.prototype.find": "^2.1.2",
     "autosize": "^5.0.1",

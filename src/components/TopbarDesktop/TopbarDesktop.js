@@ -57,7 +57,7 @@ const TopbarDesktop = props => {
       initialValues={initialSearchFormValues}
     />
   );
-
+  
   const createListingMaybe=isAdmin?
         <NamedLink className={css.createListingLink} name="NewListingPage">
           <span className={css.createListing}>
@@ -98,15 +98,16 @@ const TopbarDesktop = props => {
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
-      <MenuItem key="ManageListingsPage">
-          <NamedLink
-            className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
-            name="ManageListingsPage"
-          >
-            <span className={css.menuItemBorder} />
-            <FormattedMessage id="TopbarDesktop.yourListingsLink" />
-          </NamedLink>
-        </MenuItem>
+      {isAdmin?<MenuItem key="ManageListingsPage">
+      <NamedLink
+        className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
+        name="ManageListingsPage"
+      >
+        <span className={css.menuItemBorder} />
+        <FormattedMessage id="TopbarDesktop.yourListingsLink" />
+      </NamedLink>
+     
+</MenuItem> :null}
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
             className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
