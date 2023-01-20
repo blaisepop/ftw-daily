@@ -103,8 +103,8 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
     // Example: Add custom directive override
     // imgSrc: exampleImgSrc,
     //CRM Link
-    'mobile-food-ch.herokuapp.com',
-    'localhost:5000',
+    prodCRMLink:'mobile-food-ch.herokuapp.com',
+    LocalCRMLink:'localhost:5000'
   };
 
   // ================ END CUSTOM CSP URLs ================ //
