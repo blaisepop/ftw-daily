@@ -34,7 +34,7 @@ const defaultDirectives = {
 
     //CRM Link
     'mobile-food-ch.herokuapp.com',
-    'localhost',
+    'localhost:*',
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
   frameSrc: [self, '*.stripe.com'],
