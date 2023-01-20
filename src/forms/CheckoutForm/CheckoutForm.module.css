@@ -7,3 +7,12 @@
 .submitButton{
     margin-top: 20px;
 }
+.speculateError {
+    color: var(--failColor);
+    margin: 19px 0 1px 0;
+  
+    @media (--viewportLarge) {
+      margin: 28px 48px 0 48px;
+    }
+  }
+  

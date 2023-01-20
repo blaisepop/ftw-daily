@@ -37,6 +37,7 @@ import {
   fetchTransactionLineItems,
 } from './TransactionPage.duck';
 import css from './TransactionPage.module.css';
+import axios from 'axios';
 
 const PROVIDER = 'provider';
 const CUSTOMER = 'customer';
@@ -85,10 +86,14 @@ export const TransactionPageComponent = props => {
   } = props;
 
   const currentTransaction = ensureTransaction(transaction);
+  console.log(currentTransaction);
   const currentListing = ensureListing(currentTransaction.listing);
   const isProviderRole = transactionRole === PROVIDER;
   const isCustomerRole = transactionRole === CUSTOMER;
-
+  
+    
+    
+  
   const redirectToCheckoutPageWithInitialValues = (initialValues, listing) => {
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates

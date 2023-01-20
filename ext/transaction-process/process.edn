@@ -23,17 +23,7 @@
    :from :state/enquiry,
    :to :state/preauthorized 
    :privileged? true}
-  {:name :transition/expire-payment,
-   :at
-   {:fn/plus
-    [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
-     {:fn/period ["PT15M"]}]},
-   :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
-    ],
-   :from :state/preauthorized,
-   :to :state/payment-expired}
+  
 
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
@@ -74,6 +64,7 @@
     ],
    :from :state/preauthorized,
    :to :state/declined}
+   
   {:name :transition/complete,
    :at {:fn/timepoint [:time/booking-end]},
    :actions [],

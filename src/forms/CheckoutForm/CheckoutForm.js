@@ -5,15 +5,23 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 import css from './CheckoutForm.module.css';
+import { FormattedMessage } from '../../util/reactIntl';
 
 import {PrimaryButton} from '../../components';
-export default function CheckoutForm() {
+import axios from "axios";
+export default function CheckoutForm(props) {
   const stripe = useStripe();
   const elements = useElements();
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [speculateTransactionError, setError]=useState(false)
 
+  const speculateTransactionErrorMessage = speculateTransactionError ? (
+    <p className={css.speculateError}>
+      <FormattedMessage id="CheckoutForm.ConfirmPaymentError" />
+    </p>
+  ) : null;
   useEffect(() => {
     if (!stripe) {
       return;
@@ -47,16 +55,35 @@ export default function CheckoutForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-
+    console.log("EEEE", elements.getElement('payment'));
     setIsLoading(true);
-
+   
+    const config = {
+      headers: { 
+        'X-User-Token': "t-wCWAyLtsToftoF9Rrq",
+        'X-User-Email': "26.mariusremy@gmail.com"
+      }
+  }
+   
+    console.log("number");
+    var data={
+        "amount": props.amount,
+        "payment_id":props.paymentIntentID
+    }
+    
+    axios.post("http://localhost:5000/api/v1/updatePaymentAmount" , 
+    data
+    ,config)
+    .then(async ()=>{
+     console.log("ELEMENTS",elements)
     const { error } = await stripe.confirmPayment({
+      
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
@@ -64,19 +91,19 @@ export default function CheckoutForm() {
       },
       redirect: 'if_required' 
     });
-
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
-    } else {
-      setMessage("An unexpected error occurred.");
+    if(error){
+      if (error.type === "card_error" || error.type === "validation_error") {
+        setError(true);
+      } else {
+        setError(true);
+      }
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
+    else {
+      props.registerBooking(props.valuesToSub)
+      setIsLoading(false);
+    }
+   });    
   };
 
   const paymentElementOptions = {
@@ -100,7 +127,7 @@ export default function CheckoutForm() {
                   Confirm booking
       </PrimaryButton>
       {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      {speculateTransactionErrorMessage}
     </form>
   );
 }

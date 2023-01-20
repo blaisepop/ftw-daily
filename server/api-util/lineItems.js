@@ -6,7 +6,7 @@ const { Money } = types;
 // line-item/night, line-item/day or line-item/units
 const bookingUnitType = 'line-item/units';
 const PROVIDER_COMMISSION_PERCENTAGE = -100;
-const MOBILE_FOOD_COMMISSION=0.08;
+const MOBILE_FOOD_COMMISSION=0.2;
 const resolveMenuPrice = key => {
   const mount=Number(key.split('-')[2])
     return new Money( mount*MOBILE_FOOD_COMMISSION, "CHF"); 
@@ -81,19 +81,28 @@ exports.transactionLineItems = (listing, bookingData) => {
   };
   
   const menus1=[];
-  Object.keys(menus).forEach(key => {
-    if(menus[key]>0){
-      menus1.push({
-      code: 'line-item/'+getName(key),
-      unitPrice: resolveMenuPrice(key),
-      quantity: menus[key],
-      includeFor: ['customer', 'provider'],
-      type:"menu",
-      id:getId(key),
-    });
-    }
+  if(menus){
     
-  });
+  }
+  if(menus){
+    Object.keys(menus).forEach(key => {
+      if(menus[key]>0){
+        menus1.push({
+        code: 'line-item/'+getName(key),
+        unitPrice: resolveMenuPrice(key),
+        quantity: menus[key],
+        includeFor: ['customer', 'provider'],
+        type:"menu",
+        id:getId(key),
+      });
+      }
+      
+    });
+  }
+  else{
+    
+  }
+  
   const feePrice = hasFee ? resolveFeePrice(listing) : null;
  const fee = feePrice
    ? [

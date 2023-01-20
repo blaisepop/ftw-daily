@@ -124,6 +124,9 @@
   "CheckoutPage.speculateTransactionError": "Impossible de charger les détails de la réservation.",
   "CheckoutPage.postError": "Une erreur s'est produite, veuillez vérifier que vous avez bien confirmé votre adresse email.",
   "CheckoutPage.title": "Réserver {listingTitle}",
+  "CheckoutForm.ConfirmPaymentError":"Une erreur s'est produite lors du paiement ",
+  "CheckoutPage.RegisterError":"Une erreur s'est produite lors de la réservation ",
+
   "ConfirmSignupForm.emailInvalid": "Une adresse email valide est requise",
   "ConfirmSignupForm.emailLabel": "Email",
   "ConfirmSignupForm.emailPlaceholder": "john.doe@example.com",
@@ -231,6 +234,7 @@
   "EditListingDescriptionForm.capacity": "Le nombre minimal d'invités",
   "EditListingDescriptionForm.capacityPlaceholder": "Minimum d'invités",
   "EditListingDescriptionForm.capacityRequired": "Le nombre d'invités est requis.",
+  
   "EditListingDescriptionPanel.createListingTitle": "Ajoutez votre Food truck",
   "EditListingDescriptionPanel.title": "Modifier les détails de {listingTitle}",
   "EditListingFeaturesForm.showListingFailed": "Impossible de récupérer les informations de l'annonce",
@@ -295,6 +299,7 @@
   "EditListingPartnerIDPanel.title":"Numéro de Partenaire",
   "EditListingPartnerIDForm.numberPlaceholder": "Veuillez renseigner le partner_number de ce Food truck",
   "EditListingPartnerIDForm.numberLabel": "Numéro",
+  "EditListingNumberForm.numberRequired":"Le numéro de partner est requis",
   "EditListingWizard.payoutModalInfo": "Vous y êtes presque ! Pour pouvoir vous transférer vos gains, nous devons en apprendre un peu plus sur vous. Nous vous guiderons tout au long de la vérification de votre compte. Ces informations pourront ensuite être modifiées depuis les paramètres de votre compte dans l'onglet Détails de paiement.",
   "EditListingWizard.payoutModalTitleOneMoreThing": "Encore une petite chose :",
   "EditListingWizard.payoutModalTitlePayoutPreferences": "Préférences de paiements",

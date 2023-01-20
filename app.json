@@ -48,7 +48,7 @@
     },
     "MOBILE_FOOD_COMMISSION":{
       "description": "commission mobile food",
-      "value": 0.08
+      "value": 0.20
     }
   }
 }

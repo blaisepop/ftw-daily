@@ -6,6 +6,8 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { Form, Button, FieldTextInput } from '../../components';
+import { maxLength, required, composeValidators } from '../../util/validators';
+
 
 import css from './EditListingPartnerIDForm.module.css';
 
@@ -34,7 +36,9 @@ export const EditListingPartnerIDFormComponent = props => (
         id: "EditListingPartnerIDForm.numberPlaceholder",
       });
       
-
+      const numberRequiredMessage = intl.formatMessage({
+        id: 'EditListingPartnerIDForm.numberRequired',
+      });
       const { updateListingError, showListingsError } = fetchErrors || {};
       const errorMessage = updateListingError ? (
         <p className={css.error}>
@@ -63,8 +67,8 @@ export const EditListingPartnerIDFormComponent = props => (
             className={css.partnerID}
             type="textarea"
             label={numberLabelMessage}
+            validate={composeValidators(required(numberRequiredMessage))}
           />
-
           <Button
             className={css.submitButton}
             type="submit"
