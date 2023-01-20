@@ -102,6 +102,9 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
   const customDirectives = {
     // Example: Add custom directive override
     // imgSrc: exampleImgSrc,
+    //CRM Link
+    'mobile-food-ch.herokuapp.com',
+    'localhost:5000',
   };
 
   // ================ END CUSTOM CSP URLs ================ //
