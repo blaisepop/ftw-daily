@@ -6,7 +6,7 @@ import { currencyConfiguration } from './currency-config';
 const env = process.env.REACT_APP_ENV;
 const dev = process.env.REACT_APP_ENV === 'development';
 
-const mfCommission = process.env.REACT_APP_MOBILE_FOOD_COMMISSION;
+const mfCommission = process.env.REACT_APP_FIRST_PAYMENT_PART;
 
 console.log("COMMISSION",mfCommission, "all variables", process.env)
 
