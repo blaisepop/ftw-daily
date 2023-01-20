@@ -33,8 +33,8 @@ const defaultDirectives = {
     '*.stripe.com',
 
     //CRM Link
-    //'mobile-food-ch.herokuapp.com',
-    'localhost:5000',
+    'mobile-food-ch.herokuapp.com',
+    'localhost',
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
   frameSrc: [self, '*.stripe.com'],
@@ -103,11 +103,7 @@ module.exports = (reportUri, enforceSsl, reportOnly) => {
     // Example: Add custom directive override
     // imgSrc: exampleImgSrc,
     //CRM Link
-    connectSrc: [
-      "mobile-food-ch.herokuapp.com",
-      "localhost:5000"
-    ]
-    
+   
   };
 
   // ================ END CUSTOM CSP URLs ================ //
