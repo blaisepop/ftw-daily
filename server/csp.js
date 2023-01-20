@@ -8,7 +8,7 @@ const data = 'data:';
 const blob = 'blob:';
 const devImagesMaybe = dev ? ['*.localhost:8000'] : [];
 const baseUrl = process.env.REACT_APP_SHARETRIBE_SDK_BASE_URL || 'https://flex-api.sharetribe.com';
-
+const localhost='http://localhost:*'
 // Default CSP whitelist.
 //
 // NOTE: Do not change these in the customizations, make custom
@@ -33,8 +33,13 @@ const defaultDirectives = {
     '*.stripe.com',
 
     //CRM Link
+    'localhost',
+    '127.0.0.1',
     'mobile-food-ch.herokuapp.com',
-    'localhost:*',
+    'http://localhost:*',
+    '*//localhost:5000/*',
+
+    
   ],
   fontSrc: [self, data, 'assets-sharetribecom.sharetribe.com', 'fonts.gstatic.com'],
   frameSrc: [self, '*.stripe.com'],
