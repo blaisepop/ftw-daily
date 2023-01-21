@@ -57,7 +57,7 @@ export default function CheckoutForm(props) {
 
     e.preventDefault();
     console.log(props.valuesToSub)
-    if (!stripe || !elements || !(props.valuesToSub&&props.valuesToSub.BookingAddress&&props.valuesToSub.BookingAddress.trim()!="")) {
+    if (!stripe || !elements || !(props.valuesToSub&&props.valuesToSub.values&&props.valuesToSub.values.BookingAddress&&props.valuesToSub.values.BookingAddress.trim()!="")) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
