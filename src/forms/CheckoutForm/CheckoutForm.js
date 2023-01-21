@@ -56,8 +56,8 @@ export default function CheckoutForm(props) {
   const handleSubmit = async (e) => {
 
     e.preventDefault();
-    
-    if (!stripe || !elements || !(props.valuesToSub&&props.valuesToSub.adresse&&props.valuesToSub.adresse.trim()!="")) {
+    console.log(props.valuesToSub)
+    if (!stripe || !elements || !(props.valuesToSub&&props.valuesToSub.BookingAddress&&props.valuesToSub.BookingAddress.trim()!="")) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
