@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  PaymentElement,
+  CardElement,
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
@@ -113,7 +113,7 @@ export default function CheckoutForm(props) {
 
   return (
     <form id="payment-form" onSubmit={handleSubmit} className={css.root}>
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
+      <CardElement id="payment-element" options={paymentElementOptions} />
       {/*<button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
