@@ -654,7 +654,7 @@ export class CheckoutPageComponent extends Component {
                     <FormattedMessage id="StripePaymentForm.cardHeading" />
                   </h3>
                 {clientSecret && (
-                  <Elements stripe={stripePromise}>
+                  <Elements options={options} stripe={stripePromise}>
                     <CheckoutForm 
                       paymentIntentID={this.state.paymentIntentID} 
                       amount={amount}

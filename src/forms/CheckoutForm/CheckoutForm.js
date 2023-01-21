@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-  
+  PaymentElement,
   useStripe,
-  useElements,
-  CardElement
+  useElements
 } from "@stripe/react-stripe-js";
 import css from './CheckoutForm.module.css';
 import { FormattedMessage } from '../../util/reactIntl';
@@ -109,28 +108,12 @@ export default function CheckoutForm(props) {
   };
 
   const paymentElementOptions = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#aab7c4",
-        },
-        
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
-    },
-  
-  };
+    layout: "tabs"
+  }
 
   return (
     <form id="payment-form" onSubmit={handleSubmit} className={css.root}>
-      <CardElement id="payment-element" options={paymentElementOptions} />
+      <PaymentElement id="payment-element" options={paymentElementOptions} />
       {/*<button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
