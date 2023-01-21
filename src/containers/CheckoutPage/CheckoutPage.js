@@ -307,7 +307,7 @@ export class CheckoutPageComponent extends Component {
               id: orderId.uuid,
             });
             clearData(STORAGE_KEY);
-            //history.push(orderDetailsPath);
+            history.push(orderDetailsPath);
           })
           .catch(() => {
             this.setState({registerTransactionError:true})
