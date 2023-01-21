@@ -67,6 +67,7 @@ import css from './CheckoutPage.module.css';
 
 const STORAGE_KEY = 'CheckoutPage';
 const stripeKey = config.stripe.publishableKey;
+console.log("key", stripeKey);
 const stripePromise = loadStripe(stripeKey);
 
 
