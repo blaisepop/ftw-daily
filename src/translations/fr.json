@@ -959,6 +959,8 @@
   "StripePaymentForm.genericError": "Impossible de traiter ces détails de paiement. Veuillez essayer de nouveau.",
   "StripePaymentForm.confirmCardPaymentError": "Nous n'avons pas pu valider votre méthode de paiement. Veuillez vérifier vos informations et essayer de nouveau.",
   "StripePaymentForm.messageHeading": "Message",
+  "StripePaymentForm.cardHeading": "Informations de paiement",
+
   "StripePaymentForm.messageLabel": "Prenez un moment dire quelques mots au propriétaire",
   "StripePaymentForm.messageOptionalText": "• optionel",
   "StripePaymentForm.messagePlaceholder": "Bonjour {name} ! J'aimerais…",

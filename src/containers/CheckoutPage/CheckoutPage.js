@@ -650,9 +650,11 @@ export class CheckoutPageComponent extends Component {
                 </div>
               ) : null}
               <div className={css.submitContainer}>
-
+                <h3 className={css.messageHeading}>
+                    <FormattedMessage id="StripePaymentForm.cardHeading" />
+                  </h3>
                 {clientSecret && (
-                  <Elements options={options} stripe={stripePromise}>
+                  <Elements stripe={stripePromise}>
                     <CheckoutForm 
                       paymentIntentID={this.state.paymentIntentID} 
                       amount={amount}

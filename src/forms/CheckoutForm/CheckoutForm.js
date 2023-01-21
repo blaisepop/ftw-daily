@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   CardElement,
   useStripe,
-  useElements
+  useElements,
+  CardElement
 } from "@stripe/react-stripe-js";
 import css from './CheckoutForm.module.css';
 import { FormattedMessage } from '../../util/reactIntl';
@@ -108,8 +109,24 @@ export default function CheckoutForm(props) {
   };
 
   const paymentElementOptions = {
-    layout: "tabs"
-  }
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#aab7c4",
+        },
+        
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
+    },
+  
+  };
 
   return (
     <form id="payment-form" onSubmit={handleSubmit} className={css.root}>
