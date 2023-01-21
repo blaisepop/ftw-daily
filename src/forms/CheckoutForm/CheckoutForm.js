@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  CardElement,
+  
   useStripe,
   useElements,
   CardElement
