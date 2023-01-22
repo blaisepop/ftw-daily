@@ -101,8 +101,8 @@ export default function CheckoutForm(props) {
       setIsLoading(false);
     }
     else {
-      props.registerBooking(props.valuesToSub)
-      setIsLoading(false);
+      props.registerBooking(props.valuesToSub, props.amount)
+      //setIsLoading(false);
     }
    });    
   };

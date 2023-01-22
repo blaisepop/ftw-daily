@@ -231,7 +231,7 @@ export class CheckoutPageComponent extends Component {
     this.setState({formValues:values}) ; 
     
   }
-   registerBooking(values){
+   registerBooking(values, amount){
     if (this.state.submitting) {
       return;
     }
@@ -275,7 +275,8 @@ export class CheckoutPageComponent extends Component {
           "sharetribe_user_id": this.props.currentUser.id.uuid,
           "status": "Cancelled",
           "marketplace_transaction_id": transactionID,
-          "payment_intent_id": this.state.paymentIntentID
+          "payment_intent_id": this.state.paymentIntentID,
+          "total_amount":amount
         }
 
       }
