@@ -78,7 +78,7 @@ export default function CheckoutForm(props) {
         "payment_id":props.paymentIntentID
     }
     
-    axios.post("http://localhost:5000/api/v1/updatePaymentAmount" , 
+    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" , 
     data
     ,config)
     .then(async ()=>{
@@ -88,7 +88,7 @@ export default function CheckoutForm(props) {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: "https://marketplace.mobile-food.ch/",
       },
       redirect: 'if_required' 
     });

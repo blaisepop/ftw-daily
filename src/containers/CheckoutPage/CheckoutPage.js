@@ -115,7 +115,7 @@ export class CheckoutPageComponent extends Component {
       partner_number: partnerNumber
     }
 
-    axios.post("http://localhost:5000/api/v1/paymentIntent",
+    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/paymentIntent",
       data
       , config)
       .then((res) => res.data)
@@ -285,7 +285,7 @@ export class CheckoutPageComponent extends Component {
           'X-User-Email': "26.mariusremy@gmail.com"
         }
       }
-      axios.post("http://localhost:5000/api/v1/bookings",
+      axios.post("https://mobile-food-ch.herokuapp.com/api/v1/bookings",
         bookingForCRM
         , config)
         .then(()=>{

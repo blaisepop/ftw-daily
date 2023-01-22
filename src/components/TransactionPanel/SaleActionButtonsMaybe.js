@@ -37,7 +37,7 @@ const SaleActionButtonsMaybe = props => {
     const data={
       "marketplace_transaction_id":transactionId.uuid
     }
-    axios.post("http://localhost:5000/api/v1/confirmPayment",
+    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/confirmPayment",
       data
       , config)
       .then(()=>{
