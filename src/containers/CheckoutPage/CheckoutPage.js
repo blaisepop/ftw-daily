@@ -102,7 +102,7 @@ export class CheckoutPageComponent extends Component {
     console.log(this.state.pageData);
     const config = {
       headers: {
-        'X-User-Token': "t-wCWAyLtsToftoF9Rrq",
+        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
         'X-User-Email': "26.mariusremy@gmail.com"
       }
     }

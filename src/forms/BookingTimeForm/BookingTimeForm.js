@@ -79,7 +79,7 @@ export class BookingTimeFormComponent extends Component {
     else if (!this.state.showCapacityMessage && !this.state.showBookedMessage) {
       const config = {
         headers: { 
-          'X-User-Token': "t-wCWAyLtsToftoF9Rrq",//"HExzbkejGSjXMXKu-HiT",
+          'X-User-Token': "HExzbkejGSjXMXKu-HiT",//"HExzbkejGSjXMXKu-HiT",
           'X-User-Email': "26.mariusremy@gmail.com"
         }
     }

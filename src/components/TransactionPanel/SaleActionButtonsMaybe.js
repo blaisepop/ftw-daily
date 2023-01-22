@@ -30,7 +30,7 @@ const SaleActionButtonsMaybe = props => {
     setCaptureInProgress(true)
     const config = {
       headers: {
-        'X-User-Token': "t-wCWAyLtsToftoF9Rrq",
+        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
         'X-User-Email': "26.mariusremy@gmail.com"
       }
     }
