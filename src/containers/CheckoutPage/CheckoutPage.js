@@ -100,7 +100,7 @@ export class CheckoutPageComponent extends Component {
     }*/
 
     console.log(this.state.pageData);
-    const config = {
+    const conf = {
       headers: {
         'X-User-Token': "HExzbkejGSjXMXKu-HiT",
         'X-User-Email': "26.mariusremy@gmail.com"
@@ -117,7 +117,7 @@ export class CheckoutPageComponent extends Component {
 
     axios.post("https://mobile-food-ch.herokuapp.com/api/v1/paymentIntent",
       data
-      , config)
+      , conf)
       .then((res) => res.data)
       .then((data) =>
         data.payment_intent
@@ -276,11 +276,11 @@ export class CheckoutPageComponent extends Component {
           "status": "Cancelled",
           "marketplace_transaction_id": transactionID,
           "payment_intent_id": this.state.paymentIntentID,
-          "total_amount":amount
+          "total_amount":amount/config.mfCommission
         }
 
       }
-      const config = {
+      const conf = {
         headers: {
           'X-User-Token': "HExzbkejGSjXMXKu-HiT",
           'X-User-Email': "26.mariusremy@gmail.com"
@@ -288,7 +288,7 @@ export class CheckoutPageComponent extends Component {
       }
       axios.post("https://mobile-food-ch.herokuapp.com/api/v1/bookings",
         bookingForCRM
-        , config)
+        , conf)
         .then(()=>{
           onSendMessage({ ...params, message: initialMessage })
           .then(values => {
