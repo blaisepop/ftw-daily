@@ -38,7 +38,7 @@ const LineItemUnknownItemsMaybe = props => {
        
         let itemCopy=_.cloneDeep(item);
         
-        itemCopy.lineTotal.amount=itemCopy.lineTotal.amount/config.mfCommission;
+        //itemCopy.lineTotal.amount=itemCopy.lineTotal.amount/config.mfCommission;
         const label =
           quantity && quantity > 1
             ? `${humanizeLineItemCode(item.code)} x ${quantity}`

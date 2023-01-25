@@ -34,6 +34,7 @@ import axios from "axios";
  *         and tie them with correct extended data key
  *         (i.e. pub_<key> or meta_<key>).
  */
+/*
 var opt=[]
 axios.get("https://mobile-food-ch.herokuapp.com/api/v1/food_types") .then(resp=>{
  var listeFiltersType=resp.data
@@ -44,7 +45,7 @@ axios.get("https://mobile-food-ch.herokuapp.com/api/v1/food_types") .then(resp=>
 })
 .catch(e=>{
  throw(e);
-})
+})*/
 export const filters = [
   {
     id: 'dates-length',
@@ -129,15 +130,15 @@ export const filters = [
       schemaType: 'enum',
 
     
-      options: opt,
-    /* options:[
+    //  options: opt,
+     options:[
 
       { key: 'burger', label: 'Burger' },
       { key: 'pizza', label: 'Pizza' },
       { key: 'crepe', label: 'Crepe' },
       { key: 'thai', label: 'Thai' },
 
-    ],*/
+    ],
     },
   },
   {

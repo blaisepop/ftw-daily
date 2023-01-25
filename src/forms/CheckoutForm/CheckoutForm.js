@@ -68,6 +68,7 @@ export default function CheckoutForm(props) {
     const config = {
       headers: { 
         'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
         'X-User-Email': "26.mariusremy@gmail.com"
       }
   }
@@ -77,8 +78,9 @@ export default function CheckoutForm(props) {
         "amount": props.amount,
         "payment_id":props.paymentIntentID
     }
-    
     axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" , 
+    
+    //axios.post("http://localhost:5000/api/v1/updatePaymentAmount" , 
     data
     ,config)
     .then(async ()=>{

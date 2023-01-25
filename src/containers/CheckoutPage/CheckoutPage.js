@@ -103,6 +103,7 @@ export class CheckoutPageComponent extends Component {
     const conf = {
       headers: {
         'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
         'X-User-Email': "26.mariusremy@gmail.com"
       }
     }
@@ -116,6 +117,7 @@ export class CheckoutPageComponent extends Component {
     }
 
     axios.post("https://mobile-food-ch.herokuapp.com/api/v1/paymentIntent",
+    //axios.post("http://localhost:5000/api/v1/paymentIntent",
       data
       , conf)
       .then((res) => res.data)
@@ -248,9 +250,10 @@ export class CheckoutPageComponent extends Component {
       bookingStart: speculatedTransaction.booking.attributes.start,
       bookingEnd: speculatedTransaction.booking.attributes.end,
       menus: this.state.pageData.bookingData.menus,
-      hasFee: this.state.pageData.bookingData.hasFee,
+      hasFee: this.state.pageData.bookingData.fee,
       nbGuest: this.state.pageData.bookingData.nbGuest,
     };
+    console.log("params",requestParams);
     const enquiredTransaction = this.state.pageData.enquiredTransaction;
     const transactionIdMaybe = enquiredTransaction ? enquiredTransaction.id : null;
 
@@ -283,9 +286,12 @@ export class CheckoutPageComponent extends Component {
       const conf = {
         headers: {
           'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+         // 'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
+         
           'X-User-Email': "26.mariusremy@gmail.com"
         }
       }
+      //axios.post("http://localhost:5000/api/v1/bookings",
       axios.post("https://mobile-food-ch.herokuapp.com/api/v1/bookings",
         bookingForCRM
         , conf)
@@ -658,7 +664,7 @@ export class CheckoutPageComponent extends Component {
                   <Elements options={options} stripe={stripePromise}>
                     <CheckoutForm 
                       paymentIntentID={this.state.paymentIntentID} 
-                      amount={amount}
+                      amount={amount*config.mfCommission}
                       valuesToSub={this.state.formValues}
                       registerBooking={this.registerBooking}
                       />

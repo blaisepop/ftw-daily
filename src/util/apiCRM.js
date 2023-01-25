@@ -4,11 +4,12 @@ import axios from "axios";
 const config = {
     headers: { 
       'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+      //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
       'X-User-Email': "26.mariusremy@gmail.com"
     }
 }
 const baseUrl="https://mobile-food-ch.herokuapp.com/api/v1/";
-//
+//const baseUrl="http://localhost:5000/api/v1/";
 export  const post=(url, object)=>{
     return axios.post(baseUrl+url, object, config)
     .then((resp)=> resp.data)

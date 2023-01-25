@@ -32,7 +32,7 @@ const LineItemUnitPrice = props => {
     : transaction.attributes.payinTotal;
   
   let t=_.cloneDeep(totalPrice);
-  t.amount/=config.mfCommission;
+ // t.amount//=config.mfCommission;
   const formattedTotalPrice = formatMoney(intl, t);
 
   return (

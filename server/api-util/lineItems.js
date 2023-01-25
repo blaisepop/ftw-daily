@@ -6,7 +6,7 @@ const { Money } = types;
 // line-item/night, line-item/day or line-item/units
 const bookingUnitType = 'line-item/units';
 const PROVIDER_COMMISSION_PERCENTAGE = -100;
-const MOBILE_FOOD_COMMISSION=0.2;
+const MOBILE_FOOD_COMMISSION=1;
 const resolveMenuPrice = key => {
   const mount=Number(key.split('-')[2])
     return new Money( mount*MOBILE_FOOD_COMMISSION, "CHF"); 

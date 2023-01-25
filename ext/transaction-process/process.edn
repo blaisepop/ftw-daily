@@ -128,6 +128,15 @@
    :on :transition/confirm-payment,
    :to :actor.role/provider,
    :template :new-booking-request}
+   {:name :notification/new-booking-request1,
+   :on :transition/request-payment,
+   :to :actor.role/provider,
+   :template :new-booking-request}
+   {:name :notification/new-booking-request2,
+   :on :transition/request-payment-after-enquiry,
+   :to :actor.role/provider,
+   :template :new-booking-request}
+
   {:name :notification/booking-request-accepted,
    :on :transition/accept,
    :to :actor.role/customer,

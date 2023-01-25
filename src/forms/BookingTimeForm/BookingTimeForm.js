@@ -72,7 +72,7 @@ export class BookingTimeFormComponent extends Component {
   }
 
   handleFormSubmit(e) {
-    if (this.totalCost < 80000*config.mfCommission) {
+    if (this.totalCost < 80000/*config.mfCommission*/) {
 
       this.setState({ showMinMessage: true })
     }
