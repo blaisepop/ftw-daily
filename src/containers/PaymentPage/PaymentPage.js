@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
-import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes';
+import {
+  createResourceLocatorString,
+  findRouteByRouteName,
+  pathByRouteName
+} from '../../util/routes';
 import routeConfiguration from '../../routeConfiguration';
 import {DATE_TYPE_DATETIME, propTypes} from '../../util/types';
 import {ensureBooking, ensureListing, ensureTransaction, ensureUser} from '../../util/data';
@@ -140,10 +144,16 @@ export const TransactionPageComponent = props => {
 
 
   })
-
+  const routes = routeConfiguration();
   function handleFirstPayment(){
     console.log("transaction",currentTransaction);
     onFirstPayment(currentTransaction.id.uuid)
+
+    const orderDetailsPath = pathByRouteName('OrderDetailsPage', routes, {
+      id: currentTransaction.id.uuid,
+    });
+
+    history.push(orderDetailsPath);
   }
   function handleSubmit(values){
 

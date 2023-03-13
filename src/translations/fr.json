@@ -129,7 +129,7 @@
   "CheckoutPage.title": "Réserver {listingTitle}",
   "CheckoutForm.ConfirmPaymentError":"Une erreur s'est produite lors du paiement ",
   "CheckoutPage.RegisterError":"Une erreur s'est produite lors de la réservation ",
-  "CheckoutForm.submitButton":"Confirmer le paiement",
+  "CheckoutForm.submitButton":"Demander la réservation",
   "ConfirmSignupForm.emailInvalid": "Une adresse email valide est requise",
   "ConfirmSignupForm.emailLabel": "Email",
   "ConfirmSignupForm.emailPlaceholder": "john.doe@example.com",
