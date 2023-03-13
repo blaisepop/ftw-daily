@@ -24,7 +24,7 @@ export const TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY = 'transition/request-paym
 // Therefore we need to make another transition to Marketplace API,
 // to tell that the payment is confirmed.
 export const TRANSITION_CONFIRM_PAYMENT = 'transition/confirm-payment';
-
+export const TRANSITION_FIRST_PAYMENT='transition/first-payment'
 // If the payment is not confirmed in the time limit set in transaction process (by default 15min)
 // the transaction will expire automatically.
 export const TRANSITION_EXPIRE_PAYMENT = 'transition/expire-payment';
@@ -94,6 +94,7 @@ const STATE_DELIVERED = 'delivered';
 const STATE_REVIEWED = 'reviewed';
 const STATE_REVIEWED_BY_CUSTOMER = 'reviewed-by-customer';
 const STATE_REVIEWED_BY_PROVIDER = 'reviewed-by-provider';
+const STATE_PENDING_FIRST_PAYMENT= 'pending-first-payment';
 
 /**
  * Description of transaction process
@@ -142,10 +143,14 @@ const stateDescription = {
       on: {
         [TRANSITION_DECLINE]: STATE_DECLINED,
         [TRANSITION_EXPIRE]: STATE_DECLINED,
-        [TRANSITION_ACCEPT]: STATE_ACCEPTED,
+        [TRANSITION_ACCEPT]: STATE_PENDING_FIRST_PAYMENT,
       },
     },
-
+    [STATE_PENDING_FIRST_PAYMENT]:{
+      on:{
+        [TRANSITION_FIRST_PAYMENT]:STATE_ACCEPTED
+      }
+    },
     [STATE_DECLINED]: {},
     [STATE_ACCEPTED]: {
       on: {
@@ -228,6 +233,8 @@ export const txIsEnquired = tx =>
 
 export const txIsPaymentPending = tx =>
   getTransitionsToState(STATE_PENDING_PAYMENT).includes(txLastTransition(tx));
+export const txIsFirstPaymentPending = tx =>
+  getTransitionsToState(STATE_PENDING_FIRST_PAYMENT).includes(txLastTransition(tx));
 
 export const txIsPaymentExpired = tx =>
   getTransitionsToState(STATE_PAYMENT_EXPIRED).includes(txLastTransition(tx));
@@ -238,7 +245,7 @@ export const txIsRequested = tx =>
   getTransitionsToState(STATE_PREAUTHORIZED).includes(txLastTransition(tx));
 
 export const txIsAccepted = tx =>
-  getTransitionsToState(STATE_ACCEPTED).includes(txLastTransition(tx));
+  getTransitionsToState(STATE_PENDING_FIRST_PAYMENT).includes(txLastTransition(tx));
 
 export const txIsDeclined = tx =>
   getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
@@ -303,6 +310,7 @@ export const isRelevantPastTransition = transition => {
   return [
     TRANSITION_ACCEPT,
     TRANSITION_CANCEL,
+    TRANSITION_FIRST_PAYMENT,
     TRANSITION_COMPLETE,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_DECLINE,

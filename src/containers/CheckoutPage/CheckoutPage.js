@@ -92,7 +92,7 @@ export class CheckoutPageComponent extends Component {
     this.handleOnChange = this.handleOnChange.bind(this);
     this.registerBooking = this.registerBooking.bind(this);
 
-    
+
   }
   componentDidMount() {
     /*if (window) {
@@ -108,13 +108,11 @@ export class CheckoutPageComponent extends Component {
       }
     }
 
-    const partnerNumber = this.state.pageData.listing.attributes.publicData.partnerNumber;
-    const amount = this.state.amount;
-    console.log("number", partnerNumber);
 
-    const data = {
+    /*const data = {
       partner_number: partnerNumber
     }
+
 
     axios.post("https://mobile-food-ch.herokuapp.com/api/v1/paymentIntent",
     //axios.post("http://localhost:5000/api/v1/paymentIntent",
@@ -128,15 +126,13 @@ export class CheckoutPageComponent extends Component {
         console.log("aaaa", payment_intent);
         this.setState({ clientSecret: payment_intent.client_secret })
         this.setState({ paymentIntentID: payment_intent.id })
-      });
+      });*/
   }
 
   componentWillMount() {
     if (window) {
       this.loadInitialData();
-
     }
-    console.log("load")
   }
 
   /**
@@ -224,14 +220,64 @@ export class CheckoutPageComponent extends Component {
     this.setState({ pageData: pageData || {}, dataLoaded: true });
   }
 
-  async handleSubmit(values) {
 
-  }
+    handleSubmit(values, amount) {
+      if (this.state.submitting) {
+        return;
+      }
+
+      this.setState({ submitting: true });
+      this.registerBooking(values, amount)/*
+      const initialMessage = values.initialMessage;
+      const { history, speculatedTransaction, dispatch, onInitiateOrder, onSendMessage } = this.props;
+
+      // Create order aka transaction
+      // NOTE: if unit type is line-item/units, quantity needs to be added.
+      // The way to pass it to checkout page is through pageData.bookingData
+
+      const requestParams = {
+        listingId: this.state.pageData.listing.id,
+        bookingStart: speculatedTransaction.booking.attributes.start,
+        bookingEnd: speculatedTransaction.booking.attributes.end,
+        menus: this.state.pageData.bookingData.menus,
+        hasFee: this.state.pageData.bookingData.fee,
+        nbGuest: this.state.pageData.bookingData.nbGuest,
+      };
+      const enquiredTransaction = this.state.pageData.enquiredTransaction;
+      const transactionIdMaybe = enquiredTransaction ? enquiredTransaction.id : null;
+
+      onInitiateOrder(requestParams, transactionIdMaybe).then(params => {
+        onSendMessage({ ...params, message: initialMessage })
+          .then(values => {
+            const { orderId, messageSuccess } = values;
+            this.setState({ submitting: false });
+            const routes = routeConfiguration();
+            const OrderPage = findRouteByRouteName('OrderDetailsPage', routes);
+
+            // Transaction is already created, but if the initial message
+            // sending failed, we tell it to the OrderDetailsPage.
+            dispatch(
+              OrderPage.setInitialValues({
+                initialMessageFailedToTransaction: messageSuccess ? null : orderId,
+              })
+            );
+            const orderDetailsPath = pathByRouteName('OrderDetailsPage', routes, {
+              id: orderId.uuid,
+            });
+            clearData(STORAGE_KEY);
+            history.push(orderDetailsPath);
+          })
+          .catch(() => {
+            this.setState({ submitting: false });
+          });
+      });*/
+    }
+
 
   handleOnChange(values){
     console.log(this.state.formValues);
-    this.setState({formValues:values}) ; 
-    
+    this.setState({formValues:values}) ;
+
   }
    registerBooking(values, amount){
     if (this.state.submitting) {
@@ -269,30 +315,29 @@ export class CheckoutPageComponent extends Component {
       {
         "booking":
         {
-          "address": values.values.BookingAddress,
+          "address": values.BookingAddress,
           "budget_per_guest": "12",
           "guest_quantity": requestParams.nbGuest,
           "start_time": new Date(this.state.pageData.bookingDates.bookingStart).toISOString(),
           "end_time": new Date(this.state.pageData.bookingDates.bookingEnd).toISOString(),
           "partner_number": partnerNumber,
           "sharetribe_user_id": this.props.currentUser.id.uuid,
-          "status": "Cancelled",
+          "status": "Sharetribe requested",
           "marketplace_transaction_id": transactionID,
           "payment_intent_id": this.state.paymentIntentID,
-          "total_amount":amount/config.mfCommission
+          "total_amount":amount
         }
-
       }
       const conf = {
         headers: {
           'X-User-Token': "HExzbkejGSjXMXKu-HiT",
          // 'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
-         
+
           'X-User-Email': "26.mariusremy@gmail.com"
         }
       }
       //axios.post("http://localhost:5000/api/v1/bookings",
-      axios.post("https://mobile-food-ch.herokuapp.com/api/v1/bookings",
+        axios.post("https://mobile-food-ch.herokuapp.com/api/v1/bookings",
         bookingForCRM
         , conf)
         .then(()=>{
@@ -302,7 +347,7 @@ export class CheckoutPageComponent extends Component {
             this.setState({ submitting: false });
             const routes = routeConfiguration();
             const OrderPage = findRouteByRouteName('OrderDetailsPage', routes);
-  
+
             // Transaction is already created, but if the initial message
             // sending failed, we tell it to the OrderDetailsPage.
             dispatch(
@@ -328,7 +373,7 @@ export class CheckoutPageComponent extends Component {
           return;
         });
       console.log("bookingCRM", bookingForCRM);
-     
+
     });
   }
   render() {
@@ -539,7 +584,7 @@ export class CheckoutPageComponent extends Component {
         </p>
       );
     }
-  
+
     const topbar = (
       <div className={css.topbar}>
         <NamedLink className={css.home} name="LandingPage">
@@ -615,7 +660,7 @@ export class CheckoutPageComponent extends Component {
     console.log("EEERRRUUUURRR", speculateTransactionError)
     const bookingForm = !speculateTransactionError?(
       <FinalForm
-        onSubmit={values => this.handleSubmit(values)}
+        onSubmit={values => this.handleSubmit(values, amount)}
         render={fieldRenderProps => {
           const { handleSubmit } = fieldRenderProps;
           return (
@@ -627,7 +672,7 @@ export class CheckoutPageComponent extends Component {
                 }}
               />
               {showInitialMessageInput ? (
-                <div>
+                <div className={css.messageHeading} >
 
                   <h3 className={css.addressHeading}>
                     <FormattedMessage id="StripePaymentForm.addressHeading" />
@@ -656,34 +701,34 @@ export class CheckoutPageComponent extends Component {
                   />
                 </div>
               ) : null}
-              <div className={css.submitContainer}>
+              {/*<div className={css.submitContainer}>
                 <h3 className={css.messageHeading}>
                     <FormattedMessage id="StripePaymentForm.cardHeading" />
                   </h3>
-                {clientSecret && (
+                clientSecret && (
                   <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm 
-                      paymentIntentID={this.state.paymentIntentID} 
+                    <CheckoutForm
+                      paymentIntentID={this.state.paymentIntentID}
                       amount={amount*config.mfCommission}
                       valuesToSub={this.state.formValues}
                       registerBooking={this.registerBooking}
                       />
                   </Elements>)
-                }
-              </div>
+
+              </div>*/}
               {registerErrorMessage}
-              {/*<PrimaryButton
+              {<PrimaryButton
                   className={css.submitButton}
                   type="submit"
                   inProgress={isLoading }
-                 
+
                 >
                   Confirm booking
-              </PrimaryButton>*/}
+              </PrimaryButton>}
             </Form>
           );
         }}
-      /> 
+      />
     ):null;
 
     return (
@@ -737,7 +782,7 @@ export class CheckoutPageComponent extends Component {
             </div>
 
             {speculateTransactionErrorMessage}
-           
+
             {breakdown}
           </div>
         </div>

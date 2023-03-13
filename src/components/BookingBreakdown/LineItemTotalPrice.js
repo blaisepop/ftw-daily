@@ -26,14 +26,26 @@ const LineItemUnitPrice = props => {
   ) : (
     <FormattedMessage id="BookingBreakdown.total" />
   );
+  
+   
+    const firstPaymentLabel=<FormattedMessage id="BookingBreakdown.totalFirstPayment" />;
+  
+
+    const secondPaymentLabel=<FormattedMessage id="BookingBreakdown.totalSecondPayment" />;
 
   const totalPrice = isProvider
     ? transaction.attributes.payoutTotal
     : transaction.attributes.payinTotal;
   
-  let t=_.cloneDeep(totalPrice);
- // t.amount//=config.mfCommission;
-  const formattedTotalPrice = formatMoney(intl, t);
+  let firstPaymentPrice=_.cloneDeep(totalPrice);
+  let secondPaymentPrice=_.cloneDeep(totalPrice);
+  firstPaymentPrice.amount*=config.mfCommission;
+  secondPaymentPrice.amount*=1-config.mfCommission;
+
+  const formattedTotalPrice = formatMoney(intl, totalPrice);
+  const formattedFirstPaymentPrice= formatMoney(intl, firstPaymentPrice);
+  const formattedsecondPaymentPrice= formatMoney(intl, secondPaymentPrice);
+
 
   return (
     <>
@@ -41,6 +53,14 @@ const LineItemUnitPrice = props => {
       <div className={css.lineItemTotal}>
         <div className={css.totalLabel}>{totalLabel}</div>
         <div className={css.totalPrice}>{formattedTotalPrice}</div>
+      </div>
+      <div className={css.lineItemTotal}>
+        <div className={css.totalLabel}>{firstPaymentLabel}</div>
+        <div className={css.itemValue}>{formattedFirstPaymentPrice}</div>
+      </div>
+      <div className={css.lineItemTotal}>
+        <div className={css.totalLabel}>{secondPaymentLabel}</div>
+        <div className={css.itemValue}>{formattedsecondPaymentPrice}</div>
       </div>
     </>
   );

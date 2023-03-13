@@ -480,3 +480,10 @@
   margin-top: 0;
   margin-bottom: 1px;
 }
+.stickyLink{
+  top:0px;
+  position: sticky;
+}
+.pagePaymentLink{
+ color:white;
+}

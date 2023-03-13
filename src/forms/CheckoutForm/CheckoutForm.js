@@ -54,59 +54,56 @@ export default function CheckoutForm(props) {
   }, [stripe]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault()
 
-    e.preventDefault();
-    console.log(props.valuesToSub)
-    if (!stripe || !elements || !(props.valuesToSub&&props.valuesToSub.values&&props.valuesToSub.values.BookingAddress&&props.valuesToSub.values.BookingAddress.trim()!="")) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
+
+
     console.log("EEEE", elements.getElement('payment'));
     setIsLoading(true);
-   
+
     const config = {
-      headers: { 
+      headers: {
         'X-User-Token': "HExzbkejGSjXMXKu-HiT",
         //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
         'X-User-Email': "26.mariusremy@gmail.com"
       }
-  }
-   
-    console.log("number");
+    }
+
+    console.log("number", props.amount);
     var data={
-        "amount": props.amount,
-        "payment_id":props.paymentIntentID
+      "amount": props.amount,
+      "payment_id":props.paymentIntentID
     }
-    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" , 
-    
-    //axios.post("http://localhost:5000/api/v1/updatePaymentAmount" , 
-    data
-    ,config)
-    .then(async ()=>{
-     console.log("ELEMENTS",elements)
-    const { error } = await stripe.confirmPayment({
-      
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: "https://marketplace.mobile-food.ch/",
-      },
-      redirect: 'if_required' 
-    });
-    if(error){
-      if (error.type === "card_error" || error.type === "validation_error") {
-        setError(true);
-      } else {
-        setError(true);
-      }
-      setIsLoading(false);
-    }
-    else {
-      props.registerBooking(props.valuesToSub, props.amount)
-      //setIsLoading(false);
-    }
-   });    
+    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" ,
+
+      //axios.post("http://localhost:5000/api/v1/updatePaymentAmount" ,
+      data
+      ,config)
+      .then(async ()=>{
+        console.log("ELEMENTS",elements)
+        const { error } = await stripe.confirmPayment({
+
+          elements,
+          confirmParams: {
+            // Make sure to change this to your payment completion page
+            return_url: "https://marketplace.mobile-food.ch/",
+          },
+          redirect: 'if_required'
+        });
+        if(error){
+          if (error.type === "card_error" || error.type === "validation_error") {
+            setError(true);
+          } else {
+            setError(true);
+          }
+          setIsLoading(false);
+        }
+        else {
+          // props.registerBooking(props.valuesToSub, props.amount)
+          props.handleFunction();
+          setIsLoading(false);
+        }
+      });
   };
 
   const paymentElementOptions = {
@@ -122,12 +119,13 @@ export default function CheckoutForm(props) {
         </span>
   </button>*/}
       <PrimaryButton
-                  className={css.submitButton}
-                  type="submit"
-                  inProgress={isLoading }
-                 
-                >
-                  Confirm booking
+        className={css.submitButton}
+        type="submit"
+        inProgress={isLoading }
+      >
+        <FormattedMessage
+          id="CheckoutForm.submitButton"
+        />
       </PrimaryButton>
       {/* Show any error or success messages */}
       {speculateTransactionErrorMessage}

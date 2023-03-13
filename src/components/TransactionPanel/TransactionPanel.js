@@ -10,6 +10,7 @@ import {
   txIsEnquired,
   txIsPaymentExpired,
   txIsPaymentPending,
+  txIsFirstPaymentPending,
   txIsRequested,
   txHasBeenDelivered,
 } from '../../util/transaction';
@@ -25,7 +26,7 @@ import { formatMoney } from '../../util/currency';
 import {
   AvatarLarge,
   BookingPanel,
-  NamedLink,
+  NamedLink, PrimaryButton,
   ReviewModal,
   UserDisplayName,
 } from '../../components';
@@ -98,7 +99,7 @@ export class TransactionPanelComponent extends Component {
     this.onMessageSubmit = this.onMessageSubmit.bind(this);
     this.scrollToMessage = this.scrollToMessage.bind(this);
   }
- 
+
   componentDidMount() {
     this.isMobSaf = isMobileSafari();
   }
@@ -196,7 +197,7 @@ export class TransactionPanelComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
     } = this.props;
-    
+
     const currentTransaction = ensureTransaction(transaction);
     const currentListing = ensureListing(currentTransaction.listing);
     const currentProvider = ensureUser(currentTransaction.provider);
@@ -231,7 +232,14 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_PAYMENT_PENDING,
           showDetailCardHeadings: isCustomer,
         };
-      } else if (txIsPaymentExpired(tx)) {
+      }
+      else if(txIsFirstPaymentPending(tx)){
+        return{
+          showPaymentButton:isCustomer
+        }
+      }
+
+      else if (txIsPaymentExpired(tx)) {
         return {
           headingState: HEADING_PAYMENT_EXPIRED,
           showDetailCardHeadings: isCustomer,
@@ -303,8 +311,8 @@ export class TransactionPanelComponent extends Component {
 
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
+    console.log(currentTransaction.id);
 
-    
     /*const bookingForAPI =
       {
         "address": currentTransaction.attributes.metadata.address,
@@ -478,9 +486,29 @@ export class TransactionPanelComponent extends Component {
                 transactionRole={transactionRole}
               />
 
+
               {stateData.showSaleButtons ? (
                 <div className={css.desktopActionButtons}>{saleButtons}</div>
-              ) : null}
+              ) :
+               null
+                }
+              { stateData.showPaymentButton?(<div className={css.desktopActionButtons}>
+                <div className={css.actionButtons}>
+                  <NamedLink
+                    className={css.pagePaymentLink}
+                    name={'PaymentPage'}
+                    params={{ id: currentTransaction.id.uuid }}
+                  >
+                    <PrimaryButton>
+                      <FormattedMessage id="TransactionPanel.paymentPageLinkButton" />
+                    </PrimaryButton> </NamedLink>
+                </div>
+
+
+              </div>):null}
+              {
+
+              }
             </div>
           </div>
         </div>

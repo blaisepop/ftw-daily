@@ -322,7 +322,7 @@ for more information.
   introduces new endpoints `createUserWithIdp` and `loginWithIdp` and strategy for logging in with
   Facebook. See the PR for the more detailed view of the changes.
   [#1364](https://github.com/sharetribe/ftw-daily/pull/1364)
-- [fix] Fix missing proptype warnings in `TransactionPage` and `TransactionPanel` tests.
+- [fix] Fix missing proptype warnings in `PaymentPage` and `TransactionPanel` tests.
   [#1363](https://github.com/sharetribe/ftw-daily/pull/1363)
 - [fix] Improve error handling by passing error details forward instead of creating a new error that
   hides the details when making API call to FTW server.
@@ -648,7 +648,7 @@ allow multiple listings in your marketplace.)
 
 - [change] About page. [#50](https://github.com/sharetribe/ftw-time/pull/50)
 - [change] Remove “Hosted by” text from CheckoutPage. Link provider's avatar to listing instead of
-  the user profile on InboxPage and on TransactionPage. Don't add a link to profile to Avatar on
+  the user profile on InboxPage and on PaymentPage. Don't add a link to profile to Avatar on
   ActivityFeed or Reviews. [#47](https://github.com/sharetribe/ftw-time/pull/47)
 - [fix] Add allowOnlyOneListing prop to EditListingPage and redirect to existing listing if true.
   [#52](https://github.com/sharetribe/ftw-time/pull/52)
@@ -769,9 +769,9 @@ allow multiple listings in your marketplace.)
 - [add] New components `BookingTimeForm` and `FieldDateAndTimeInput` for handling time-based
   availability. Also change template to use time-based transaction process.
   [#7](https://github.com/sharetribe/ftw-time/pull/7)
-- [add] Inbox and TransactionPage use time zones to display booking times
+- [add] Inbox and PaymentPage use time zones to display booking times
   [#10](https://github.com/sharetribe/ftw-time/pull/10)
-- [add] Fetch timeSlots on ListingPage and TransactionPage.
+- [add] Fetch timeSlots on ListingPage and PaymentPage.
   [#9](https://github.com/sharetribe/ftw-time/pull/9)
 - [remove] Remove dateFromAPIToLocalNoon and dateFromLocalToAPI.
   [#6](https://github.com/sharetribe/ftw-time/pull/6)
@@ -901,7 +901,7 @@ allow multiple listings in your marketplace.)
   - UI changes to `CheckoutPage` for showing the saved payment method
   - One more step to `handlePaymentIntent` flow on `CheckoutPage` if the user decides to save the
     payment card
-  - Showing error notification on `TransactionPage` if saving the payment method has failed
+  - Showing error notification on `PaymentPage` if saving the payment method has failed
   - Use Flex SDK v1.5.0 which has new endpoints for creating Stripe Customer and using Stripe
     SetupIntents
   - Add `handleCardSetup` function to `stripe.duck.js`
@@ -990,7 +990,7 @@ Read more from Flex docs:
 
 - [fix] `stripeCardToken` didn't update when the user tried to book the same listing for a second
   time. This update will clear the old cardtoken from Redux store when redirecting to
-  `TransactionPage`. [#1114](https://github.com/sharetribe/flex-template-web/pull/1114)
+  `PaymentPage`. [#1114](https://github.com/sharetribe/flex-template-web/pull/1114)
 - [fix] In `LineItemProviderCommissionMaybe.js` file check that `providerCommissionLineItem` exists.
   In default transaction process the `providerCommissionLineItem` can be expected to be there but if
   the process is using only customer commission there will be error.
@@ -1062,7 +1062,7 @@ There was also a couple of bug fixes you should check carefully:
   - Recent SDK update changed the proptypes for snapshots.
   - Updated scripts/config.js after Prettier version bump
   - Removed unnecessary audit exceptions
-- [fix] Ensure on `TransactionPage` that all the required data is loaded before showing the page.
+- [fix] Ensure on `PaymentPage` that all the required data is loaded before showing the page.
   [#1082](https://github.com/sharetribe/flex-template-web/pull/1082)
 - [fix] Use proper method for Sentry on logout to avoid error message.
   [#1080](https://github.com/sharetribe/flex-template-web/pull/1080),
@@ -1597,7 +1597,7 @@ There was also a couple of bug fixes you should check carefully:
 - [change] Use sessionTokens and fields for Autocomplete calls to Google Maps. This is a reaction to
   pricing change of Google Maps APIs.
   [#867](https://github.com/sharetribe/flex-template-web/pull/867)
-- [change] Change TransactionPage state management in loadData.
+- [change] Change PaymentPage state management in loadData.
   [#863](https://github.com/sharetribe/flex-template-web/pull/863),
   [#865](https://github.com/sharetribe/flex-template-web/pull/865) &
   [#866](https://github.com/sharetribe/flex-template-web/pull/866)

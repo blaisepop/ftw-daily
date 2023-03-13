@@ -32,3 +32,10 @@
     display: block;
   }
 }
+.stickyLink{
+  background-color: var(--marketplaceColor);
+  color: var(--matterColorLight);
+  width: 100%;
+  display: block;
+  padding-left: 40px;
+}

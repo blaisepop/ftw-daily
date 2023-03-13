@@ -5,14 +5,16 @@
     margin-top: 20px;
 }
 .submitButton{
-    margin-top: 20px;
+    margin-top: 40px;
 }
 .speculateError {
     color: var(--failColor);
     margin: 19px 0 1px 0;
-  
+
     @media (--viewportLarge) {
       margin: 28px 48px 0 48px;
     }
   }
-  
+  .inputzone{
+    margin-bottom: 20px;
+  }

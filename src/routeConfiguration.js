@@ -33,6 +33,7 @@ const SearchPage = loadable(() => import(/* webpackChunkName: "SearchPage" */ /*
 const StripePayoutPage = loadable(() => import(/* webpackChunkName: "StripePayoutPage" */ './containers/StripePayoutPage/StripePayoutPage'));
 const TermsOfServicePage = loadable(() => import(/* webpackChunkName: "TermsOfServicePage" */ './containers/TermsOfServicePage/TermsOfServicePage'));
 const TransactionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ './containers/TransactionPage/TransactionPage'));
+const PaymentPage = loadable(() => import(/* webpackChunkName: "PaymentPage" */ './containers/PaymentPage/PaymentPage'));
 
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ './containers/StyleguidePage/StyleguidePage'));
@@ -101,7 +102,7 @@ const routeConfiguration = () => {
       component: CheckoutPage,
       setInitialValues: pageDataLoadingAPI.CheckoutPage.setInitialValues,
     },
-    
+
     {
       path: '/l/:slug/:id/:variant',
       name: 'ListingPageVariant',
@@ -223,6 +224,18 @@ const routeConfiguration = () => {
         pageDataLoadingAPI.TransactionPage.loadData({ ...params, transactionRole: 'customer' }),
       setInitialValues: pageDataLoadingAPI.TransactionPage.setInitialValues,
     },
+    {
+      path: '/order/:id/payment',
+      name: 'PaymentPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: PaymentPage,
+      extraProps: { transactionRole: 'customer' },
+      loadData: params =>
+        pageDataLoadingAPI.TransactionPage.loadData({ ...params, transactionRole: 'customer' }),
+      setInitialValues: pageDataLoadingAPI.TransactionPage.setInitialValues,
+    },
+
     {
       path: '/sale/:id',
       name: 'SalePage',

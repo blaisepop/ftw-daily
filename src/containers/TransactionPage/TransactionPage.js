@@ -23,7 +23,7 @@ import {
   LayoutWrapperTopbar,
   LayoutWrapperMain,
   LayoutWrapperFooter,
-  Footer,
+  Footer, NamedLink,
 } from '../../components';
 import { TopbarContainer } from '../../containers';
 
@@ -90,10 +90,10 @@ export const TransactionPageComponent = props => {
   const currentListing = ensureListing(currentTransaction.listing);
   const isProviderRole = transactionRole === PROVIDER;
   const isCustomerRole = transactionRole === CUSTOMER;
-  
-    
-    
-  
+
+
+
+
   const redirectToCheckoutPageWithInitialValues = (initialValues, listing) => {
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
@@ -263,6 +263,7 @@ export const TransactionPageComponent = props => {
       lineItems={lineItems}
       fetchLineItemsInProgress={fetchLineItemsInProgress}
       fetchLineItemsError={fetchLineItemsError}
+      histoey={history}
     />
   ) : (
     loadingOrFailedFetching
@@ -276,8 +277,10 @@ export const TransactionPageComponent = props => {
       <LayoutSingleColumn>
         <LayoutWrapperTopbar>
           <TopbarContainer />
+
         </LayoutWrapperTopbar>
         <LayoutWrapperMain>
+
           <div className={css.root}>{panel}</div>
         </LayoutWrapperMain>
         <LayoutWrapperFooter className={css.footer}>

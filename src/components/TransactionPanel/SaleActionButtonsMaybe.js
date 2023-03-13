@@ -27,7 +27,7 @@ const SaleActionButtonsMaybe = props => {
 
 
   function handleAccept() {
-    setCaptureInProgress(true)
+   /* setCaptureInProgress(true)
     const config = {
       headers: {
         'X-User-Token': "HExzbkejGSjXMXKu-HiT",
@@ -40,16 +40,16 @@ const SaleActionButtonsMaybe = props => {
     axios.post("https://mobile-food-ch.herokuapp.com/api/v1/confirmPayment",
       data
       , config)
-      .then(()=>{
+      .then(()=>{*/
         onAcceptSale(transactionId);
-      })
+     /* })
       .catch(() => {
        // this.setState({ submitting: false });
        setCaptureInProgress(false)
         return;
-      });
-    
-   
+      });*/
+
+
   }
   const buttonsDisabled = acceptInProgress || declineInProgress || captureInProgress;
 
