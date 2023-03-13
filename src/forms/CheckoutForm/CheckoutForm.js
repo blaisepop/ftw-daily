@@ -74,9 +74,9 @@ export default function CheckoutForm(props) {
       "amount": props.amount,
       "payment_id":props.paymentIntentID
     }
-    //axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" ,
+    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" ,
 
-      axios.post("http://localhost:5000/api/v1/updatePaymentAmount" ,
+    //  axios.post("http://localhost:5000/api/v1/updatePaymentAmount" ,
       data
       ,config)
       .then(async ()=>{

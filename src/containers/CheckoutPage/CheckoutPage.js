@@ -723,7 +723,7 @@ export class CheckoutPageComponent extends Component {
                   inProgress={isLoading }
 
                 >
-                <FormattedMessage id="CheckoutForm.submitButton" />
+                <FormattedMessage id="CheckoutPage.submitButton" />
               </PrimaryButton>}
             </Form>
           );
