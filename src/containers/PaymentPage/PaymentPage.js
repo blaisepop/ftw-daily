@@ -103,6 +103,7 @@ export const TransactionPageComponent = props => {
   } = props;
   const [clientSecret, setClientSecret] = useState(null);
   const [paymentIntentID, setPaymentIntentID] = useState(null);
+  const [paymentIntentError, setPaymentIntentError] = useState(false);
   // const [partnerNumber, setPartnerNumber]=useState(null)
   let isDataAvailable=false;
   useEffect(()=>{
@@ -117,7 +118,7 @@ export const TransactionPageComponent = props => {
       console.log("aaaaa",currentListing);
       const conf = {
         headers: {
-          'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+          'X-User-Token': process.env.REACT_APP_CRM_USER_TOKEN,
    //       'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
           'X-User-Email': "26.mariusremy@gmail.com"
         }
@@ -127,7 +128,7 @@ export const TransactionPageComponent = props => {
       const data = {
         partner_number: currentListing.attributes.publicData.partnerNumber
       }
-      axios.post("https://mobile-food-ch.herokuapp.com/api/v1/paymentIntent",
+      axios.post(process.env.REACT_APP_CRM_LINK+"paymentIntent",
       //axios.post("http://localhost:5000/api/v1/paymentIntent",
         data
         , conf)
@@ -139,7 +140,12 @@ export const TransactionPageComponent = props => {
           console.log("aaaa", payment_intent);
           setClientSecret(payment_intent.client_secret )
           setPaymentIntentID(payment_intent.id)
-        });
+          setErrorPaymentIntent(false)
+        })
+        .catch((error)=>{
+          setPaymentIntentError(true)
+      })
+      ;
     }
 
 
@@ -172,7 +178,14 @@ export const TransactionPageComponent = props => {
   const isProviderRole = transactionRole === PROVIDER;
   const isCustomerRole = transactionRole === CUSTOMER;
 
-
+  const PaymentIntentMessage=paymentIntentError? (
+    <p className={css.speculateError}>
+      <FormattedMessage id="PaymentPage.PaymentIntentError" />
+    </p>
+  ) :
+    <p>
+    <FormattedMessage id="PaymentPage.PaymentIntentLoading" />
+  </p>;
 
 
   const redirectToCheckoutPageWithInitialValues = (initialValues, listing) => {
@@ -365,7 +378,7 @@ export const TransactionPageComponent = props => {
         <h2 className={css.detailsTitle}>{listingTitle}</h2>
       </div>
 
-      {/*speculateTransactionErrorMessage*/}
+
 
       {breakdown}
     </div>
@@ -400,7 +413,10 @@ export const TransactionPageComponent = props => {
         );
       }}
     />
-  ):null;
+  ):
+    <div>
+      {PaymentIntentMessage}
+    </div>;
   return (
     <Page
       title={intl.formatMessage({ id: 'PaymentPage.title' }, { title: listingTitle })}
@@ -420,6 +436,7 @@ export const TransactionPageComponent = props => {
               </div>
               <section className={css.paymentContainer}>
                 {bookingForm}
+
               </section>
             </div>
 

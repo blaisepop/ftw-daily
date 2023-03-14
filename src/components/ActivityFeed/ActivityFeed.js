@@ -26,7 +26,7 @@ import {
   txRoleIsProvider,
   txRoleIsCustomer,
   getUserTxRole,
-  isRelevantPastTransition,
+  isRelevantPastTransition, TRANSITION_FIRST_PAYMENT,
 } from '../../util/transaction';
 import { propTypes } from '../../util/types';
 import * as log from '../../util/log';
@@ -130,6 +130,12 @@ const resolveTransitionMessage = (
         <FormattedMessage id="ActivityFeed.ownTransitionAccept" />
       ) : (
         <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
+      );
+      case TRANSITION_FIRST_PAYMENT:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionFirstPayment" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionFirstPayment" values={{ displayName }} />
       );
     case TRANSITION_DECLINE:
       return isOwnTransition ? (

@@ -183,4 +183,6 @@
   {:name :notification/review-by-customer-second,
    :on :transition/review-2-by-customer,
    :to :actor.role/provider,
-   :template :review-by-other-party-published}]}
+   :template :review-by-other-party-published}
+
+   ]}

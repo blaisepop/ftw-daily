@@ -75,7 +75,7 @@ export const EmailVerificationPageComponent = props => {
   // We can redirect user forward from email verification page.
   if (isVerified && user && user.attributes.emailVerified) {
     const userForCRM={
-    
+
           "client": {
             "first_name": user.attributes.profile.firstName,
             "last_name":  user.attributes.profile.lastName,
@@ -88,16 +88,11 @@ export const EmailVerificationPageComponent = props => {
         }
 
     }
-    let config = {
-      headers: {
-        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
-        'X-User-Email': "26.mariusremy@gmail.com"
-      }
-    };
-    
+
+
     //post client
     postClient(userForCRM)
-    
+
   }
 
   return (

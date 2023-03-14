@@ -100,13 +100,7 @@ export class CheckoutPageComponent extends Component {
     }*/
 
     console.log(this.state.pageData);
-    const conf = {
-      headers: {
-        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
-        //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
-        'X-User-Email': "26.mariusremy@gmail.com"
-      }
-    }
+
 
 
     /*const data = {
@@ -227,50 +221,8 @@ export class CheckoutPageComponent extends Component {
       }
 
       this.setState({ submitting: true });
-      this.registerBooking(values, amount)/*
-      const initialMessage = values.initialMessage;
-      const { history, speculatedTransaction, dispatch, onInitiateOrder, onSendMessage } = this.props;
+      this.registerBooking(values, amount)
 
-      // Create order aka transaction
-      // NOTE: if unit type is line-item/units, quantity needs to be added.
-      // The way to pass it to checkout page is through pageData.bookingData
-
-      const requestParams = {
-        listingId: this.state.pageData.listing.id,
-        bookingStart: speculatedTransaction.booking.attributes.start,
-        bookingEnd: speculatedTransaction.booking.attributes.end,
-        menus: this.state.pageData.bookingData.menus,
-        hasFee: this.state.pageData.bookingData.fee,
-        nbGuest: this.state.pageData.bookingData.nbGuest,
-      };
-      const enquiredTransaction = this.state.pageData.enquiredTransaction;
-      const transactionIdMaybe = enquiredTransaction ? enquiredTransaction.id : null;
-
-      onInitiateOrder(requestParams, transactionIdMaybe).then(params => {
-        onSendMessage({ ...params, message: initialMessage })
-          .then(values => {
-            const { orderId, messageSuccess } = values;
-            this.setState({ submitting: false });
-            const routes = routeConfiguration();
-            const OrderPage = findRouteByRouteName('OrderDetailsPage', routes);
-
-            // Transaction is already created, but if the initial message
-            // sending failed, we tell it to the OrderDetailsPage.
-            dispatch(
-              OrderPage.setInitialValues({
-                initialMessageFailedToTransaction: messageSuccess ? null : orderId,
-              })
-            );
-            const orderDetailsPath = pathByRouteName('OrderDetailsPage', routes, {
-              id: orderId.uuid,
-            });
-            clearData(STORAGE_KEY);
-            history.push(orderDetailsPath);
-          })
-          .catch(() => {
-            this.setState({ submitting: false });
-          });
-      });*/
     }
 
 
@@ -330,14 +282,12 @@ export class CheckoutPageComponent extends Component {
       }
       const conf = {
         headers: {
-          'X-User-Token': "HExzbkejGSjXMXKu-HiT",
-         // 'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
-
+          'X-User-Token': process.env.REACT_APP_CRM_USER_TOKEN,
           'X-User-Email': "26.mariusremy@gmail.com"
         }
       }
       //axios.post("http://localhost:5000/api/v1/bookings",
-        axios.post("https://mobile-food-ch.herokuapp.com/api/v1/bookings",
+        axios.post(process.env.REACT_APP_CRM_LINK+"bookings",
         bookingForCRM
         , conf)
         .then(()=>{
@@ -701,27 +651,11 @@ export class CheckoutPageComponent extends Component {
                   />
                 </div>
               ) : null}
-              {/*<div className={css.submitContainer}>
-                <h3 className={css.messageHeading}>
-                    <FormattedMessage id="StripePaymentForm.cardHeading" />
-                  </h3>
-                clientSecret && (
-                  <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm
-                      paymentIntentID={this.state.paymentIntentID}
-                      amount={amount*config.mfCommission}
-                      valuesToSub={this.state.formValues}
-                      registerBooking={this.registerBooking}
-                      />
-                  </Elements>)
-
-              </div>*/}
               {registerErrorMessage}
               {<PrimaryButton
                   className={css.submitButton}
                   type="submit"
-                  inProgress={isLoading }
-
+                  inProgress={this.state.submitting}
                 >
                 <FormattedMessage id="CheckoutPage.submitButton" />
               </PrimaryButton>}

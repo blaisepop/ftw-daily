@@ -2,7 +2,7 @@
 
 import axios from "axios";
 const config = {
-    headers: { 
+    headers: {
       'X-User-Token': "HExzbkejGSjXMXKu-HiT",
       //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
       'X-User-Email': "26.mariusremy@gmail.com"

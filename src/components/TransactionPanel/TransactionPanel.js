@@ -235,7 +235,8 @@ export class TransactionPanelComponent extends Component {
       }
       else if(txIsFirstPaymentPending(tx)){
         return{
-          showPaymentButton:isCustomer
+          showPaymentButton:isCustomer,
+          headingState: HEADING_PAYMENT_PENDING,
         }
       }
 

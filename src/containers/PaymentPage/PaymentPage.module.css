@@ -202,3 +202,7 @@
   margin: 0 48px;
 }
 }
+.speculateError {
+  color: var(--failColor);
+  margin: 19px 0 1px 0;
+}

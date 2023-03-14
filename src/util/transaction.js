@@ -233,6 +233,7 @@ export const txIsEnquired = tx =>
 
 export const txIsPaymentPending = tx =>
   getTransitionsToState(STATE_PENDING_PAYMENT).includes(txLastTransition(tx));
+
 export const txIsFirstPaymentPending = tx =>
   getTransitionsToState(STATE_PENDING_FIRST_PAYMENT).includes(txLastTransition(tx));
 
@@ -245,7 +246,7 @@ export const txIsRequested = tx =>
   getTransitionsToState(STATE_PREAUTHORIZED).includes(txLastTransition(tx));
 
 export const txIsAccepted = tx =>
-  getTransitionsToState(STATE_PENDING_FIRST_PAYMENT).includes(txLastTransition(tx));
+  getTransitionsToState(STATE_ACCEPTED).includes(txLastTransition(tx));
 
 export const txIsDeclined = tx =>
   getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));

@@ -55,9 +55,16 @@
     </p>
 
     <p>
-      We have charged {{> format-money money=payin-total}} from your credit card. Here's your
-      receipt.
+      You can now confirm the payment for this booking by {{> format-date date=delayed-transition.run-at}}.
+
+
     </p>
+    <p>
+      <a href="{{ marketplace.url }}/order/{{url-encode id}}/details"
+      >Confirm the payment
+      </a>
+    </p>
+
 
     <table>
       <thead>

@@ -64,11 +64,11 @@ export class BookingTimeFormComponent extends Component {
 
   }
   componentDidMount() {
-   
+
 
     this.fetchMenus();
     this.fetchBookings();
-    
+
   }
 
   handleFormSubmit(e) {
@@ -77,13 +77,6 @@ export class BookingTimeFormComponent extends Component {
       this.setState({ showMinMessage: true })
     }
     else if (!this.state.showCapacityMessage && !this.state.showBookedMessage) {
-      const config = {
-        headers: { 
-          'X-User-Token': "HExzbkejGSjXMXKu-HiT",//"HExzbkejGSjXMXKu-HiT",
-          'X-User-Email': "26.mariusremy@gmail.com"
-        }
-    }
-      //axios.get("http://localhost:5000/api/v1/payments", config).then((resp)=>console.log(resp.data))
       this.props.onSubmit(e);
     }
 
@@ -307,7 +300,7 @@ export class BookingTimeFormComponent extends Component {
           ) : null;
           const feeMaybe = fee ? (
             <div>
-              
+
             <FieldTextInput
               id={"fee"}
               name="fee"
@@ -315,7 +308,7 @@ export class BookingTimeFormComponent extends Component {
               defaultValue="fee"
               readonly
               type="hidden"
-              
+
             />
           </div>
           ) : null;

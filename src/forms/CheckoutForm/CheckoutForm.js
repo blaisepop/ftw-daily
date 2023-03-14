@@ -63,7 +63,7 @@ export default function CheckoutForm(props) {
 
     const config = {
       headers: {
-        'X-User-Token': "HExzbkejGSjXMXKu-HiT",
+        'X-User-Token':process.env.REACT_APP_CRM_USER_TOKEN,
         //'X-User-Token': " t-wCWAyLtsToftoF9Rrq",
         'X-User-Email': "26.mariusremy@gmail.com"
       }
@@ -74,7 +74,7 @@ export default function CheckoutForm(props) {
       "amount": props.amount,
       "payment_id":props.paymentIntentID
     }
-    axios.post("https://mobile-food-ch.herokuapp.com/api/v1/updatePaymentAmount" ,
+    axios.post(process.env.REACT_APP_CRM_LINK+"updatePaymentAmount" ,
 
     //  axios.post("http://localhost:5000/api/v1/updatePaymentAmount" ,
       data
@@ -103,7 +103,13 @@ export default function CheckoutForm(props) {
           props.handleFunction();
           setIsLoading(false);
         }
-      });
+      })
+      .catch((error) => {
+        setError(true)
+        setIsLoading(false);
+      })
+    ;
+
   };
 
   const paymentElementOptions = {
@@ -118,6 +124,7 @@ export default function CheckoutForm(props) {
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
   </button>*/}
+      {speculateTransactionErrorMessage}
       <PrimaryButton
         className={css.submitButton}
         type="submit"
@@ -128,7 +135,7 @@ export default function CheckoutForm(props) {
         />
       </PrimaryButton>
       {/* Show any error or success messages */}
-      {speculateTransactionErrorMessage}
+
     </form>
   );
 }

@@ -13,6 +13,7 @@ import {
   txHasBeenDelivered,
   txIsPaymentExpired,
   txIsPaymentPending,
+  txIsFirstPaymentPending,
 } from '../../util/transaction';
 import { propTypes, DATE_TYPE_DATETIME } from '../../util/types';
 import { createSlug, stringify } from '../../util/urlHelpers';
@@ -87,14 +88,14 @@ export const txState = (intl, tx, type) => {
         };
 
     return requested;
-  } else if (txIsPaymentPending(tx)) {
+  } else if (txIsFirstPaymentPending(tx)) {
     return {
       nameClassName: isOrder ? css.nameNotEmphasized : css.nameEmphasized,
       bookingClassName: css.bookingNoActionNeeded,
       lastTransitionedAtClassName: css.lastTransitionedAtNotEmphasized,
       stateClassName: isOrder ? css.stateActionNeeded : css.stateNoActionNeeded,
       state: intl.formatMessage({
-        id: 'InboxPage.statePendingPayment',
+        id: 'InboxPage.statePendingFirstPayment',
       }),
     };
   } else if (txIsPaymentExpired(tx)) {
