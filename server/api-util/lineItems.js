@@ -5,11 +5,11 @@ const { Money } = types;
 // This bookingUnitType needs to be one of the following:
 // line-item/night, line-item/day or line-item/units
 const bookingUnitType = 'line-item/units';
-const PROVIDER_COMMISSION_PERCENTAGE = -100;
+const PROVIDER_COMMISSION_PERCENTAGE = -1;
 const MOBILE_FOOD_COMMISSION=1;
 const resolveMenuPrice = key => {
   const mount=Number(key.split('-')[2])
-    return new Money( mount*MOBILE_FOOD_COMMISSION, "CHF"); 
+    return new Money( mount*MOBILE_FOOD_COMMISSION, "CHF");
 };
 const getId = key=>{
   return  key.split('-')[1];
@@ -60,7 +60,7 @@ const resolveFeeName=listing=>{
  * @returns {Array} lineItems
  */
 exports.transactionLineItems = (listing, bookingData) => {
-  
+
   const unitPrice = listing.attributes.price;
   const { startDate, endDate, menus, hasFee, nbGuest } = bookingData;
 
@@ -79,10 +79,10 @@ exports.transactionLineItems = (listing, bookingData) => {
     quantity: calculateQuantityFromHours(startDate, endDate),
     includeFor: ['customer', 'provider'],
   };
-  
+
   const menus1=[];
   if(menus){
-    
+
   }
   if(menus){
     Object.keys(menus).forEach(key => {
@@ -96,13 +96,13 @@ exports.transactionLineItems = (listing, bookingData) => {
         id:getId(key),
       });
       }
-      
+
     });
   }
   else{
-    
+
   }
-  
+
   const feePrice = hasFee ? resolveFeePrice(listing) : null;
  const fee = feePrice
    ? [
@@ -114,7 +114,7 @@ exports.transactionLineItems = (listing, bookingData) => {
        },
      ]
    : [];
-  
+
 
   const guests=
     {
@@ -124,14 +124,14 @@ exports.transactionLineItems = (listing, bookingData) => {
       includeFor: ['customer', 'provider'],
 
     }
-  
+
   const providerCommission = {
     code: 'line-item/provider-commission',
     unitPrice: calculateTotalFromLineItems([ ...menus1, ...fee, guests]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   };
-  const lineItems = [ ...menus1,...fee, guests, providerCommission];
- 
+  const lineItems = [ ...menus1,...fee, guests];
+
   return lineItems;
 };

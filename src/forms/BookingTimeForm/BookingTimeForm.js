@@ -73,7 +73,6 @@ export class BookingTimeFormComponent extends Component {
 
   handleFormSubmit(e) {
     if (this.totalCost < 80000/*config.mfCommission*/) {
-
       this.setState({ showMinMessage: true })
     }
     else if (!this.state.showCapacityMessage && !this.state.showBookedMessage) {
@@ -275,11 +274,16 @@ export class BookingTimeFormComponent extends Component {
               }
               : null;
 
-          const showEstimatedBreakdown =
-            bookingData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
+          const showEstimatedBreakdown = bookingData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
 
-          showEstimatedBreakdown && lineItems ? this.totalCost = lineItems[lineItems.length - 1].unitPrice.amount : null;
 
+          if(showEstimatedBreakdown && lineItems){
+            let total=0
+            for (let i = 0; i < lineItems.length - 1; i++) {
+              total+=lineItems[i].unitPrice.amount
+            }
+            this.totalCost=total
+          }
           const bookingInfoMaybe = showEstimatedBreakdown ? (
             <div className={css.priceBreakdownContainer}>
               <h3 className={css.priceBreakdownTitle}>
