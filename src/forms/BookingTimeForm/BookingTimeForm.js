@@ -72,6 +72,7 @@ export class BookingTimeFormComponent extends Component {
   }
 
   handleFormSubmit(e) {
+    console.log-=(this.totalCost)
     if (this.totalCost < 80000/*config.mfCommission*/) {
       this.setState({ showMinMessage: true })
     }
@@ -278,8 +279,10 @@ export class BookingTimeFormComponent extends Component {
 
 
           if(showEstimatedBreakdown && lineItems){
-            let total=0
+            console.log(lineItems);
+            let total=0;
             for (let i = 0; i < lineItems.length - 1; i++) {
+              console.log("boucle", lineItems[i].unitPrice.amount)
               total+=lineItems[i].unitPrice.amount
             }
             this.totalCost=total
