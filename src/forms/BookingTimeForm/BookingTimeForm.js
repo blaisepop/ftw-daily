@@ -282,7 +282,7 @@ export class BookingTimeFormComponent extends Component {
             console.log(lineItems);
             let total=0;
             for (let i = 0; i < lineItems.length - 1; i++) {
-              console.log("boucle", lineItems[i].unitPrice.amount)
+              console.log("boucle", lineItems[i].lineTotal.amount)
               total+=lineItems[i].unitPrice.amount
             }
             this.totalCost=total
