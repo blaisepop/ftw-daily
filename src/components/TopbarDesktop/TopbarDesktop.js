@@ -39,10 +39,12 @@ const TopbarDesktop = props => {
     initialSearchFormValues,
   } = props;
   function changeLanguage(lang){
+    if (typeof window !== 'undefined') {
 
-      localStorage.setItem("mobile_food_language",lang)
+      localStorage.setItem("mobile_food_language", lang)
       console.log("CLIQUE")
       location.reload()
+    }
   }
   const [mounted, setMounted] = useState(false);
 
@@ -100,7 +102,7 @@ const TopbarDesktop = props => {
   const languageSelector=(
     <Menu>
       <MenuLabel className={css.languageMenuLabel} isOpenClassName={css.profileMenuIsOpen}>
-        <span>{ localStorage.getItem("mobile_food_language")}</span>
+        <span>{   typeof window !== 'undefined'? localStorage.getItem("mobile_food_language"):"FR"}</span>
 
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
