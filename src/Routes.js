@@ -10,6 +10,7 @@ import { propTypes } from './util/types';
 import * as log from './util/log';
 import { canonicalRoutePath } from './util/routes';
 import routeConfiguration from './routeConfiguration';
+import {setLanguage} from "./app";
 
 const canShowComponent = props => {
   const { isAuthenticated, route } = props;
@@ -97,8 +98,10 @@ class RouteComponentRenderer extends Component {
 
   render() {
     const { route, match, location, staticContext } = this.props;
+    console.log(this.props)
     const { component: RouteComponent, authPage = 'SignupPage', extraProps } = route;
     const canShow = canShowComponent(this.props);
+
     if (!canShow) {
       staticContext.unauthorized = true;
     }
@@ -150,7 +153,7 @@ const RouteComponentContainer = compose(connect(mapStateToProps))(RouteComponent
  */
 const Routes = (props, context) => {
   const { isAuthenticated, logoutInProgress, routes } = props;
-
+console.log(props)
   const toRouteComponent = route => {
     const renderProps = {
       isAuthenticated,
@@ -161,6 +164,10 @@ const Routes = (props, context) => {
     // By default, our routes are exact.
     // https://reacttraining.com/react-router/web/api/Route/exact-bool
     const isExact = route.exact != null ? route.exact : true;
+
+    /*const lang=window.location.pathname.split("/")[1];
+    props.setLanguage(lang)
+    console.log("ROUTE", lang)*/
     return (
       <Route
         key={route.name}
@@ -190,6 +197,7 @@ const Routes = (props, context) => {
 };
 
 Routes.propTypes = {
+  setLanguage:func.isRequired,
   routes: arrayOf(propTypes.route).isRequired,
 };
 

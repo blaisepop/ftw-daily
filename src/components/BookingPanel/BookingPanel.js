@@ -73,7 +73,7 @@ const BookingPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
-    
+
   } = props;
   const partnerNumber=listing?listing.attributes.publicData.partnerNumber:null
   const capacity=listing?listing.attributes.publicData.capacity:null
@@ -103,6 +103,7 @@ const BookingPanel = props => {
   const specialRequestMessage = intl.formatMessage({ id: 'BookingPanel.specialRequest' })
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.bookingTitle);
+
   const fee =
     listing.attributes.publicData &&
       listing.attributes.publicData.fee
@@ -134,7 +135,7 @@ const BookingPanel = props => {
             <h1 className={titleClasses}>{title}</h1>
             {subTitleText ? <div className={css.bookingHelp}>{subTitleText}</div> : null}
           </div>
-          
+
         </div>
 
         {showBookingTimeForm ? (
@@ -159,6 +160,7 @@ const BookingPanel = props => {
             partnerNumber={partnerNumber}
             capacity={capacity}
             fee={fee}
+            onManageDisableScrolling={onManageDisableScrolling}
           />
         ) : null}
       </ModalInMobile>

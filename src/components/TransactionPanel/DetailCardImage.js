@@ -39,6 +39,7 @@ const DetailCardImage = props => {
     image,
     provider,
     isCustomer,
+    imageFromMedia
   } = props;
 
   const classes = classNames(rootClassName || css.detailCardImageWrapper, className);
@@ -51,6 +52,7 @@ const DetailCardImage = props => {
           <ResponsiveImage
             rootClassName={css.rootForImage}
             alt={listingTitle}
+            imageFromMedia={imageFromMedia}
             image={image}
             variants={['landscape-crop', 'landscape-crop2x']}
           />

@@ -13,7 +13,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
-import { Button, IconClose } from '../../components';
+import {Button, IconClose, PrimaryButton} from '../../components';
 
 import css from './Modal.module.css';
 
@@ -148,6 +148,9 @@ export class ModalComponent extends Component {
       </Button>
     ) : null;
 
+
+
+
     // Modal uses given styles to wrap child components.
     // If props doesn't contain isClosedClassName, styles default to css.isClosed
     // This makes it possible to create ModalInMobile on top of Modal where style modes are:
@@ -171,6 +174,7 @@ export class ModalComponent extends Component {
           <div className={containerClasses}>
             {closeBtn}
             <div className={classNames(contentClassName || css.content)}>{children}</div>
+
           </div>
         </div>
       </div>
@@ -185,6 +189,7 @@ export class ModalComponent extends Component {
             >
               {closeBtn}
               <div className={classNames(contentClassName || css.content)}>{children}</div>
+
             </div>
           </div>
         </div>

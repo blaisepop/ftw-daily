@@ -23,7 +23,8 @@ export const TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY = 'transition/request-paym
 // Stripe SDK might need to ask 3D security from customer, in a separate front-end step.
 // Therefore we need to make another transition to Marketplace API,
 // to tell that the payment is confirmed.
-export const TRANSITION_CONFIRM_PAYMENT = 'transition/confirm-payment';
+export const TRANSITION_CRM_CONFIRM = 'transition/crm_confirm';
+export const TRANSITION_CONFIRM_PAYMENT='transition/confirm-payment'
 export const TRANSITION_FIRST_PAYMENT='transition/first-payment'
 // If the payment is not confirmed in the time limit set in transaction process (by default 15min)
 // the transaction will expire automatically.
@@ -141,6 +142,7 @@ const stateDescription = {
     [STATE_PAYMENT_EXPIRED]: {},*/
     [STATE_PREAUTHORIZED]: {
       on: {
+        [TRANSITION_CRM_CONFIRM]: STATE_PREAUTHORIZED,
         [TRANSITION_DECLINE]: STATE_DECLINED,
         [TRANSITION_EXPIRE]: STATE_DECLINED,
         [TRANSITION_ACCEPT]: STATE_PENDING_FIRST_PAYMENT,
@@ -313,6 +315,7 @@ export const isRelevantPastTransition = transition => {
     TRANSITION_CANCEL,
     TRANSITION_FIRST_PAYMENT,
     TRANSITION_COMPLETE,
+    TRANSITION_CRM_CONFIRM,
     TRANSITION_CONFIRM_PAYMENT,
     TRANSITION_DECLINE,
     TRANSITION_EXPIRE,

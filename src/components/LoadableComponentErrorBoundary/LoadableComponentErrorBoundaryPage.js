@@ -13,7 +13,8 @@ import {
 import css from './LoadableComponentErrorBoundary.module.css';
 
 export const LoadableComponentErrorBoundaryPage = () => {
-  const landingPagePath = pathByRouteName('LandingPage', routeConfiguration());
+  const trans='fr'
+  const landingPagePath = pathByRouteName('LandingPage', routeConfiguration(), );
   const handleOnClick = () => {
     if (typeof window !== 'undefined') {
       window.location = landingPagePath;

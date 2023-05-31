@@ -25,13 +25,15 @@
    :privileged? true}
 
 
-  {:name :transition/confirm-payment,
-   :actor :actor.role/customer,
-   :actions
-   [],
-    :from :state/preauthorized,
-    :to :state/preauthorized
-    }
+
+  {
+  :name :transition/crm_confirm,
+     :actor :actor.role/customer,
+     :actions
+     [],
+      :from :state/preauthorized,
+      :to :state/preauthorized
+      }
 
 
   {:name :transition/accept,
@@ -50,6 +52,16 @@
     ],
    :from :state/preauthorized,
    :to :state/declined}
+
+   {:name :transition/problem_registering,
+   :actor :actor.role/customer,
+   :actions
+   [{:name :action/decline-booking}
+    ],
+   :from :state/preauthorized,
+   :to :state/declined}
+
+
     {:name :transition/first-payment,
        :actor :actor.role/customer,
        :actions
@@ -57,20 +69,33 @@
         :from :state/pending-first-payment,
         :to :state/accepted
      }
+     {:name :transition/expirePreauth,
+        :at
+           {:fn/min
+            [{:fn/plus
+              [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
+               {:fn/period ["P6D"]}]}
+             {:fn/plus
+              [{:fn/timepoint [:time/booking-end]} {:fn/period ["P1D"]}]}]},
+           :actions
+           [{:name :action/decline-booking}
+            {:name :action/stripe-refund-payment}],
+           :from :state/preauthorized,
+           :to :state/declined}
   {:name :transition/expire,
-   :at
-   {:fn/min
-    [{:fn/plus
-      [{:fn/timepoint [:time/first-entered-state :state/pending-first-payment]}
-       {:fn/period ["P6D"]}]}
-     {:fn/plus
-      [{:fn/timepoint [:time/booking-end]} {:fn/period ["P1D"]}]}]},
-   :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
-    ],
-   :from :state/pending-first-payment,
-   :to :state/declined}
+  :at
+     {:fn/min
+      [{:fn/plus
+        [{:fn/timepoint [:time/first-entered-state :state/pending-first-payment]}
+         {:fn/period ["P2D"]}]}
+       {:fn/plus
+        [{:fn/timepoint [:time/booking-end]} {:fn/period ["P1D"]}]}]},
+     :actions
+     [{:name :action/decline-booking}
+      {:name :action/calculate-full-refund}
+      {:name :action/stripe-refund-payment}],
+     :from :state/pending-first-payment,
+     :to :state/declined}
 
   {:name :transition/complete,
    :at {:fn/timepoint [:time/booking-end]},
@@ -132,13 +157,10 @@
    :to :state/reviewed}],
  :notifications
  [{:name :notification/new-booking-request,
-   :on :transition/confirm-payment,
+   :on :transition/crm_confirm,
    :to :actor.role/provider,
    :template :new-booking-request}
-   {:name :notification/new-booking-request1,
-   :on :transition/request-payment,
-   :to :actor.role/provider,
-   :template :new-booking-request}
+
    {:name :notification/new-booking-request2,
    :on :transition/request-payment-after-enquiry,
    :to :actor.role/provider,
@@ -156,10 +178,10 @@
    :on :transition/expire,
    :to :actor.role/customer,
    :template :booking-request-auto-declined}
-  {:name :notification/money-paid,
-   :on :transition/complete,
+  {:name :notification/first-payment,
+   :on :transition/first-payment,
    :to :actor.role/provider,
-   :template :money-paid}
+   :template :first-payment}
   {:name :notification/review-period-start-provider,
    :on :transition/complete,
    :to :actor.role/provider,

@@ -1,1 +1,2 @@
-{{transaction.provider.display-name}} accepted your booking request!
+{{#eq recipient.private-data.language "FR"}}{{transaction.provider.display-name}} a accepté votre demande de réservation!{{/eq}}
+{{#eq recipient.private-data.language "DE"}}{{transaction.provider.display-name}} ihre Buchungsanfrage angenommen!{{/eq}}

@@ -58,6 +58,7 @@ export const PaginationLinksComponent = props => {
     pageSearchParams,
     pagination,
   } = props;
+  pagePathParams.trans="fr"
   const classes = classNames(rootClassName || css.root, className);
 
   const { page, totalPages } = pagination;
@@ -94,7 +95,7 @@ export const PaginationLinksComponent = props => {
     <NamedLink
       className={css.next}
       name={pageName}
-      params={pagePathParams}
+      params={ pagePathParams}
       to={{ search: stringify(nextSearchParams) }}
       title={intl.formatMessage({ id: 'PaginationLinks.next' })}
     >

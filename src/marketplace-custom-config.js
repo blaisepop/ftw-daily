@@ -1,4 +1,6 @@
 import axios from "axios";
+import { FormattedMessage} from './util/reactIntl.js';
+import React  from 'react';
 
 /*
  * Marketplace specific configuration.
@@ -68,7 +70,7 @@ export const filters = [
       searchTimeZone: 'Etc/UTC',
 
       // Options for the minimum duration of the booking
-     
+
     },
   },
   /* {
@@ -105,7 +107,7 @@ export const filters = [
   },*/
   {
     id: 'keyword',
-    label: 'Mot clé',
+    label:  <FormattedMessage id="filter.keyword.title" />,
     type: 'KeywordFilter',
     group: 'primary',
     // Note: KeywordFilter is fixed filter,
@@ -119,7 +121,7 @@ export const filters = [
   {
 
     id: 'category',
-    label: 'Catégorie',
+    label: <FormattedMessage id="filter.category.title" />,
     type: 'SelectSingleFilter',
     group: 'primary',
     queryParamNames: ['pub_category'],
@@ -129,28 +131,28 @@ export const filters = [
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
       schemaType: 'enum',
 
-    
+
     //  options: opt,
      options:[
 
-      { key: 'burger', label: 'Burger' },
-      { key: 'pizza', label: 'Pizza' },
-      { key: 'crepe', label: 'Crepe' },
-      { key: 'thai', label: 'Thai' },
+      { key: 'burger', label: <FormattedMessage id="filter.category.burger" /> },
+      { key: 'pizza', label: <FormattedMessage id="filter.category.pizza" /> },
+      { key: 'crepe', label: <FormattedMessage id="filter.category.crepe" /> },
+      { key: 'thai', label: <FormattedMessage id="filter.category.thai" /> },
 
     ],
     },
   },
   {
     id: 'amenities',
-    label: 'Agréments',
+    label: <FormattedMessage id="filter.amenities.title" />,
     type: 'SelectMultipleFilter',
-    group: 'secondary',
+    group: 'primary',
     queryParamNames: ['pub_amenities'],
     config: {
       // Optional modes: 'has_all', 'has_any'
       // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      
+
       schemaType: 'enum',
       // "key" is the option you see in Flex Console.
       // "label" is set here for this web app's UI only.
@@ -159,23 +161,23 @@ export const filters = [
       options: [
         {
           key: 'starter',
-          label: 'Entrée',
+          label: <FormattedMessage id="filter.amenities.starter" />,
         },
         {
           key: 'main',
-          label: 'Principal',
+          label: <FormattedMessage id="filter.amenities.main" />,
         },
         {
           key: 'drinks',
-          label: 'Boissons',
+          label: <FormattedMessage id="filter.amenities.drinks" />,
         },
         {
           key: 'dessert',
-          label: 'Dessert',
+          label: <FormattedMessage id="filter.amenities.dessert" />,
         },
         {
           key: 'aperitive',
-          label: 'Apéritif',
+          label: <FormattedMessage id="filter.amenities.aperitive" />,
         },
       ],
     },
@@ -201,13 +203,13 @@ export const sortConfig = {
   conflictingFilters: ['keyword'],
 
   options: [
-    { key: 'createdAt', label: 'Plus récent' },
-    { key: '-createdAt', label: 'Plus ancien' },
-    
+    { key: 'createdAt', label: <FormattedMessage id="filter.sort.mostRecent" /> },
+    { key: '-createdAt', label: <FormattedMessage id="filter.sort.lessRecent" /> },
+
 
     // The relevance is only used for keyword search, but the
     // parameter isn't sent to the Marketplace API. The key is purely
     // for handling the internal state of the sorting dropdown.
-    { key: 'relevance', label: 'Relevance', longLabel: 'Relevance (Keyword search)' },
+   // { key: 'relevance', label: 'Relevance', longLabel: 'Relevance (Keyword search)' },
   ],
 };

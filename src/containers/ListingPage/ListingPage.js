@@ -40,7 +40,7 @@ import {
   LayoutWrapperMain,
   LayoutWrapperFooter,
   Footer,
-  BookingPanel,
+  BookingPanel, PrimaryButton,
 
 
 } from '../../components';
@@ -90,6 +90,8 @@ export class ListingPageComponent extends Component {
       pageClassNames: [],
       imageCarouselOpen: false,
       enquiryModalOpen: enquiryModalOpenForListingId === params.id,
+      infosModalOpen:false,
+      valuesToSubmit:{}
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -128,7 +130,7 @@ export class ListingPageComponent extends Component {
     };
 
     const saveToSessionStorage = !this.props.currentUser;
-    
+
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
@@ -211,7 +213,7 @@ export class ListingPageComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
     } = this.props;
-    
+
     const isAdmin = isAuthenticated && currentUser != null && currentUser.attributes.profile.publicData.admin != null ? currentUser.attributes.profile.publicData.admin : false
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
@@ -256,7 +258,7 @@ export class ListingPageComponent extends Component {
       title = '',
       publicData,
     } = currentListing.attributes;
-    const partnerNumber=publicData && publicData.partnerNumber ? publicData.partnerNumber : null 
+    const partnerNumber=publicData && publicData.partnerNumber ? publicData.partnerNumber : null
 
     //Get images from public data
     const publicMedia=publicData && publicData.media?publicData.media:null;
@@ -359,7 +361,9 @@ export class ListingPageComponent extends Component {
       if (isOwnListing || isCurrentlyClosed) {
         window.scrollTo(0, 0);
       } else {
-        this.handleSubmit(values);
+        this.setState({infosModalOpen: true})
+        this.setState({valuesToSubmit: values})
+        //this.handleSubmit(values);
       }
     };
 
@@ -387,7 +391,7 @@ export class ListingPageComponent extends Component {
       { id: 'ListingPage.schemaTitle' },
       { title, price: formattedPrice, siteTitle }
     );
-   
+
     const hostLink = (
       <NamedLink
         className={css.authorNameLink}
@@ -398,8 +402,8 @@ export class ListingPageComponent extends Component {
         {authorDisplayName}
       </NamedLink>
     );
-   
-    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig); 
+
+    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig);
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
     const category =
       publicData && publicData.category ? (
@@ -409,7 +413,7 @@ export class ListingPageComponent extends Component {
         </span>
       ) : null;
     const paramsCalendar={partnerNumber}
-   
+
     const certificateOptions = findOptionsForSelectFilter('certificate', filterConfig);
     const calendarLinkMaybe = isAdmin ?
       <NamedLink
@@ -502,10 +506,34 @@ export class ListingPageComponent extends Component {
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
                   fetchLineItemsError={fetchLineItemsError}
-                 
+
                 />
               </div>
             </div>
+            <Modal
+              id="ListingPage.infos"
+              contentClassName={css.infosModalContent}
+              isOpen={this.state.infosModalOpen}
+              onClose={() => {
+                this.setState({ infosModalOpen: false });
+
+              }}
+              onManageDisableScrolling={onManageDisableScrolling}
+            >
+              <div >
+                <h2>
+                  <FormattedMessage id="ListingPage.modalInfosText"  />
+                </h2>
+
+              </div>
+              <SectionRulesMaybe publicData={publicData} />
+              <SectionDimensions publicData={publicData} />
+              <PrimaryButton onClick={() => {
+                this.setState({ infosModalOpen: false });
+                this.handleSubmit(this.state.valuesToSubmit)
+              }}>OK</PrimaryButton>
+
+            </Modal>
             <Modal
               id="ListingPage.enquiry"
               contentClassName={css.enquiryModalContent}
@@ -523,6 +551,7 @@ export class ListingPageComponent extends Component {
                 inProgress={sendEnquiryInProgress}
               />
             </Modal>
+
           </LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />

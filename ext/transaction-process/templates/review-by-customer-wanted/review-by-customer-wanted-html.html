@@ -1,14 +1,30 @@
 <html>
   <body>
+  {{#eq recipient.private-data.language "FR"}}
     {{#with transaction}}
-    <h1>How was your experience with {{listing.title}}? Write a review!</h1>
+    <h1>Comment s'est passé votre événement avec {{listing.title}}? Donnez votre avis!</h1>
 
-    <p>You recently booked {{listing.title}} from {{provider.display-name}}. Please write a review to describe your experience. Reviews are important part of the {{marketplace.name}} community.</p>
+    <p>Vous avez récemment réservé {{listing.title}} de {{provider.display-name}}. Vous pouvez donne votre avis.</p>
 
-    <p><a href="{{marketplace.url}}/order/{{url-encode id}}/details">Leave a review</a></p>
+    <p><a href="{{marketplace.url}}/order/{{url-encode id}}/details">Laisser un avis</a></p>
     {{/with}}
 
     <hr />
-    <p>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team.</p>
+    <p>
+      Vous avez reçu ce mail car vous êtes membre de {{ marketplace.name }}.
+      Si vous ne souhaitez plus recevoir de mail, veuillez contacter l'équipe {{ marketplace.name }}.
+    </p>
+  {{else}}
+  {{#with transaction}}
+      <h1>Wie ist Ihre Erfahrung mit {{listing.title}} verlaufen? Geben Sie Ihre Bewertung ab!</h1>
+      <p>Sie haben kürzlich {{listing.title}} von {{provider.display-name}} gebucht. Sie können Ihre Meinung abgeben.</p>
+      <p><a href="{{marketplace.url}}/order/{{url-encode id}}/details">Eine Bewertung abgeben</a></p>
+      {{/with}}
+      <hr />
+      <p>
+        Sie haben diese E-Mail erhalten, weil Sie Mitglied bei {{marketplace.name}} sind.
+        Wenn Sie keine E-Mails mehr erhalten möchten, wenden Sie sich bitte an das Team von {{marketplace.name}}.
+      </p>
+  {{/eq}}
   </body>
 </html>

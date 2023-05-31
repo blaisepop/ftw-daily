@@ -164,7 +164,8 @@
 }
 
 /* Profile menu */
-.profileMenuLabel {
+.profileMenuLabel
+.languageMenuLabel {
   @apply --TopbarDesktop_linkHover;
   flex-shrink: 0;
   display: flex;
@@ -232,12 +233,14 @@
   top: 2px;
   left: 0px;
   height: calc(100% - 4px);
-  width: 0;
+  width: 6px;
   transition: width var(--transitionStyleButton);
 }
 
 .profileSettingsLink,
+.languageItem,
 .yourListingsLink {
+  cursor:pointer;
   @apply --marketplaceH4FontStyles;
   position: relative;
   display: block;
@@ -322,3 +325,24 @@
     }
   }
 }
+.languageMenuLabel{
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+}
+.languageMenuLabel::after{
+  content: "";
+  position: relative;
+
+  margin-left: 5px;
+  border-right: solid 2px var(--matterColor);
+  border-bottom: solid 2px var(--matterColor);
+  bottom:2px;
+  /*left: 80%;*/
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+}
+

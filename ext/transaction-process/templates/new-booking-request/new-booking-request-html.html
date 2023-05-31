@@ -47,18 +47,17 @@
   </head>
   <body>
     {{#with transaction}}
-    <h1>Please respond to a request by {{ customer.display-name }}</h1>
+    <h1>Nouvelle demande de réservation par {{ customer.display-name }}</h1>
 
     <p>
-      Good news! {{ customer.display-name }} just requested to book {{ listing.title }} from
-      {{> format-date date=booking.start}} to {{> format-date date=booking.end}}. Here's the
-      breakdown.
+      Bonne Nouvelle ! {{ customer.display-name }} vient souhaite réserver {{ listing.title }} du
+      {{> format-date date=booking.start}} au {{> format-date date=booking.end}}. Voici le résumé :
     </p>
     <table>
       <thead>
         <tr>
-          <td class="left">Start date</td>
-          <td class="right">End date</td>
+          <td class="left">Début</td>
+          <td class="right">Fin</td>
         </tr>
         <tr>
           <th class="left">{{> format-day-time date=booking.start}}</th>
@@ -92,7 +91,7 @@
         </tr>
         {{/if}}
         <tr class="top-row">
-          <th class="left">Subtotal</th>
+          <th class="left">Sous Total</th>
           <th class="right">{{> format-money money=line-total}}</th>
         </tr>
         {{/eq}}
@@ -108,21 +107,19 @@
       </tbody>
       <tfoot>
         <tr class="top-row">
-          <th class="left">You'll make</th>
+          <th class="left">Total</th>
           <th class="right">{{> format-money money=payout-total}}</th>
         </tr>
       </tfoot>
     </table>
 
     <p>
-      You need to accept the request by {{> format-date date=delayed-transition.run-at}}. Otherwise
-      the request will be expired and you won't get paid. If the booked dates won't work for you,
-      you can also choose to decline the request.
+      Vous devez accepter cette delande avant le {{> format-date date=delayed-transition.run-at}}. Après cela, la demande expirera.
     </p>
 
     <p>
       <a href="{{ marketplace.url }}/sale/{{url-encode id}}/details"
-        >Accept or decline the booking</a
+        >Accepter ou décliner</a
       >
     </p>
 
@@ -131,8 +128,8 @@
     <hr />
 
     <p>
-      You have received this email notification because you are a member of {{ marketplace.name }}.
-      If you no longer wish to receive these emails, please contact {{ marketplace.name }} team.
+      Vous avez reçu ce mail car vous êtes membre de {{ marketplace.name }}.
+      Si vous ne souhaitez plus recevoir de mail, veuillez contacter l'équipe {{ marketplace.name }}.
     </p>
   </body>
 </html>

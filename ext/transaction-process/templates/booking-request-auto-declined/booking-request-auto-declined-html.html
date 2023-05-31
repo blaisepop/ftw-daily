@@ -6,24 +6,44 @@
 
 <html>
   <body>
-    <h1>Your booking request has expired.</h1>
+  {{#eq recipient.private-data.language "FR"}}
+    <h1>Votre demande de réservation a expiré.</h1>
 
     {{#with transaction}}
     <p>
-      Unfortunately {{ provider.display-name }} didn't respond to your booking request for
-      {{ listing.title }} from {{> format-date date=booking.start}} to
-      {{> format-date date=booking.end}} on time, so the request has expired. You have not been
-      billed.
+      Malheureusement  {{ provider.display-name }} n'a pas répondu à votre demande de réservation de
+      {{ listing.title }} du {{> format-date date=booking.start}} au
+      {{> format-date date=booking.end}} à temps, la requete a donc expiré.
     </p>
     {{/with}}
 
-    <p><a href="{{ marketplace.url }}">Try to book something else instead</a></p>
+    <p><a href="{{ marketplace.url }}">Essayez de réserver un autre food truck !</a></p>
 
     <hr />
 
-    <p>
-      You have received this email notification because you are a member of {{ marketplace.name }}.
-      If you no longer wish to receive these emails, please contact {{ marketplace.name }} team.
-    </p>
+  <p>
+    Vous avez reçu ce mail car vous êtes membre de {{ marketplace.name }}.
+    Si vous ne souhaitez plus recevoir de mail, veuillez contacter l'équipe {{ marketplace.name }}.
+  </p>
+  {{else}}
+  <h1>Ihre Buchungsanfrage ist abgelaufen.</h1>
+
+  {{#with transaction}}
+  <p>
+    Leider hat {{ provider.display-name }} nicht auf Ihre Buchungsanfrage von
+    {{ listing.title }} vom {{> format-date date date=booking.start}} bis zum
+    {{> format-date date=booking.end}} nicht rechtzeitig geantwortet, sodass die Anfrage abgelaufen ist.
+  </p>
+  {{/with}}
+
+  <p><a href="{{ marketplace.url }}">Versuchen Sie, einen anderen Foodtruck zu buchen !</a></p>
+
+  <hr />
+
+  <p>
+    Sie haben diese E-Mail erhalten, weil Sie Mitglied von {{ marketplace.name }}.
+    Wenn Sie keine weiteren E-Mails mehr erhalten möchten, wenden Sie sich bitte an das Team {{ marketplace.name }}.
+  </p>
+  {{/eq}}
   </body>
 </html>

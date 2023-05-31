@@ -30,12 +30,12 @@ class SearchFiltersMobileComponent extends Component {
   // Close the filters by clicking cancel, revert to the initial params
   cancelFilters() {
     const { history, onCloseModal } = this.props;
-
+    const trans='fr'
     history.push(
       createResourceLocatorString(
         'SearchPage',
         routeConfiguration(),
-        {},
+        {trans},
         this.state.initialQueryParams
       )
     );

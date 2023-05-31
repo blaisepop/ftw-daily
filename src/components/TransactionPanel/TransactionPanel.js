@@ -295,6 +295,18 @@ export class TransactionPanelComponent extends Component {
     const listingTitle = currentListing.attributes.deleted
       ? deletedListingTitle
       : currentListing.attributes.title;
+    const publicMedia=(currentListing
+      &&currentListing.attributes
+      &&currentListing.attributes.publicData
+      && currentListing.attributes.publicData.media?
+        currentListing.attributes.publicData.media
+        :null);
+
+    const listImagesFromMedia=publicMedia && publicMedia.pictures ? publicMedia.pictures:null
+    let firstImageFromMedia=null
+    if(listImagesFromMedia){
+      firstImageFromMedia=listImagesFromMedia[0]
+    }
 
     const unitType = config.bookingUnitType;
     const isNightly = unitType === LINE_ITEM_NIGHT;
@@ -398,7 +410,7 @@ export class TransactionPanelComponent extends Component {
                 geolocation={geolocation}
                 showAddress={stateData.showAddress}
               />
-              <BreakdownMaybe transaction={currentTransaction} transactionRole={transactionRole} />
+              <BreakdownMaybe onManageDisableScrolling={onManageDisableScrolling} transaction={currentTransaction} transactionRole={transactionRole} />
             </div>
 
             {savePaymentMethodFailed ? (
@@ -448,6 +460,7 @@ export class TransactionPanelComponent extends Component {
                 avatarWrapperClassName={css.avatarWrapperDesktop}
                 listingTitle={listingTitle}
                 image={firstImage}
+                imageFromMedia={firstImageFromMedia}
                 provider={currentProvider}
                 isCustomer={isCustomer}
                 listingId={currentListing.id && currentListing.id.uuid}
@@ -485,6 +498,7 @@ export class TransactionPanelComponent extends Component {
                 className={css.breakdownContainer}
                 transaction={currentTransaction}
                 transactionRole={transactionRole}
+                onManageDisableScrolling={onManageDisableScrolling}
               />
 
 

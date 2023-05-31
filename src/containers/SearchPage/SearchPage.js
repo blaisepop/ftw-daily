@@ -50,9 +50,9 @@ export class SearchPageComponent extends Component {
   // when map is moved by user or viewport has changed
   onMapMoveEnd(viewportBoundsChanged, data) {
     const { viewportBounds, viewportCenter } = data;
-
+    const trans='fr'
     const routes = routeConfiguration();
-    const searchPagePath = pathByRouteName('SearchPage', routes);
+    const searchPagePath = pathByRouteName('SearchPage', routes, {});
     const currentPath =
       typeof window !== 'undefined' && window.location && window.location.pathname;
 

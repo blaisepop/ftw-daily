@@ -55,9 +55,6 @@ export default function CheckoutForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-
-
     console.log("EEEE", elements.getElement('payment'));
     setIsLoading(true);
 
@@ -75,8 +72,6 @@ export default function CheckoutForm(props) {
       "payment_id":props.paymentIntentID
     }
     axios.post(process.env.REACT_APP_CRM_LINK+"updatePaymentAmount" ,
-
-    //  axios.post("http://localhost:5000/api/v1/updatePaymentAmount" ,
       data
       ,config)
       .then(async ()=>{
@@ -99,11 +94,13 @@ export default function CheckoutForm(props) {
           setIsLoading(false);
         }
         else {
-          // props.registerBooking(props.valuesToSub, props.amount)
-          props.handleFunction();
+
           setIsLoading(false);
-        }
-      })
+
+          props.handleFunction();
+              setError(true)
+              setIsLoading(false)
+      }})
       .catch((error) => {
         setError(true)
         setIsLoading(false);

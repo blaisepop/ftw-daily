@@ -6,11 +6,22 @@ import { storableError } from '../../util/errors';
 import {
   TRANSITION_REQUEST_PAYMENT,
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
-  TRANSITION_CONFIRM_PAYMENT,
-  isPrivileged,
+
+  isPrivileged, TRANSITION_DECLINE,
 } from '../../util/transaction';
 import * as log from '../../util/log';
-import { fetchCurrentUserHasOrdersSuccess, fetchCurrentUser } from '../../ducks/user.duck';
+import {
+  fetchCurrentUserHasOrdersSuccess,
+  fetchCurrentUser,
+  fetchCurrentUserNotifications
+} from '../../ducks/user.duck';
+import {addMarketplaceEntities} from "../../ducks/marketplaceData.duck";
+import {acceptOrDeclineInProgress} from "../TransactionPage/TransactionPage.duck";
+import {
+  DECLINE_SALE_ERROR,
+  DECLINE_SALE_REQUEST,
+  DECLINE_SALE_SUCCESS
+} from "../PaymentPage/PaymentPage.duck";
 
 // ================ Action types ================ //
 
@@ -31,6 +42,14 @@ export const SPECULATE_TRANSACTION_ERROR = 'app/ListingPage/SPECULATE_TRANSACTIO
 export const STRIPE_CUSTOMER_REQUEST = 'app/CheckoutPage/STRIPE_CUSTOMER_REQUEST';
 export const STRIPE_CUSTOMER_SUCCESS = 'app/CheckoutPage/STRIPE_CUSTOMER_SUCCESS';
 export const STRIPE_CUSTOMER_ERROR = 'app/CheckoutPage/STRIPE_CUSTOMER_ERROR';
+
+export const TRANSITION_PROBLEM_REGISTERING = 'transition/problem_registering';
+export const TRANSITION_CRM_CONFIRM = 'transition/crm_confirm';
+
+
+export const REGISTERING_CRM_SUCCESSED_REQUEST='app/PaymentPage/REGISTERING_CRM_SUCCESSED_REQUEST';
+export const REGISTERING_FAILED_REQUEST  = 'app/PaymentPage/REGISTERING_FAILED_REQUEST';
+
 
 // ================ Reducer ================ //
 
@@ -163,7 +182,14 @@ export const stripeCustomerError = e => ({
 
 export const initiateOrder = (orderParams, transactionId) => (dispatch, getState, sdk) => {
   dispatch(initiateOrderRequest());
-
+  sdk.currentUser.updateProfile({
+    privateData: {
+      Language:localStorage.getItem("mobile_food_language")
+    }
+  }, {
+    expand: true,
+    include: ["profileImage"]
+  }).then(res => {})
   // If we already have a transaction ID, we should transition, not
   // initiate.
   const isTransition = !!transactionId;
@@ -195,7 +221,9 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
     include: ['booking', 'provider'],
     expand: true,
   };
-
+  console.log("booking",bookingData)
+  console.log("body", bodyParams)
+  console.log("query", queryParams)
   const handleSucces = response => {
     const entities = denormalisedResponseEntities(response);
     const order = entities[0];
@@ -244,12 +272,12 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
 export const confirmPayment = orderParams => (dispatch, getState, sdk) => {
   dispatch(confirmPaymentRequest());
 
- 
+
   const bodyParams = {
     id: orderParams.transactionId,
     transition: TRANSITION_CONFIRM_PAYMENT,
     params: {metadata:{ "adress":"7 rue exemple"}},
-   
+
   };
 
   return sdk.transactions
@@ -399,5 +427,44 @@ export const stripeCustomer = () => (dispatch, getState, sdk) => {
     })
     .catch(e => {
       dispatch(stripeCustomerError(storableError(e)));
+    });
+};
+
+const registeringFailedRequest = () => ({ type: REGISTERING_FAILED_REQUEST });
+const registeringCRMSuccessedRequest = () => ({ type: REGISTERING_CRM_SUCCESSED_REQUEST });
+//const declineSaleSuccess = () => ({ type: DECLINE_SALE_SUCCESS });
+//const declineSaleError = e => ({ type: DECLINE_SALE_ERROR, error: true, payload: e });
+export const registeringFailed = id => (dispatch, getState, sdk) => {
+
+  dispatch(registeringFailedRequest());
+
+  return sdk.transactions
+    .transition({ id, transition: TRANSITION_PROBLEM_REGISTERING, params: {} }, { expand: true })
+    .then(response => {
+      return response;
+    })
+    .catch(e => {
+      log.error(e, 'reject-sale-failed', {
+        txId: id,
+        transition: TRANSITION_PROBLEM_REGISTERING,
+      });
+      throw e;
+    });
+};
+export const registeringCRMSuccessed = id => (dispatch, getState, sdk) => {
+
+  dispatch(registeringFailedRequest());
+
+  return sdk.transactions
+    .transition({ id, transition: TRANSITION_CRM_CONFIRM, params: {} }, { expand: true })
+    .then(response => {
+      return response;
+    })
+    .catch(e => {
+      log.error(e, 'reject-sale-failed', {
+        txId: id,
+        transition: TRANSITION_CRM_CONFIRM,
+      });
+      throw e;
     });
 };

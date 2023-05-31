@@ -1,1 +1,4 @@
 Your booking request has expired
+
+{{#eq recipient.private-data.language "FR"}} Vote demande de réservation a expiré{{/eq}}
+{{#eq recipient.private-data.language "DE"}} Ihre Buchungsanfrage ist abgelaufen{{/eq}}

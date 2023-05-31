@@ -3,7 +3,7 @@
  * I.e. dates and other details related to payment decision in receipt format.
  */
 import React from 'react';
-import { oneOf, string } from 'prop-types';
+import {func, oneOf, string} from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import {
@@ -37,6 +37,7 @@ export const BookingBreakdownComponent = props => {
     intl,
     dateType,
     timeZone,
+    onManageDisableScrolling,
   } = props;
 
   const isCustomer = userRole === 'customer';
@@ -131,7 +132,7 @@ export const BookingBreakdownComponent = props => {
         intl={intl}
       />
 
-      <LineItemTotalPrice transaction={transaction} isProvider={isProvider} intl={intl} />
+      <LineItemTotalPrice onManageDisableScrolling={onManageDisableScrolling} transaction={transaction} isProvider={isProvider} intl={intl} />
 
       {hasCommissionLineItem ? (
         <span className={css.feeInfo}>
@@ -150,6 +151,7 @@ BookingBreakdownComponent.defaultProps = {
 };
 
 BookingBreakdownComponent.propTypes = {
+  onManageDisableScrolling: func.isRequired,
   rootClassName: string,
   className: string,
 

@@ -3,6 +3,7 @@ import loadable from '@loadable/component';
 import getPageDataLoadingAPI from './containers/pageDataLoadingAPI';
 import { NotFoundPage } from './containers';
 
+
 // routeConfiguration needs to initialize containers first
 // Otherwise, components will import form container eventually and
 // at that point css bundling / imports will happen in wrong order.
@@ -48,7 +49,7 @@ export const ACCOUNT_SETTINGS_PAGES = [
 // https://en.wikipedia.org/wiki/Universally_unique_identifier#Nil_UUID
 const draftId = '00000000-0000-0000-0000-000000000000';
 const draftSlug = 'draft';
-
+const trans='fr'
 const RedirectToLandingPage = () => <NamedRedirect name="LandingPage" />;
 
 // NOTE: Most server-side endpoints are prefixed with /api. Requests to those
@@ -66,6 +67,7 @@ const routeConfiguration = () => {
       name: 'LandingPage',
       component: LandingPage,
     },
+
     {
       path: '/about',
       name: 'AboutPage',

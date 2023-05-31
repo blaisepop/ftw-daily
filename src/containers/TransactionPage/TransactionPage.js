@@ -264,6 +264,7 @@ export const TransactionPageComponent = props => {
       fetchLineItemsInProgress={fetchLineItemsInProgress}
       fetchLineItemsError={fetchLineItemsError}
       histoey={history}
+
     />
   ) : (
     loadingOrFailedFetching

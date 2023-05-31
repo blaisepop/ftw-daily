@@ -36,7 +36,7 @@ export class NotFoundPageComponent extends Component {
     const title = intl.formatMessage({
       id: 'NotFoundPage.title',
     });
-
+    const trans='fr'
     const handleSearchSubmit = values => {
       const { search, selectedPlace } = values.location;
       const { origin, bounds } = selectedPlace;

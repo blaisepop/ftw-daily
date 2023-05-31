@@ -48,22 +48,25 @@ import {
   ResponsiveImage,
   Form,
   PrimaryButton,
-  FieldTextInput,
+  FieldTextInput, Modal,
 } from '../../components';
 import { CheckoutForm } from '../../forms';
 
-import { isScrollingDisabled } from '../../ducks/UI.duck';
+import {isScrollingDisabled, manageDisableScrolling} from '../../ducks/UI.duck';
 import {
   initiateOrder,
   setInitialValues,
   speculateTransaction,
-  sendMessage,
+  sendMessage, registeringFailed, registeringCRMSuccessed,
 } from './CheckoutPage.duck';
 
 import config from '../../config';
 
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers';
 import css from './CheckoutPage.module.css';
+import SectionRulesMaybe from "../ListingPage/SectionRulesMaybe";
+import SectionDimensions from "../ListingPage/SectionDimensions";
+import {declineSale} from "../TransactionPage/TransactionPage.duck";
 
 const STORAGE_KEY = 'CheckoutPage';
 const stripeKey = config.stripe.publishableKey;
@@ -84,7 +87,9 @@ export class CheckoutPageComponent extends Component {
       paymentIntentID: "",
       transac: null,
       formValues:null,
-      registerTransactionError:false
+      registerTransactionError:false,
+      infosModalOpen:false,
+      valuesToSubmit:{}
     };
 
     this.loadInitialData = this.loadInitialData.bind(this);
@@ -153,6 +158,7 @@ export class CheckoutPageComponent extends Component {
       enquiredTransaction,
       fetchSpeculatedTransaction,
       history,
+
     } = this.props;
     console.log(this.props)
     // Browser's back navigation should not rewrite data in session store.
@@ -219,9 +225,8 @@ export class CheckoutPageComponent extends Component {
       if (this.state.submitting) {
         return;
       }
-
-      this.setState({ submitting: true });
-      this.registerBooking(values, amount)
+      this.setState({infosModalOpen:true})
+      this.setState({valuesToSubmit:values})
 
     }
 
@@ -238,7 +243,7 @@ export class CheckoutPageComponent extends Component {
     this.setState({ submitting: true });
 
     const initialMessage = values.initialMessage;
-    const { history, speculatedTransaction, dispatch, onInitiateOrder, onSendMessage } = this.props;
+    const { history, speculatedTransaction, dispatch, onInitiateOrder, onSendMessage,onregisteringCRMSuccessed, onRegisteringFailed } = this.props;
 
     // Create order aka transaction
     // NOTE: if unit type is line-item/units, quantity needs to be added.
@@ -254,15 +259,18 @@ export class CheckoutPageComponent extends Component {
     console.log("params",requestParams);
     const enquiredTransaction = this.state.pageData.enquiredTransaction;
     const transactionIdMaybe = enquiredTransaction ? enquiredTransaction.id : null;
-
+    console.log("Transaction ID", transactionIdMaybe);
     const partnerNumber = this.state.pageData.listing.attributes.publicData.partnerNumber
-    const currentUser = this.props.currentUser;
 
-    console.log("VALUES", values)
-    console.log("pagedata", this.state.pageData)
+
+     const currentUser = this.props.currentUser;
+
+   // console.log("VALUES", values)
+    //console.log("pagedata", this.state.pageData)
 
     onInitiateOrder(requestParams, transactionIdMaybe).then(params => {
       const transactionID = params.id.uuid;
+      console.log(transactionID)
       const bookingForCRM =
       {
         "booking":
@@ -291,6 +299,7 @@ export class CheckoutPageComponent extends Component {
         bookingForCRM
         , conf)
         .then(()=>{
+          onregisteringCRMSuccessed(params.id.uuid)
           onSendMessage({ ...params, message: initialMessage })
           .then(values => {
             const { orderId, messageSuccess } = values;
@@ -311,12 +320,15 @@ export class CheckoutPageComponent extends Component {
             clearData(STORAGE_KEY);
             history.push(orderDetailsPath);
           })
-          .catch(() => {
+          .catch((params) => {
+
             this.setState({registerTransactionError:true})
             this.setState({ submitting: false });
           });
         })
         .catch((error) => {
+          console.log("PARAMS",params);
+          onRegisteringFailed(params.id.uuid)
           this.setState({registerTransactionError:true})
           console.log("erreur", this.state.registertransactionError, this.state.submitting)
           this.setState({ submitting: false });
@@ -338,6 +350,7 @@ export class CheckoutPageComponent extends Component {
       intl,
       params,
       currentUser,
+      onManageDisableScrolling,
     } = this.props;
     const appearance = {
       theme: 'stripe',
@@ -423,6 +436,7 @@ export class CheckoutPageComponent extends Component {
           booking={txBooking}
           dateType={DATE_TYPE_DATETIME}
           timeZone={timeZone}
+          onManageDisableScrolling={onManageDisableScrolling}
         />
       ) : null;
     const initialMessageLabel = intl.formatMessage(
@@ -438,7 +452,19 @@ export class CheckoutPageComponent extends Component {
       currentListing.images && currentListing.images.length > 0
         ? currentListing.images[0]
         : null;
+    const publicMedia=(currentListing
+      &&currentListing.attributes
+      &&currentListing.attributes.publicData
+      && currentListing.attributes.publicData.media?
+      currentListing.attributes.publicData.media
+      :null);
+    const listImagesFromMedia=publicMedia && publicMedia.pictures ? publicMedia.pictures:null
+    let firstImageFromMedia=null
+    if(listImagesFromMedia){
+      firstImageFromMedia=listImagesFromMedia[0]
 
+    }
+    console.log(currentListing)
     const listingNotFoundErrorMessage = listingNotFound ? (
       <p className={css.notFoundError}>
         <FormattedMessage id="CheckoutPage.listingNotFoundError" />
@@ -534,7 +560,7 @@ export class CheckoutPageComponent extends Component {
         </p>
       );
     }
-
+    const trans='fr'
     const topbar = (
       <div className={css.topbar}>
         <NamedLink className={css.home} name="LandingPage">
@@ -610,7 +636,9 @@ export class CheckoutPageComponent extends Component {
     console.log("EEERRRUUUURRR", speculateTransactionError)
     const bookingForm = !speculateTransactionError?(
       <FinalForm
-        onSubmit={values => this.handleSubmit(values, amount)}
+        onSubmit={values => {
+          this.handleSubmit(values, amount);
+        }}
         render={fieldRenderProps => {
           const { handleSubmit } = fieldRenderProps;
           return (
@@ -659,6 +687,32 @@ export class CheckoutPageComponent extends Component {
                 >
                 <FormattedMessage id="CheckoutPage.submitButton" />
               </PrimaryButton>}
+              <Modal
+                id="checkout.infos"
+                contentClassName={css.infosModalContent}
+                isOpen={this.state.infosModalOpen}
+                onClose={() => {
+                  this.setState({ infosModalOpen: false });
+                }}
+                onManageDisableScrolling={onManageDisableScrolling}
+              >
+                <div style={{ margin: '1rem' }}>
+                  <h2>
+                    <FormattedMessage id="CheckoutPage.modalInfosPaymentsTitle"  />
+                  </h2>
+                  <p>
+                    <FormattedMessage id="CheckoutPage.modalInfosPaymentsPart1"  />
+                  </p>
+                  <p>
+                    <FormattedMessage id="CheckoutPage.modalInfosPaymentsPart2"  />
+                  </p>
+
+                </div>
+                <PrimaryButton onClick={() => {
+                  this.setState({ infosModalOpen: false });
+                  this.registerBooking(this.state.valuesToSubmit, amount)
+                }}>OK</PrimaryButton>
+              </Modal>
             </Form>
           );
         }}
@@ -674,8 +728,10 @@ export class CheckoutPageComponent extends Component {
               rootClassName={css.rootForImage}
               alt={listingTitle}
               image={firstImage}
+              imageFromMedia={firstImageFromMedia}
               variants={['landscape-crop', 'landscape-crop2x']}
             />
+
           </div>
           <div className={classNames(css.avatarWrapper, css.avatarMobile)}>
             <AvatarMedium user={currentAuthor} disableProfileLink />
@@ -705,6 +761,7 @@ export class CheckoutPageComponent extends Component {
                 rootClassName={css.rootForImage}
                 alt={listingTitle}
                 image={firstImage}
+                imageFromMedia={firstImageFromMedia}
                 variants={['landscape-crop', 'landscape-crop2x']}
               />
             </div>
@@ -737,6 +794,9 @@ CheckoutPageComponent.defaultProps = {
 };
 
 CheckoutPageComponent.propTypes = {
+  onRegisteringFailed: func.isRequired,
+  onregisteringCRMSuccessed: func.isRequired,
+  onManageDisableScrolling: func.isRequired,
   scrollingDisabled: bool.isRequired,
   listing: propTypes.listing,
   bookingData: object,
@@ -798,10 +858,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
+  onManageDisableScrolling: (componentId, disableScrolling) =>
+    dispatch(manageDisableScrolling(componentId, disableScrolling)),
   onInitiateOrder: (params, transactionId) =>
     dispatch(initiateOrder(params, transactionId)),
   onSendMessage: params => dispatch(sendMessage(params)),
   fetchSpeculatedTransaction: params => dispatch(speculateTransaction(params)),
+  onRegisteringFailed: transactionId => dispatch(registeringFailed(transactionId)),
+  onregisteringCRMSuccessed: transactionId => dispatch(registeringCRMSuccessed(transactionId)),
 });
 
 const CheckoutPage = compose(

@@ -6,10 +6,12 @@ import { ensureListing } from '../../util/data';
 import { BookingBreakdown } from '../../components';
 
 import css from './TransactionPanel.module.css';
+import {func} from "prop-types";
+import {BookingBreakdownComponent} from "../BookingBreakdown/BookingBreakdown";
 
 // Functional component as a helper to build BookingBreakdown
 const BreakdownMaybe = props => {
-  const { className, rootClassName, breakdownClassName, transaction, transactionRole } = props;
+  const { className, rootClassName, breakdownClassName, transaction, transactionRole,onManageDisableScrolling } = props;
   const loaded = transaction && transaction.id && transaction.booking && transaction.booking.id;
   const listingAttributes = ensureListing(transaction.listing).attributes;
   const timeZone =
@@ -30,9 +32,12 @@ const BreakdownMaybe = props => {
         booking={transaction.booking}
         dateType={DATE_TYPE_DATETIME}
         timeZone={timeZone}
+        onManageDisableScrolling={onManageDisableScrolling}
       />
     </div>
   ) : null;
 };
-
+BreakdownMaybe.propTypes = {
+  onManageDisableScrolling: func.isRequired
+}
 export default BreakdownMaybe;

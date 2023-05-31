@@ -15,9 +15,11 @@ import { propTypes } from '../../util/types';
 import css from './EmailVerificationForm.module.css';
 
 const EmailVerificationFormComponent = props => (
+
   <FinalForm
     {...props}
     render={formRenderProps => {
+      const trans='fr'
       const { currentUser, inProgress, handleSubmit, verificationError } = formRenderProps;
 
       const { email, emailVerified, pendingEmail, profile } = currentUser.attributes;
@@ -81,7 +83,7 @@ const EmailVerificationFormComponent = props => (
           </div>
 
           <div className={css.bottomWrapper}>
-            <NamedLink className={css.submitButton} name="LandingPage">
+            <NamedLink className={css.submitButton} name="LandingPage" >
               <FormattedMessage id="EmailVerificationForm.successButtonText" />
             </NamedLink>
           </div>
@@ -106,7 +108,7 @@ const EmailVerificationFormComponent = props => (
           </div>
 
           <div className={css.bottomWrapper}>
-            <NamedLink className={css.submitButton} name="LandingPage">
+            <NamedLink className={css.submitButton} name="LandingPage" >
               <FormattedMessage id="EmailVerificationForm.successButtonText" />
             </NamedLink>
           </div>

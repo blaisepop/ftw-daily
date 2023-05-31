@@ -34,6 +34,8 @@ import config from '../../config';
 import { BookingBreakdown } from '../../components';
 
 import css from './BookingTimeForm.module.css';
+import {func} from "prop-types";
+import {BookingTimeFormComponent} from "./BookingTimeForm";
 
 const { Money, UUID } = sdkTypes;
 
@@ -101,6 +103,8 @@ const estimatedTransaction = (bookingStart, bookingEnd, lineItems, userRole) => 
 };
 
 const EstimatedBreakdownMaybe = props => {
+  const {onManageDisableScrolling}=props
+
   const { unitType, startDate, endDate, timeZone } = props.bookingData;
   const lineItems = props.lineItems;
 
@@ -120,8 +124,13 @@ const EstimatedBreakdownMaybe = props => {
       transaction={tx}
       booking={tx.booking}
       timeZone={timeZone}
+      onManageDisableScrolling={onManageDisableScrolling}
+
     />
   ) : null;
 };
+EstimatedBreakdownMaybe.propTypes = {
+  onManageDisableScrolling: func.isRequired
+}
 
 export default EstimatedBreakdownMaybe;

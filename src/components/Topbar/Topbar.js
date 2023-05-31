@@ -67,6 +67,7 @@ GenericError.propTypes = {
 };
 
 class TopbarComponent extends Component {
+
   constructor(props) {
     super(props);
     this.handleMobileMenuOpen = this.handleMobileMenuOpen.bind(this);
@@ -111,12 +112,12 @@ class TopbarComponent extends Component {
   handleLogout() {
     const { onLogout, history } = this.props;
     onLogout().then(() => {
-      const path = pathByRouteName('LandingPage', routeConfiguration());
+      const path = pathByRouteName('LandingPage', routeConfiguration(), );
 
       // In production we ensure that data is really lost,
       // but in development mode we use stored values for debugging
       if (config.dev) {
-        history.push(path);
+        history.push(+path);
       } else if (typeof window !== 'undefined') {
         window.location = path;
       }
@@ -190,7 +191,6 @@ class TopbarComponent extends Component {
     };
 
     const classes = classNames(rootClassName || css.root, className);
-  
     return (
       <div className={classes}>
         <LimitedAccessBanner
@@ -212,6 +212,7 @@ class TopbarComponent extends Component {
           <NamedLink
             className={css.home}
             name="LandingPage"
+
             title={intl.formatMessage({ id: 'Topbar.logoIcon' })}
           >
             <Logo format="mobile" />

@@ -101,7 +101,7 @@ export class AuthenticationPageComponent extends Component {
     // (i.e. `from` is present). We must also check the `emailVerified`
     // flag only when the current user is fully loaded.
     const showEmailVerification = !isLogin && currentUserLoaded && !user.attributes.emailVerified;
-
+    const trans='fr'
     // Already authenticated, redirect away from auth page
     if (isAuthenticated && from) {
       return <Redirect to={from} />;
@@ -209,7 +209,8 @@ export class AuthenticationPageComponent extends Component {
       const fromParam = from ? `from=${from}` : '';
 
       // Default route where user is returned after successfull authentication
-      const defaultReturn = pathByRouteName('LandingPage', routes);
+      const trans='fr'
+      const defaultReturn = pathByRouteName('LandingPage', routes, );
       const defaultReturnParam = defaultReturn ? `&defaultReturn=${defaultReturn}` : '';
 
       // Route for confirming user data before creating a new user

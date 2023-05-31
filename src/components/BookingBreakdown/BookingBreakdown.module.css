@@ -9,6 +9,23 @@
   white-space: nowrap;
 }
 
+.infoButton{
+  outline: none;
+  margin-left: 5px;
+  border: solid 2px var(--marketplaceColor);
+  color: var(--matterColor);
+  border-radius: 100%;
+  line-height: 15px;
+
+  background:none;
+  padding: 0 6px ;
+  &:hover{
+      text-decoration: none;
+      background-color: var(--marketplaceColor);
+      color: var(--matterColorLight);
+    }
+
+}
 .lineItem {
   @apply --marketplaceH4FontStyles;
   margin: 0;

@@ -166,9 +166,10 @@ export class BookingTimeFormComponent extends Component {
   }
 
   render() {
-    const { rootClassName, className, price: unitPrice, ...rest } = this.props;
-    const classes = classNames(rootClassName || css.root, className);
 
+    console.log(this.props);
+    const { rootClassName, className, price: unitPrice, onManageDisableScrolling,...rest } = this.props;
+    const classes = classNames(rootClassName || css.root, className);
     if (!unitPrice) {
       return (
         <div className={classes}>
@@ -214,6 +215,7 @@ export class BookingTimeFormComponent extends Component {
             fetchLineItemsError,
             fee,
             capacity,
+
 
           } = fieldRenderProps;
           const feeName = fee ? fee.name : null
@@ -292,7 +294,7 @@ export class BookingTimeFormComponent extends Component {
               <h3 className={css.priceBreakdownTitle}>
                 <FormattedMessage id="BookingTimeForm.priceBreakdownTitle" />
               </h3>
-              <EstimatedBreakdownMaybe bookingData={bookingData} lineItems={lineItems} />
+              <EstimatedBreakdownMaybe onManageDisableScrolling={onManageDisableScrolling} bookingData={bookingData} lineItems={lineItems} />
             </div>
           ) : null;
 
@@ -427,6 +429,8 @@ BookingTimeFormComponent.defaultProps = {
 };
 
 BookingTimeFormComponent.propTypes = {
+  onManageDisableScrolling: func.isRequired,
+
   rootClassName: string,
   className: string,
   submitButtonWrapperClassName: string,

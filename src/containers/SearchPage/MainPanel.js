@@ -63,6 +63,7 @@ class MainPanel extends Component {
 
   // Apply the filters by redirecting to SearchPage with new filters.
   applyFilters() {
+    const trans='fr'
     const { history, urlQueryParams, sortConfig, filterConfig } = this.props;
     const searchParams = { ...urlQueryParams, ...this.state.currentQueryParams };
     const search = cleanSearchFromConflictingParams(searchParams, sortConfig, filterConfig);
@@ -77,6 +78,7 @@ class MainPanel extends Component {
 
   // Reset all filter query parameters
   resetAll(e) {
+    const trans='fr'
     const { urlQueryParams, history, filterConfig } = this.props;
     const filterQueryParamNames = filterConfig.map(f => f.queryParamNames);
 
@@ -114,7 +116,7 @@ class MainPanel extends Component {
 
   getHandleChangedValueFn(useHistoryPush) {
     const { urlQueryParams, history, sortConfig, filterConfig } = this.props;
-
+    const trans="fr"
     return updatedURLParams => {
       const updater = prevState => {
         const { address, bounds } = urlQueryParams;
@@ -132,7 +134,7 @@ class MainPanel extends Component {
         if (useHistoryPush) {
           const searchParams = this.state.currentQueryParams;
           const search = cleanSearchFromConflictingParams(searchParams, sortConfig, filterConfig);
-          history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, search));
+          history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {trans}, search));
         }
       };
 
@@ -141,6 +143,7 @@ class MainPanel extends Component {
   }
 
   handleSortBy(urlParam, values) {
+    const trans='fr'
     const { history, urlQueryParams } = this.props;
     const queryParams = values
       ? { ...urlQueryParams, [urlParam]: values }

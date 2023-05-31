@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import ReactDOMServer from 'react-dom/server';
 
@@ -7,7 +7,7 @@ import ReactDOMServer from 'react-dom/server';
 // NOTE: Initializing it here will initialize it also for app.test.js
 import 'react-dates/initialize';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter, StaticRouter } from 'react-router-dom';
+import {BrowserRouter, StaticRouter, useLocation, useParams, withRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import difference from 'lodash/difference';
 import mapValues from 'lodash/mapValues';
@@ -19,8 +19,30 @@ import Routes from './Routes';
 import config from './config';
 
 // Flex template application uses English translations as default.
-import defaultMessages from './translations/fr.json';
+import frMessages from './translations/fr.json';
+import deMessages from './translations/de.json'
 
+
+
+const getLanguage=()=>{
+
+  if(!(localStorage.getItem("mobile_food_language"))){
+    localStorage.setItem("mobile_food_language", "FR")
+  }
+
+    if (localStorage.getItem("mobile_food_language")==="DE"){
+
+      console.log("allemand")
+      return deMessages
+
+    }
+    else if(localStorage.getItem("mobile_food_language")==="FR"){
+      console.log("français")
+      return frMessages
+    }
+
+}
+let defaultMessages=getLanguage()
 // If you want to change the language, change the imports to match the wanted locale:
 //   1) Change the language in the config.js file!
 //   2) Import correct locale rules for Moment library
@@ -58,18 +80,22 @@ const addMissingTranslations = (sourceLangTranslations, targetLangTranslations) 
   return missingKeys.reduce(addMissingTranslation, targetLangTranslations);
 };
 
+
+
+
+
 const isDefaultLanguageInUse = config.locale === 'en';
 
-const messages = isDefaultLanguageInUse
+let messages = isDefaultLanguageInUse
   ? defaultMessages
   : addMissingTranslations(defaultMessages, messagesInLocale);
 
-const isTestEnv = process.env.NODE_ENV === 'test';
+let isTestEnv = process.env.NODE_ENV === 'test';
 
 // Locale should not affect the tests. We ensure this by providing
 // messages with the key as the value of each message.
-const testMessages = mapValues(messages, (val, key) => key);
-const localeMessages = isTestEnv ? testMessages : messages;
+let testMessages = mapValues(messages, (val, key) => key);
+let localeMessages = isTestEnv ? testMessages : messages;
 
 const setupLocale = () => {
   if (isTestEnv) {
@@ -88,6 +114,37 @@ const setupLocale = () => {
 export const ClientApp = props => {
   const { store } = props;
   setupLocale();
+  const config=routeConfiguration()
+  const [appKey, setAppKey] = useState(0);
+
+
+
+
+  const setLanguage1=(params)=>{
+    console.log("ici1", params, defaultMessages!==deMessages, defaultMessages!==frMessages)
+    if (params==="de"&&defaultMessages!==deMessages){
+      defaultMessages=deMessages
+      console.log("allemand")
+    }
+    else if(params==="fr"&&defaultMessages!==frMessages){
+      defaultMessages=frMessages
+      console.log("français")
+    }
+    else return
+    console.log("ici")
+    messages = isDefaultLanguageInUse
+      ? defaultMessages
+      : addMissingTranslations(defaultMessages, messagesInLocale);
+
+    isTestEnv = process.env.NODE_ENV === 'test';
+
+// Locale should not affect the tests. We ensure this by providing
+// messages with the key as the value of each message.
+    testMessages = mapValues(messages, (val, key) => key);
+    localeMessages = isTestEnv ? testMessages : messages;
+    setAppKey(appKey+1)
+  }
+
   return (
     <IntlProvider locale={config.locale} messages={localeMessages} textComponent="span">
       <Provider store={store}>
@@ -138,6 +195,7 @@ export const renderApp = (url, serverContext, preloadedState, collectChunks) => 
   // Don't pass an SDK instance since we're only rendering the
   // component tree with the preloaded store state and components
   // shouldn't do any SDK calls in the (server) rendering lifecycle.
+
   const store = configureStore(preloadedState);
 
   const helmetContext = {};

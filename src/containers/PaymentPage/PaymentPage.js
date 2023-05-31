@@ -104,18 +104,19 @@ export const TransactionPageComponent = props => {
   const [clientSecret, setClientSecret] = useState(null);
   const [paymentIntentID, setPaymentIntentID] = useState(null);
   const [paymentIntentError, setPaymentIntentError] = useState(false);
+  const [waitingPI, setWaitingPI] = useState(false);
   // const [partnerNumber, setPartnerNumber]=useState(null)
   let isDataAvailable=false;
   useEffect(()=>{
 
 
-    if(isDataAvailable&&!clientSecret&&!paymentIntentID
+    if(!waitingPI&&isDataAvailable&&!clientSecret&&!paymentIntentID
       &&currentListing
       &&currentListing.attributes
       &&currentListing.attributes.publicData
       &&currentListing.attributes.publicData.partnerNumber){
 
-      console.log("aaaaa",currentListing);
+      console.log("LAAAAAA",paymentIntentID, clientSecret);
       const conf = {
         headers: {
           'X-User-Token': process.env.REACT_APP_CRM_USER_TOKEN,
@@ -124,10 +125,12 @@ export const TransactionPageComponent = props => {
         }
       }
 
-      console.log(currentListing);
+      console.log(currentTransaction);
       const data = {
-        partner_number: currentListing.attributes.publicData.partnerNumber
+        partner_number: currentListing.attributes.publicData.partnerNumber,
+        transaction_id: currentTransaction.id.uuid
       }
+      setWaitingPI(true)
       axios.post(process.env.REACT_APP_CRM_LINK+"paymentIntent",
       //axios.post("http://localhost:5000/api/v1/paymentIntent",
         data
@@ -137,12 +140,15 @@ export const TransactionPageComponent = props => {
           data.payment_intent
         )
         .then((payment_intent) => {
-          console.log("aaaa", payment_intent);
-          setClientSecret(payment_intent.client_secret )
-          setPaymentIntentID(payment_intent.id)
+          console.log("payment_intent", payment_intent);
+          console.log("id1", clientSecret, paymentIntentID)
+          clientSecret?null:setClientSecret(payment_intent.client_secret )
+          paymentIntentID?null:setPaymentIntentID(payment_intent.id)
           setErrorPaymentIntent(false)
+          setWaitingPI(false)
         })
         .catch((error)=>{
+          setWaitingPI(false)
           setPaymentIntentError(true)
       })
       ;
@@ -330,6 +336,17 @@ export const TransactionPageComponent = props => {
     currentListing.images && currentListing.images.length > 0
       ? currentListing.images[0]
       : null;
+  const publicMedia=(currentListing
+  &&currentListing.attributes
+  &&currentListing.attributes.publicData
+  && currentListing.attributes.publicData.media?
+    currentListing.attributes.publicData.media
+    :null);
+  const listImagesFromMedia=publicMedia && publicMedia.pictures ? publicMedia.pictures:null
+  let firstImageFromMedia=null
+  if(listImagesFromMedia){
+    firstImageFromMedia=listImagesFromMedia[0]
+  }
   const currentAuthor = ensureUser(currentListing.author);
   // Show breakdown only when speculated transaction and booking are loaded
   // (i.e. have an id)
@@ -358,6 +375,7 @@ export const TransactionPageComponent = props => {
         booking={txBooking}
         dateType={DATE_TYPE_DATETIME}
         timeZone={timeZone}
+        onManageDisableScrolling={onManageDisableScrolling}
       />
     ) : null;
 
@@ -368,6 +386,7 @@ export const TransactionPageComponent = props => {
           rootClassName={css.rootForImage}
           alt={listingTitle}
           image={firstImage}
+          imageFromMedia={firstImageFromMedia}
           variants={['landscape-crop', 'landscape-crop2x']}
         />
       </div>
@@ -400,6 +419,7 @@ export const TransactionPageComponent = props => {
 
               <Elements options={options} stripe={stripePromise}>
                 <CheckoutForm
+
                   paymentIntentID={paymentIntentID}
                   amount={amount*config.mfCommission}
                   handleFunction={handleFirstPayment}
@@ -470,6 +490,7 @@ TransactionPageComponent.defaultProps = {
   };
 
 TransactionPageComponent.propTypes = {
+
     params: shape({ id: string }).isRequired,
       transactionRole: oneOf([PROVIDER, CUSTOMER]).isRequired,
       currentUser: propTypes.currentUser,
@@ -495,6 +516,7 @@ TransactionPageComponent.propTypes = {
       onFetchTimeSlots: func.isRequired,
       monthlyTimeSlots: object,
       onFirstPayment:func.isRequired,
+    onManageDisableScrolling:func.isRequired,
       // monthlyTimeSlots could be something like:
       // monthlyTimeSlots: {
       //   '2019-11': {
@@ -579,6 +601,7 @@ const mapStateToProps = state => {
       lineItems,
       fetchLineItemsInProgress,
       fetchLineItemsError,
+
     };
   };
 

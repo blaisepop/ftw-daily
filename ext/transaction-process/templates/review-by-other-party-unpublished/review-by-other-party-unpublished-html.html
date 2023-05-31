@@ -1,17 +1,19 @@
 <html>
   <body>
     {{#with transaction}}
-    <h1>Find out what {{other-party.display-name}} wrote!</h1>
+    <h1>Découvrez ce que {{other-party.display-name}} a écrit!</h1>
 
-    <p>{{other-party.display-name}} has left you a new review. To see what they wrote, please leave them a review to describe your experience.</p>
+    <p>{{other-party.display-name}} vous a laissé un avis. Pour voir ce qu'ils ont écrit vauillez leur laisser un avis.</p>
 
     <p>
-      <a href="{{marketplace.url}}/{{#eq recipient-role "customer"}}order{{else}}sale{{/eq}}/{{url-encode id}}/details">Leave a review</a>
+      <a href="{{marketplace.url}}/{{#eq recipient-role "customer"}}order{{else}}sale{{/eq}}/{{url-encode id}}/details">Laisser un avis</a>
     </p>
     {{/with}}
 
     <hr />
 
-    <p>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team.</p>
-  </body>
+    <p>
+      Vous avez reçu ce mail car vous êtes membre de {{ marketplace.name }}.
+      Si vous ne souhaitez plus recevoir de mail, veuillez contacter l'équipe {{ marketplace.name }}.
+    </p>  </body>
 </html>

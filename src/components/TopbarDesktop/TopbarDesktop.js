@@ -20,6 +20,7 @@ import { TopbarSearchForm } from '../../forms';
 
 import css from './TopbarDesktop.module.css';
 import { Link } from 'react-router-dom';
+import {forceLoad} from "@sentry/browser";
 
 const TopbarDesktop = props => {
   const {
@@ -37,7 +38,12 @@ const TopbarDesktop = props => {
     onSearchSubmit,
     initialSearchFormValues,
   } = props;
-  
+  function changeLanguage(lang){
+
+      localStorage.setItem("mobile_food_language",lang)
+      console.log("CLIQUE")
+      location.reload()
+  }
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -57,7 +63,7 @@ const TopbarDesktop = props => {
       initialValues={initialSearchFormValues}
     />
   );
-  
+
   const createListingMaybe=isAdmin?
         <NamedLink className={css.createListingLink} name="NewListingPage">
           <span className={css.createListing}>
@@ -91,7 +97,31 @@ const TopbarDesktop = props => {
       page === 'AccountSettingsPage' && ACCOUNT_SETTINGS_PAGES.includes(currentPage);
     return currentPage === page || isAccountSettingsPage ? css.currentPage : null;
   };
+  const languageSelector=(
+    <Menu>
+      <MenuLabel className={css.languageMenuLabel} isOpenClassName={css.profileMenuIsOpen}>
+        <span>{ localStorage.getItem("mobile_food_language")}</span>
 
+      </MenuLabel>
+      <MenuContent className={css.profileMenuContent}>
+        <MenuItem key="FRLanguage" >
+          <div className={css.languageItem} onClick={()=>changeLanguage("FR")}>
+            <span className={css.menuItemBorder} />
+            <span  >FR</span>
+
+          </div>
+        </MenuItem>
+        <MenuItem key="DELanguage" >
+          <div className={css.languageItem} onClick={()=>changeLanguage("DE")}>
+            <span className={css.menuItemBorder} />
+            <span  >DE</span>
+          </div>
+
+        </MenuItem>
+
+      </MenuContent>
+    </Menu>
+  )
   const profileMenu = authenticatedOnClientSide ? (
     <Menu>
       <MenuLabel className={css.profileMenuLabel} isOpenClassName={css.profileMenuIsOpen}>
@@ -101,13 +131,12 @@ const TopbarDesktop = props => {
       {isAdmin?<MenuItem key="ManageListingsPage">
       <NamedLink
         className={classNames(css.yourListingsLink, currentPageClass('ManageListingsPage'))}
-        name="ManageListingsPage"
-      >
+        name="ManageListingsPage">
         <span className={css.menuItemBorder} />
         <FormattedMessage id="TopbarDesktop.yourListingsLink" />
       </NamedLink>
-     
-</MenuItem> :null}
+
+          </MenuItem> :null}
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
             className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
@@ -173,10 +202,10 @@ const TopbarDesktop = props => {
         </span>
       </NamedLink>
     );
-
+  const trans='fr'
   return (
     <nav className={classes}>
-      <NamedLink className={css.logoLink} name="LandingPage">
+      <NamedLink className={css.logoLink} name="LandingPage" >
         <Logo
           format="desktop"
           className={css.logo}
@@ -184,7 +213,9 @@ const TopbarDesktop = props => {
         />
       </NamedLink>
       {search}
+      {languageSelector}
       {specialRequest}
+
       {createListingMaybe}
 
       {inboxLink}
