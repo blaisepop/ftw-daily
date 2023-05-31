@@ -25,22 +25,24 @@ import deMessages from './translations/de.json'
 
 
 const getLanguage=()=>{
+  if (typeof window !== 'undefined') {
+    if (!(localStorage.getItem("mobile_food_language"))) {
+      localStorage.setItem("mobile_food_language", "FR")
+    }
 
-  if(!(localStorage.getItem("mobile_food_language"))){
-    localStorage.setItem("mobile_food_language", "FR")
-  }
-
-    if (localStorage.getItem("mobile_food_language")==="DE"){
+    if (localStorage.getItem("mobile_food_language") === "DE") {
 
       console.log("allemand")
       return deMessages
 
-    }
-    else if(localStorage.getItem("mobile_food_language")==="FR"){
+    } else if (localStorage.getItem("mobile_food_language") === "FR") {
       console.log("français")
       return frMessages
     }
-
+  }
+  else{
+    return frMessages
+  }
 }
 let defaultMessages=getLanguage()
 // If you want to change the language, change the imports to match the wanted locale:
