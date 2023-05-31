@@ -317,6 +317,8 @@
   "InboxPage.statePendingPayment": "Zahlung ausstehend",
   "InboxPage.stateRequested": "Angefragt",
   "InboxPage.title": "Inbox",
+  "InboxPage.statePendingFirstPayment": "Zahlung ausstehend",
+
   "KeywordFilter.filterText": "Ergebnisse filtern nach",
   "KeywordFilter.labelSelected": "\"{labelText}\"",
   "KeywordFilter.placeholder": "Schlüsselwort eingeben…",
@@ -831,7 +833,7 @@
   "StripePaymentForm.confirmPaymentError": "Die Zahlung ist erfolgt, aber wir konnten die Buchung nicht bestätigen. Bitte versuche, die Buchungsanfrage erneut zu bestätigen! Wenn die Buchung nicht rechtzeitigt bestätigt ist, wird die Zahlung vollständig erstattet.",
   "StripePaymentForm.genericError": "Zahlungsinformationen konnten nicht verarbeitet werden. Bitte erneut versuchen.",
   "StripePaymentForm.messageHeading": "Nachricht",
-  "StripePaymentForm.messageLabel": "Hallo an deine(n) Gastgeber(in) {messageOptionalText} sagen",
+  "StripePaymentForm.messageLabel": "Nehmen Sie sich einen Moment Zeit, um dem Besitzer ein paar Worte zu sagen",
   "StripePaymentForm.messageOptionalText": "• optional",
   "StripePaymentForm.messagePlaceholder": "Hallo {name}! Ich freue mich auf…",
   "StripePaymentForm.missingStripeKey": "Der öffentliche Stripe API-schlüssel (\"Stripe publishable key\") wurde noch nicht für diesen Marktplatz konfiguriert. Leider kann der Eintrag nicht gebucht werden.",

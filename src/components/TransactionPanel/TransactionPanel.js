@@ -470,7 +470,6 @@ export class TransactionPanelComponent extends Component {
               <DetailCardHeadingsMaybe
                 showDetailCardHeadings={stateData.showDetailCardHeadings}
                 listingTitle={listingTitle}
-                subTitle={bookingSubTitle}
                 location={location}
                 geolocation={geolocation}
                 showAddress={stateData.showAddress}
