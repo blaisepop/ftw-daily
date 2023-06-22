@@ -69,6 +69,7 @@
   "BookingDatesForm.requestToBook": "Buchung anfragen",
   "BookingDatesForm.requiredDate": "Ups! Stelle bitte sicher, dass dein Datum richtig ist.",
   "BookingDatesForm.timeSlotsError": "Fehler beim Laden der Verfügbarkeit des Eintrags. Bitte Seite neu laden.",
+  "BookingDatesForm.totalCostError": "Mindestbetrag: 800 CHF",
   "BookingDatesForm.youWontBeChargedInfo": "Deine Karte wird noch nicht belastet",
   "BookingDatesForm.feeLabel": "{name}: {fee}",
   "BookingDateRangeFilter.labelPlain": "Daten",

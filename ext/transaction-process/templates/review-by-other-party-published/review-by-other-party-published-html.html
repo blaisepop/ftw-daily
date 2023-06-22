@@ -1,7 +1,7 @@
 <html>
   <body>
     {{#with transaction}}
-    <h1>{{other-party.display-name}} a laissé un avis.</h1>
+    <h1>{{other-party.display-name}} wrote you a review. Here's what they wrote.</h1>
 
     {{#each reviews}}
       {{#eq recipient.id subject.id}}
@@ -9,18 +9,15 @@
       {{/eq}}
     {{/each}}
 
-    <p>L'avis a été laissé sur le food truck {{marketplace.name}}.</p>
+    <p>The review has been published on your {{marketplace.name}} profile.</p>
 
     <p>
-      <a href="{{marketplace.url}}/u/{{url-encode recipient.id}}">Votre profile.</a>
+      <a href="{{marketplace.url}}/u/{{url-encode recipient.id}}">View your profile.</a>
     </p>
     {{/with}}
 
     <hr />
 
-    <p>
-      Vous avez reçu ce mail car vous êtes membre de {{ marketplace.name }}.
-      Si vous ne souhaitez plus recevoir de mail, veuillez contacter l'équipe {{ marketplace.name }}.
-    </p>
+    <p>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team.</p>
   </body>
 </html>

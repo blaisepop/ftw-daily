@@ -1,1 +1,1 @@
-Lisez l'avis que {{other-party.display-name}} a laissé un avis !
+Read the review {{other-party.display-name}} wrote you

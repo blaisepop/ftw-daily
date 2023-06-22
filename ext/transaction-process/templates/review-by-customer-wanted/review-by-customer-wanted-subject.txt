@@ -1,1 +1,3 @@
 Write a review for {{transaction.listing.title}}
+{{#eq recipient.private-data.language "FR"}}{{transaction.provider.display-name}} Write a review for {{transaction.listing.title}}{{/eq}}
+{{#eq recipient.private-data.language "DE"}}{{transaction.provider.display-name}} Schreiben Sie eine Bewertung für {{transaction.listing.title}}{{/eq}}

@@ -47,21 +47,22 @@
   </head>
   <body>
     {{#with transaction}}
-    <h1>{{ customer.display-name }} a réalisé le premier paiement </h1>
+    <h1>{{ customer.display-name }} completed the first payment </h1>
 
     <p>
-      {{ customer.display-name }} vient juste de réaliser le premier paiement pour la réservation de
-      {{ listing.title }} de {{> format-date date=booking.start}} au
-      {{> format-date date=booking.end}} par {{ customer.display-name }}.
+      {{ customer.display-name }} just completed the first payment of his booking for
+      the booking for the booking of
+      {{ listing.title }} from {{> format-date date=booking.start}} to
+      {{> format-date date=booking.end}} by {{ customer.display-name }}.
     </p>
 
-    <p>Résumé.</p>
+    <p>Here's the breakdown.</p>
 
     <table>
       <thead>
         <tr>
-          <td class="left">Début</td>
-          <td class="right">Fin</td>
+          <td class="left">Start date</td>
+          <td class="right">End date</td>
         </tr>
         <tr>
           <th class="left">{{> format-day-time date=booking.start}}</th>
@@ -95,7 +96,7 @@
         </tr>
         {{/if}}
         <tr class="top-row">
-          <th class="left">Sous total</th>
+          <th class="left">Subtotal</th>
           <th class="right">{{> format-money money=line-total}}</th>
         </tr>
         {{/eq}}
@@ -111,7 +112,7 @@
       </tbody>
       <tfoot>
         <tr class="top-row">
-          <th class="left">Total: </th>
+          <th class="left">You'll make</th>
           <th class="right">{{> format-money money=payout-total}}</th>
         </tr>
       </tfoot>
@@ -122,9 +123,8 @@
     <hr />
 
     <p>
-      Vous avez reçu ce mail car vous êtes membre de {{ marketplace.name }}.
-      Si vous ne souhaitez plus recevoir de mail, veuillez contacter l'équipe {{ marketplace.name }}.
+      You have received this email notification because you are a member of {{ marketplace.name }}.
+      If you no longer wish to receive these emails, please contact {{ marketplace.name }} team.
     </p>
-
   </body>
 </html>

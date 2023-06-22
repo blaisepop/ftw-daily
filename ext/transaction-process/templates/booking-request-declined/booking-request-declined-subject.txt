@@ -1,4 +1,2 @@
-{{transaction.provider.display-name}} declined your booking request
-
 {{#eq recipient.private-data.language "FR"}}{{transaction.provider.display-name}}  a refusé votre demande de réservation{{/eq}}
 {{#eq recipient.private-data.language "DE"}}{{transaction.provider.display-name}}  ahre Buchungsanfrage abgelehnt hat{{/eq}}
