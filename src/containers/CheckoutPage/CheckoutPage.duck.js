@@ -184,7 +184,7 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   dispatch(initiateOrderRequest());
   sdk.currentUser.updateProfile({
     privateData: {
-      Language:localStorage.getItem("mobile_food_language")
+      language:localStorage.getItem("mobile_food_language")
     }
   }, {
     expand: true,
